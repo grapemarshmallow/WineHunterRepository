@@ -22,7 +22,7 @@ public class MainMenu extends JPanel {
 		String labelText = "Welcome, " + WineHunterApplication.userSession.getUserInfo().get("USERNAME") + "!";
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] {445, 75};
+		gridBagLayout.columnWidths = new int[] {WineHunterApplication.APPLICATION_WIDTH};
 		gridBagLayout.rowHeights = new int[]{26, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};

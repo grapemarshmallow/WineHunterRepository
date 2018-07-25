@@ -32,7 +32,7 @@ public class UserCreate extends JPanel {
 	 * @param set to 0 if first attempt, 1 for a duplicate, 2 for error
 	 */
 	public UserCreate(int attemptFlag) {
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_HEIGHT);
 
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -204,7 +204,7 @@ public class UserCreate extends JPanel {
 		Accept.setToolTipText("Click to accept the provided credentials.\n");
 		GridBagConstraints gbc_Accept = new GridBagConstraints();
 		gbc_Accept.insets = new Insets(0, 0, 5, 5);
-		gbc_Accept.anchor = GridBagConstraints.NORTHWEST;
+		gbc_Accept.anchor = GridBagConstraints.CENTER;
 		gbc_Accept.gridx = 4;
 		gbc_Accept.gridy = 0;
 		createPanel.add(Accept, gbc_Accept);

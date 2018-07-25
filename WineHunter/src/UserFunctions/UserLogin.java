@@ -38,7 +38,7 @@ public class UserLogin extends JPanel {
 	 */
 
 	public UserLogin(int attemptFlag) {
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_HEIGHT);
 
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -177,14 +177,14 @@ public class UserLogin extends JPanel {
 		newuser.setActionCommand("newuser");
 		newuser.setToolTipText("Click to create a new user.");
 		GridBagConstraints gbc_newuser = new GridBagConstraints();
-		gbc_newuser.anchor = GridBagConstraints.NORTHWEST;
+		gbc_newuser.anchor = GridBagConstraints.CENTER;
 		gbc_newuser.insets = new Insets(0, 0, 5, 5);
 		gbc_newuser.gridx = 0;
 		gbc_newuser.gridy = 0;
 		panelLogin.add(newuser, gbc_newuser);
 		login.setToolTipText("Click to login with provided credentials\n");
 		GridBagConstraints gbc_login = new GridBagConstraints();
-		gbc_login.anchor = GridBagConstraints.NORTHWEST;
+		gbc_login.anchor = GridBagConstraints.CENTER;
 		gbc_login.insets = new Insets(0, 0, 5, 5);
 		gbc_login.gridx = 3;
 		gbc_login.gridy = 0;

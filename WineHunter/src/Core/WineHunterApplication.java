@@ -36,6 +36,8 @@ public class WineHunterApplication {
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	
+	public final static int APPLICATION_WIDTH = 600;
+	public final static int APPLICATION_HEIGHT = 400;
 	
 	
 	public Core.Connect getConnection() {
@@ -116,10 +118,10 @@ public class WineHunterApplication {
 	private void initialize() {
 		frmWinehunter = new JFrame();
 		frmWinehunter.setTitle("WineHunter");
-		frmWinehunter.setBounds(100, 100, 600, 300);
+		frmWinehunter.setBounds(100, 100, APPLICATION_WIDTH, APPLICATION_HEIGHT);
 		frmWinehunter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{470, 0};
+		gridBagLayout.columnWidths = new int[]{APPLICATION_WIDTH, 0};
 		gridBagLayout.rowHeights = new int[]{20, 120};
 		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
@@ -129,7 +131,7 @@ public class WineHunterApplication {
 		toolbarPanel = new JPanel();
 		
 		GridBagConstraints gbc_toolbarPanel = new GridBagConstraints();
-		gbc_toolbarPanel.anchor = GridBagConstraints.NORTHWEST;
+		gbc_toolbarPanel.anchor = GridBagConstraints.NORTHEAST;
 		gbc_toolbarPanel.gridx = 0;
 		gbc_toolbarPanel.gridy = 0;
 		frmWinehunter.getContentPane().add(toolbarPanel, gbc_toolbarPanel);
@@ -139,7 +141,7 @@ public class WineHunterApplication {
 		mainPanel = new JPanel();
 		
 		GridBagConstraints gbc_mainPanel = new GridBagConstraints();
-		gbc_mainPanel.anchor = GridBagConstraints.NORTHWEST;
+		gbc_mainPanel.anchor = GridBagConstraints.CENTER;
 		gbc_mainPanel.gridx = 0;
 		gbc_mainPanel.gridy = 1;
 		frmWinehunter.getContentPane().add(mainPanel, gbc_mainPanel);
