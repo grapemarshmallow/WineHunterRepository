@@ -132,7 +132,25 @@ public class UserSession {
 		
 	}
 	
+	public void logOut() {
+		loggedIn = false;
+		credentials.put("USERID",-1);
+		credentials.put("ADMIN",0);
+		credentials.put("SUPERADMIN",0);
+		userInfo.put("USERNAME", null);
+		userInfo.put("NAME", null);
+	}
 	
+
+	public Map<String, String> getUserInfo() {
+		return this.userInfo;
+	}
+
+
+	public void setUserInfo(Map<String, String> userInfo) {
+		this.userInfo = userInfo;
+	}
+
 
 	public boolean isLoggedIn() {
 		return this.loggedIn;

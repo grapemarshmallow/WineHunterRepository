@@ -133,18 +133,18 @@ public class UserLogin extends JPanel {
 		gbc_passwordField.gridy = 2;
 		panel.add(passwordField, gbc_passwordField);
 		
-		JPanel panel_1 = new JPanel();
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.fill = GridBagConstraints.BOTH;
-		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 3;
-		this.add(panel_1, gbc_panel_1);
-		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[] {75, 75, 75, 75};
-		gbl_panel_1.rowHeights = new int[]{29, 0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel_1.setLayout(gbl_panel_1);
+		JPanel panelLogin = new JPanel();
+		GridBagConstraints gbc_loginPanel = new GridBagConstraints();
+		gbc_loginPanel.fill = GridBagConstraints.BOTH;
+		gbc_loginPanel.gridx = 0;
+		gbc_loginPanel.gridy = 3;
+		this.add(panelLogin, gbc_loginPanel);
+		GridBagLayout gbl_panelLogin = new GridBagLayout();
+		gbl_panelLogin.columnWidths = new int[] {75, 75, 75, 75};
+		gbl_panelLogin.rowHeights = new int[]{29, 0, 0, 0};
+		gbl_panelLogin.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_panelLogin.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panelLogin.setLayout(gbl_panelLogin);
 		
 		JButton login = new JButton("Login");
 		login.setMnemonic(KeyEvent.VK_D);
@@ -157,7 +157,7 @@ public class UserLogin extends JPanel {
 
 				try {
 					if (WineHunterApplication.userSession.validateUser(usernameIn, passwordIn)) {
-						// go to search
+						WineHunterApplication.splash();
 					} else {
 						WineHunterApplication.userLogin(1);
 					} 
@@ -181,30 +181,15 @@ public class UserLogin extends JPanel {
 		gbc_newuser.insets = new Insets(0, 0, 5, 5);
 		gbc_newuser.gridx = 0;
 		gbc_newuser.gridy = 0;
-		panel_1.add(newuser, gbc_newuser);
+		panelLogin.add(newuser, gbc_newuser);
 		login.setToolTipText("Click to login with provided credentials\n");
 		GridBagConstraints gbc_login = new GridBagConstraints();
 		gbc_login.anchor = GridBagConstraints.NORTHWEST;
 		gbc_login.insets = new Insets(0, 0, 5, 5);
 		gbc_login.gridx = 3;
 		gbc_login.gridy = 0;
-		panel_1.add(login, gbc_login);
+		panelLogin.add(login, gbc_login);
 		
-		JButton quit = new JButton("Quit");
-		quit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(1);
-			}
-		});
-		quit.setMnemonic(KeyEvent.VK_D);
-		quit.setActionCommand("quit");
-		quit.setToolTipText("Click to quit.");
-		GridBagConstraints gbc_quit = new GridBagConstraints();
-		gbc_quit.insets = new Insets(0, 0, 5, 5);
-		gbc_quit.anchor = GridBagConstraints.NORTHWEST;
-		gbc_quit.gridx = 4;
-		gbc_quit.gridy = 0;
-		panel_1.add(quit, gbc_quit);
 	}
 	
 }

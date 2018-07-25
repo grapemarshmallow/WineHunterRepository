@@ -93,12 +93,12 @@ public class UserCreate extends JPanel {
 		panel.add(lblFullName, gbc_lblFullName);
 		
 		name = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 0;
-		panel.add(name, gbc_textField);
+		GridBagConstraints gbc_name = new GridBagConstraints();
+		gbc_name.insets = new Insets(0, 0, 5, 5);
+		gbc_name.fill = GridBagConstraints.HORIZONTAL;
+		gbc_name.gridx = 2;
+		gbc_name.gridy = 0;
+		panel.add(name, gbc_name);
 		name.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Username: ");
@@ -117,12 +117,12 @@ public class UserCreate extends JPanel {
 		});
 		
 		username = new JTextField();
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 2;
-		gbc_textField_2.gridy = 1;
-		panel.add(username, gbc_textField_2);
+		GridBagConstraints gbc_username = new GridBagConstraints();
+		gbc_username.insets = new Insets(0, 0, 5, 5);
+		gbc_username.fill = GridBagConstraints.HORIZONTAL;
+		gbc_username.gridx = 2;
+		gbc_username.gridy = 1;
+		panel.add(username, gbc_username);
 		username.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password: ");
@@ -150,26 +150,26 @@ public class UserCreate extends JPanel {
 		panel.add(lblEmail, gbc_lblEmail);
 		
 		email = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 2;
-		gbc_textField_1.gridy = 3;
-		panel.add(email, gbc_textField_1);
+		GridBagConstraints gbc_email = new GridBagConstraints();
+		gbc_email.insets = new Insets(0, 0, 5, 5);
+		gbc_email.fill = GridBagConstraints.HORIZONTAL;
+		gbc_email.gridx = 2;
+		gbc_email.gridy = 3;
+		panel.add(email, gbc_email);
 		email.setColumns(10);
 		
-		JPanel panel_1 = new JPanel();
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.fill = GridBagConstraints.BOTH;
-		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 3;
-		this.add(panel_1, gbc_panel_1);
-		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[] {75, 75, 75, 75, 75, 75};
-		gbl_panel_1.rowHeights = new int[] {30};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-		gbl_panel_1.rowWeights = new double[]{0.0};
-		panel_1.setLayout(gbl_panel_1);
+		JPanel createPanel = new JPanel();
+		GridBagConstraints gbc_createPanel = new GridBagConstraints();
+		gbc_createPanel.fill = GridBagConstraints.BOTH;
+		gbc_createPanel.gridx = 0;
+		gbc_createPanel.gridy = 3;
+		this.add(createPanel, gbc_createPanel);
+		GridBagLayout gbl_createPanel = new GridBagLayout();
+		gbl_createPanel.columnWidths = new int[] {75, 75, 75, 75, 75, 75};
+		gbl_createPanel.rowHeights = new int[] {0, 30};
+		gbl_createPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
+		gbl_createPanel.rowWeights = new double[]{0.0, 0.0};
+		createPanel.setLayout(gbl_createPanel);
 		
 		JButton Accept = new JButton("Accept");
 		Accept.setMnemonic(KeyEvent.VK_D);
@@ -203,27 +203,13 @@ public class UserCreate extends JPanel {
 		});
 		Accept.setToolTipText("Click to accept the provided credentials.\n");
 		GridBagConstraints gbc_Accept = new GridBagConstraints();
-		gbc_Accept.anchor = GridBagConstraints.NORTHWEST;
 		gbc_Accept.insets = new Insets(0, 0, 5, 5);
-		gbc_Accept.gridx = 2;
+		gbc_Accept.anchor = GridBagConstraints.NORTHWEST;
+		gbc_Accept.gridx = 4;
 		gbc_Accept.gridy = 0;
-		panel_1.add(Accept, gbc_Accept);
+		createPanel.add(Accept, gbc_Accept);
 		
-		JButton quit = new JButton("Quit");
-		quit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(1);
-			}
-		});
-		quit.setMnemonic(KeyEvent.VK_D);
-		quit.setActionCommand("quit");
-		quit.setToolTipText("Click to quit.");
-		GridBagConstraints gbc_quit = new GridBagConstraints();
-		gbc_quit.insets = new Insets(0, 0, 5, 5);
-		gbc_quit.anchor = GridBagConstraints.NORTHWEST;
-		gbc_quit.gridx = 3;
-		gbc_quit.gridy = 0;
-		panel_1.add(quit, gbc_quit);
+
 	}
 
 	
