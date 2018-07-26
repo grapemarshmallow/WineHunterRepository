@@ -154,6 +154,11 @@ public class LocationFunctions implements ActionListener {
 		rs.beforeFirst();
 		
 		if (size <= 0) {
+			rs.close();
+
+			
+			
+			stmt.close();
 			return 0;
 		}
 		

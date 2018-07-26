@@ -3,9 +3,8 @@ package UserFunctions;
 
 import java.io.*;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
 import Core.WineHunterApplication;
+import WineObjects.User;
 
 
 
@@ -13,9 +12,7 @@ public class UserSession {
 
 
 	private boolean loggedIn = false;
-	
-	private Map<String, Integer> credentials = new HashMap<String, Integer>();
-	private Map<String, String> userInfo = new HashMap<String, String>();
+	private User user;
 	
 	
 	/**
@@ -24,14 +21,20 @@ public class UserSession {
 	 */
 	public UserSession() {
 		loggedIn = false;
-		credentials.put("USERID",-1);
-		credentials.put("ADMIN",0);
-		credentials.put("SUPERADMIN",0);
-		userInfo.put("USERNAME", null);
-		userInfo.put("NAME", null);
+		user = new User(null, null, -1, 0, 0);
 	}
 
 	
+	public User getUser() {
+		return this.user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
 	/**
 	 * Method to log in a user.
 	 * @param username
@@ -59,11 +62,11 @@ public class UserSession {
 		else {
 			loggedIn = true;
 			
-			credentials.replace("USERID", rs.getInt("UserID"));
-			credentials.replace("ADMIN", rs.getInt("AdminUser"));
-			credentials.replace("SUPERADMIN", rs.getInt("SuperAdminUser"));
-			userInfo.replace("USERNAME", rs.getString("Username"));
-			userInfo.replace("NAME", rs.getString("UserFullName"));
+			user.setAdmin(rs.getInt("AdminUser"));
+			user.setFullName(rs.getString("UserFullName"));
+			user.setId(rs.getInt("UserID"));
+			user.setUsername(rs.getString("Username"));
+			user.setSuperAdmin(rs.getInt("SuperAdminUser"));
 			
 			result = true;
 			
@@ -134,23 +137,14 @@ public class UserSession {
 	
 	public void logOut() {
 		loggedIn = false;
-		credentials.put("USERID",-1);
-		credentials.put("ADMIN",0);
-		credentials.put("SUPERADMIN",0);
-		userInfo.put("USERNAME", null);
-		userInfo.put("NAME", null);
+		user.setAdmin(0);
+		user.setFullName(null);
+		user.setId(-1);
+		user.setUsername(null);
+		user.setSuperAdmin(0);
+
 	}
 	
-
-	public Map<String, String> getUserInfo() {
-		return this.userInfo;
-	}
-
-
-	public void setUserInfo(Map<String, String> userInfo) {
-		this.userInfo = userInfo;
-	}
-
 
 	public boolean isLoggedIn() {
 		return this.loggedIn;
@@ -160,11 +154,5 @@ public class UserSession {
 		this.loggedIn = loggedIn;
 	}
 
-	public Map<String, Integer> getCredentials() {
-		return this.credentials;
-	}
 
-	public void setCredentials(Map<String, Integer> credentials) {
-		this.credentials = credentials;
-	}
 }
