@@ -2,10 +2,18 @@ package Core;
 
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
+import javax.swing.JLabel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.JSplitPane;
+import java.awt.GridLayout;
 
 public class Toolbar extends JPanel {
 	
@@ -16,12 +24,27 @@ public class Toolbar extends JPanel {
 	 * Create the panel.
 	 */
 	public Toolbar() {
+		
 		FlowLayout flowLayout = (FlowLayout) getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		
+		JPanel splitPane = new JPanel();
+		splitPane.setLayout(new GridLayout(0, 2, 0, 0));
+		splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
-		add(toolBar);
+		toolBar.setBounds(0, 0, WineHunterApplication.APPLICATION_WIDTH, 20);
+		
+		
+		if (WineHunterApplication.userSession.isLoggedIn()) {
+			JLabel lblLoggedInAs = new JLabel("Logged in as " + WineHunterApplication.userSession.getUser().getUsername());
+			lblLoggedInAs.setHorizontalAlignment(SwingConstants.LEFT);
+
+			lblLoggedInAs.setBounds(0, 0, 70, 20);
+			splitPane.add(lblLoggedInAs);
+		}
+		
 		
 		if (WineHunterApplication.userSession.isLoggedIn()) {
 			JButton btnWineSearch = new JButton("Wine Search");
@@ -41,7 +64,7 @@ public class Toolbar extends JPanel {
 			toolBar.add(btnUser);
 		}
 		
-		if (WineHunterApplication.userSession.getCredentials().get("SUPERADMIN") == 1) {
+		if (WineHunterApplication.userSession.getUser().getSuperAdmin() == 1) {
 			JButton btnSuperAdmin = new JButton("Super Admin");
 			btnSuperAdmin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -50,7 +73,7 @@ public class Toolbar extends JPanel {
 			toolBar.add(btnSuperAdmin);
 		}
 		
-		if (WineHunterApplication.userSession.getCredentials().get("ADMIN") == 1) {
+		if (WineHunterApplication.userSession.getUser().getAdmin() == 1) {
 			JButton btnAdminFunctions = new JButton("Admin");
 			btnAdminFunctions.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -70,13 +93,19 @@ public class Toolbar extends JPanel {
 			toolBar.add(btnLogout);
 		}
 		
+		
 		JButton btnQuit = new JButton("Quit");
 		btnQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WineHunterApplication.quit();
 			}
 		});
+		
 		toolBar.add(btnQuit);
+		
+		splitPane.add(toolBar);
+		add(splitPane);
+
 		
 	}
 	

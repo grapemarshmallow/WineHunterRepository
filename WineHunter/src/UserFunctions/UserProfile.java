@@ -1,6 +1,7 @@
 package UserFunctions;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -112,7 +113,7 @@ public class UserProfile {
 		}
 		
 		sql = "SELECT *"
-				+ " FROM KeywordDisike kd"
+				+ " FROM KeywordDislike kd"
 				+ " INNER JOIN Keyword k"
 				+ " ON kd.DislikeKeywordID = k.KeywordID"
 				+ " WHERE kd.DislikeKeywordUserID = '" + user.getId() + "'"
@@ -200,106 +201,142 @@ public class UserProfile {
 			}
 		}
 
-		
-		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
-		
-		//let's use prepared statements for this one
 
 		String sql;
 		
+		// Update like keywords
+		
+		int lastUpdate = user.getUserLikeKeywordList().size();
+		
 		for (int i = 1; i < 6; ++i) {
-			sql = "IF EXISTS(select * from test where id=30122)\n" + 
-					"   update test set name='john' where id=3012\n" + 
-					"ELSE\n" + 
-					"   insert into test(name) values('john');";
-		}
-		sql = "SELECT *"
-				+ " FROM KeywordLike kl"
-				+ " INNER JOIN Keyword k"
-				+ " ON kl.LikeKeywordID = k.KeywordID"
-				+ " WHERE KeywordLike.KeywordLikeUserID = '" + user.getId() + "'"
-				+ " ORDER BY kl.Rank";
-		
-		
-		ResultSet rs = stmt.executeQuery(sql);
-		
-		
-		while(rs.next()) {
-			if (rs.getInt("KeywordLikeUser") == 1) {
-				user.getUserLikeKeywordList().add(new Keyword(rs.getInt("KeywordID"), rs.getString("Word")));
+			if (i <= lastUpdate) {
+				sql = "IF EXISTS"
+						+ "(SELECT * "
+						+ "FROM KeywordLike "
+						+ " WHERE KeywordLike.KeywordLikeUserID = '" + user.getId() + "'"
+						+ " AND KeywordLike.Rank = '" + i + "'"
+						+ " AND KeywordLikeUser = 1)"
+						+ "   UPDATE KeywordLike set LikeKeywordID = '" + user.getUserLikeKeywordList().get(i - 1) + "'"
+						+ " WHERE KeywordLike.KeywordLikeUserID = '" + user.getId() + "'" 
+						+ " AND KeywordLike.Rank = '" + i + "'" 
+						+ " AND KeywordLikeUser = 1)"
+						+ "ELSE"
+						+ "   INSERT INTO KeywordLike(KeywordLikeUserID, LikeKeywordID, Rank, KeywordLikeUser) values"
+						+ "(" + user.getId() + "," + user.getUserLikeKeywordList().get(i - 1) + "," + i + ",)";
 			}
 			else {
-				user.getSysLikeKeywordList().add(new Keyword(rs.getInt("KeywordID"), rs.getString("Word")));
+				sql = "DELETE FROM KeywordLike"
+						+ " WHERE KeywordLike.KeywordLikeUserID = '" + user.getId() + "'"
+						+ " AND KeywordLike.Rank = '" + i + "'"
+						+ " AND KeywordLikeUser = 1)";
 			}
+			
+			PreparedStatement stmt = WineHunterApplication.connection.getConnection().prepareStatement(sql);
+			stmt.executeUpdate();
+			stmt.executeUpdate();
+			stmt.close();
 		}
 		
-		sql = "SELECT *"
-				+ " FROM KeywordDisike kd"
-				+ " INNER JOIN Keyword k"
-				+ " ON kd.DislikeKeywordID = k.KeywordID"
-				+ " WHERE kd.DislikeKeywordUserID = '" + user.getId() + "'"
-				+ " ORDER BY kd.Rank";
 		
+		//update dislike keywords
+		lastUpdate = user.getUserDislikeKeywordList().size();
 		
-		rs = stmt.executeQuery(sql);
-		
-		while(rs.next()) {
-			if (rs.getInt("KeywordDislikeUser") == 1) {
-				user.getUserDislikeKeywordList().add(new Keyword(rs.getInt("KeywordID"), rs.getString("Word")));
+		for (int i = 1; i < 6; ++i) {
+			if (i <= lastUpdate) {
+				sql = "IF EXISTS"
+						+ "(SELECT * "
+						+ "FROM KeywordDislike "
+						+ " WHERE KeywordDislike.KeywordDislikeUserID = '" + user.getId() + "'"
+						+ " AND KeywordDislike.Rank = '" + i + "'"
+						+ " AND KeywordDislikeUser = 1)"
+						+ "   UPDATE KeywordDislike set DislikeKeywordID = '" + user.getUserDislikeKeywordList().get(i - 1) + "'"
+						+ " WHERE KeywordDislike.DisikeKeywordUserID = '" + user.getId() + "'" 
+						+ " AND KeywordDislike.Rank = '" + i + "'" 
+						+ " AND KeywordDislikeUser = 1)"
+						+ "ELSE"
+						+ "   INSERT INTO KeywordDislike(DisikeKeywordUserID, DislikeKeywordID, Rank, KeywordDislikeUser) values"
+						+ "(" + user.getId() + "," + user.getUserDislikeKeywordList().get(i - 1) + "," + i + ",)";
 			}
 			else {
-				user.getSysDislikeKeywordList().add(new Keyword(rs.getInt("KeywordID"), rs.getString("Word")));
+				sql = "DELETE FROM KeywordDislike"
+						+ " WHERE KeywordDislike.DisikeKeywordUserID = '" + user.getId() + "'"
+						+ " AND KeywordDislike.Rank = '" + i + "'"
+						+ " AND KeywordDislikeUser = 1)";
 			}
+			
+			PreparedStatement stmt = WineHunterApplication.connection.getConnection().prepareStatement(sql);
+			stmt.executeUpdate();
+			stmt.close();
+			
 		}
-
-
-		rs.close();
 		
-		sql = "SELECT *"
-				+ " FROM VarietyDislike vd"
-				+ " INNER JOIN varieties v"
-				+ " ON vd.DislikeVarietyID = v.VarietyID"
-				+ " WHERE vd.DislikeUserID = '" + user.getId() + "'"
-				+ " ORDER BY vd.Rank";
+		// Update like varieties
 		
+		lastUpdate = user.getUserLikeVarietyList().size();
 		
-		rs = stmt.executeQuery(sql);
-		
-		while(rs.next()) {
-			if (rs.getInt("VarietyDislikeUser") == 1) {
-				user.getUserDislikeVarietyList().add(new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName")));
+		for (int i = 1; i < 6; ++i) {
+			if (i <= lastUpdate) {
+				sql = "IF EXISTS"
+						+ "(SELECT * "
+						+ "FROM varieties "
+						+ " WHERE varieties.LikeUserID = '" + user.getId() + "'"
+						+ " AND varieties.Rank = '" + i + "'"
+						+ " AND VarietyLikeUser = 1)"
+						+ "   UPDATE VarietyLike set LikeVariety = '" + user.getUserLikeVarietyList().get(i - 1) + "'"
+						+ " WHERE varieties.LikeUserID = '" + user.getId() + "'" 
+						+ " AND varieties.Rank = '" + i + "'" 
+						+ " AND VarietyLikeUser = 1)"
+						+ "ELSE"
+						+ "   INSERT INTO VarietyLike(LikeUserID, LikeVariety, Rank, VarietyLikeUser) values"
+						+ "(" + user.getId() + "," + user.getUserLikeVarietyList().get(i - 1) + "," + i + ",)";
 			}
 			else {
-				user.getSysDislikeVarietyList().add(new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName")));
+				sql = "DELETE FROM varieties"
+						+ " WHERE varieties.LikeUserID = '" + user.getId() + "'"
+						+ " AND varieties.Rank = '" + i + "'"
+						+ " AND VarietyLikeUser = 1)";
 			}
+			
+			PreparedStatement stmt = WineHunterApplication.connection.getConnection().prepareStatement(sql);
+			stmt.executeUpdate();
+			stmt.executeUpdate();
+			stmt.close();
 		}
-
-
-		rs.close();
 		
-		sql = "SELECT *"
-				+ " FROM VarietyLike vl"
-				+ " INNER JOIN varieties v"
-				+ " ON vl.LikeVariety = v.VarietyID"
-				+ " WHERE vl.LikeUserID = '" + user.getId() + "'"
-				+ " ORDER BY vl.Rank";
+		// Update dislike varieties
 		
+		lastUpdate = user.getUserDislikeVarietyList().size();
 		
-		rs = stmt.executeQuery(sql);
-		
-		while(rs.next()) {
-			if (rs.getInt("VarietyLikeUser") == 1) {
-				user.getUserLikeVarietyList().add(new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName")));
+		for (int i = 1; i < 6; ++i) {
+			if (i <= lastUpdate) {
+				sql = "IF EXISTS"
+						+ "(SELECT * "
+						+ "FROM varieties "
+						+ " WHERE varieties.DislikeUserID = '" + user.getId() + "'"
+						+ " AND varieties.Rank = '" + i + "'"
+						+ " AND VarietyDislikeUser = 1)"
+						+ "   UPDATE VarietyDislike set DislikeVarietyID = '" + user.getUserDislikeVarietyList().get(i - 1) + "'"
+						+ " WHERE varieties.DislikeUserID = '" + user.getId() + "'" 
+						+ " AND varieties.Rank = '" + i + "'" 
+						+ " AND VarietyDislikeUser = 1)"
+						+ "ELSE"
+						+ "   INSERT INTO VarietyDislike(DislikeUserID, DislikeVarietyID, Rank, VarietyDislikeUser) values"
+						+ "(" + user.getId() + "," + user.getUserDislikeVarietyList().get(i - 1) + "," + i + ",)";
 			}
 			else {
-				user.getSysLikeVarietyList().add(new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName")));
+				sql = "DELETE FROM varieties"
+						+ " WHERE varieties.DislikeUserID = '" + user.getId() + "'"
+						+ " AND varieties.Rank = '" + i + "'"
+						+ " AND VarietyDislikeUser = 1)";
 			}
+			
+			PreparedStatement stmt = WineHunterApplication.connection.getConnection().prepareStatement(sql);
+			stmt.executeUpdate();
+			stmt.executeUpdate();
+			stmt.close();
 		}
-
-
-		rs.close();
 		
-		stmt.close();
+		
 		
 		return result;
 	}
