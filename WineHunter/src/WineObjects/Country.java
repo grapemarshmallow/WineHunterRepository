@@ -1,45 +1,43 @@
 package WineObjects;
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
 // Main Class File:  (name of main application class)
-// File:             Keyword.java
+// File:             Country.java
 // Semester:         Summer 2018
+//
 //
 // Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
 // CS Login:         orbi
-// Lecturer's Name:  Hieng
+// Lecturer's Name:  Hien
 //
 //                   PAIR PROGRAMMERS COMPLETE THIS SECTION
 // Pair Partner:     Jennifer Shih
 // CS Login:         (partner's login name)
-//
 //////////////////////////// 80 columns wide //////////////////////////////////
 
 /**
-  * This class characterizes a keyword used to describe wine.
+  * The Country class defines a country.
   *
   * @author Orbi Ish-Shalom
   */
-public class Keyword {
+public class Country {
 	
 	// Data members
-	private int id; // the unique id for this keyword
-	private String word; // the word for this keyword
+	private int id; // the unique id for this country
+	private String name; // the name for this country
 	
 	/**
-     * Constructs a keyword with the given id and word.
-     * @param id the unique ID for the keyword
-     * @param word the word for the keyword
+     * Constructs a country with the given id and name.
+     * @param id the unique ID for the country
+     * @param name the name for the country
      */
-    public Keyword(int id, String word) {
+    public Country(int id, String name) {
         this.id = id;
-        this.word = word;
+        this.name = name;
     }
 	
     /**
-     * Returns the id for this Keyword.
+     * Returns the id for this country.
      * @return the id
      */
     public int getId() { 
@@ -47,15 +45,15 @@ public class Keyword {
     }
     
     /**
-     * Returns the word for this Keyword.
-     * @return the word
+     * Returns the name for this country.
+     * @return the name
      */
-    public String getWord() { 
-        return word; 
+    public String getName() { 
+        return name; 
     }
  
     /**
-     * Changes the id for this keyword to the one given.
+     * Changes the id for this country to the one given.
      * @param newId the new id  
      */
     public void setId(int newId) { 
@@ -63,11 +61,11 @@ public class Keyword {
     }
     
     /**
-     * Changes the word for this keyword to the one given.
-     * @param newWord the new word  
+     * Changes the name for this country to the one given.
+     * @param newName the new name  
      */
-    public void setWord(String newWord) { 
-        word = newWord; 
+    public void setName(String newName) { 
+        name = newName; 
     }
     
 	

@@ -2,7 +2,7 @@ package WineObjects;
 ///////////////////////////////////////////////////////////////////////////////
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
 // Main Class File:  (name of main application class)
-// File:             Taster.java
+// File:             Province.java
 // Semester:         Summer 2018
 //
 //
@@ -16,30 +16,38 @@ package WineObjects;
 //////////////////////////// 80 columns wide //////////////////////////////////
 
 /**
-  * The Taster class defines a taster.
+  * The Province class defines a province.
   *
   * @author Orbi Ish-Shalom
   */
-public class Taster {
+public class Province {
 	
 	// Data members
-	private int id;
-	private String twitter; // the unique twitter for this taster
-	private String name; // the name for this taster
+	private int id; // the unique id for this province
+	private String name; // the name for this province
+	private Country country;
 	
+	public Country getCountry() {
+		return this.country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
 	/**
-     * Constructs a taster with the given twitter and name.
-     * @param twitter the unique twitter for the taster
-     * @param name the word for the taster
+     * Constructs a province with the given id and name.
+     * @param id the unique ID for the province
+     * @param name the name for the province
      */
-    public Taster(int id, String twitter, String name) {
-    	this.id = id;
-        this.twitter = twitter;
+    public Province(int id, String name, Country country) {
+        this.id = id;
         this.name = name;
+        this.country = country;
     }
 	
     /**
-     * Returns the id for this taster.
+     * Returns the id for this province.
      * @return the id
      */
     public int getId() { 
@@ -47,23 +55,16 @@ public class Taster {
     }
     
     /**
-     * Returns the twitter for this taster.
-     * @return the twitter
-     */
-    public String getTwitter() { 
-        return twitter; 
-    }
-    
-    /**
-     * Returns the name for this taster.
+     * Returns the name for this province.
      * @return the name
      */
     public String getName() { 
         return name; 
     }
     
+ 
     /**
-     * Changes the id for this taster to the one given.
+     * Changes the id for this province to the one given.
      * @param newId the new id  
      */
     public void setId(int newId) { 
@@ -71,15 +72,7 @@ public class Taster {
     }
     
     /**
-     * Changes the twitter for this taster to the one given.
-     * @param newTwitter the new twitter  
-     */
-    public void setTwitter(String newTwitter) { 
-       twitter = newTwitter; 
-    }
-    
-    /**
-     * Changes the name for this taster to the one given.
+     * Changes the name for this province to the one given.
      * @param newName the new name  
      */
     public void setName(String newName) { 

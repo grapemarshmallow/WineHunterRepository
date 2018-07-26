@@ -19,7 +19,7 @@ public class MainMenu extends JPanel {
 	 */
 	public MainMenu() {
 		
-		String labelText = "Welcome, " + WineHunterApplication.userSession.getUserInfo().get("USERNAME") + "!";
+		String labelText = "Welcome, " + WineHunterApplication.userSession.getUser().getFullName() + "!";
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {WineHunterApplication.APPLICATION_WIDTH};

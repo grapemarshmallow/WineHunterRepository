@@ -1,3 +1,4 @@
+package WineObjects;
 ///////////////////////////////////////////////////////////////////////////////
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
 // Main Class File:  (name of main application class)

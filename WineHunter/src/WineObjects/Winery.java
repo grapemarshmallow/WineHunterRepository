@@ -1,3 +1,4 @@
+package WineObjects;
 ///////////////////////////////////////////////////////////////////////////////
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
 // Main Class File:  (name of main application class)
@@ -25,9 +26,8 @@ public class Winery {
 	// Data members
 	private int id; // the unique id for this winery
 	private String name; // the name for this winery
-	String region;
-	String province;
-	String country;
+	Region region;
+	Province province;
 	
 	/**
      * Constructs a winery with the given id and name.
@@ -47,12 +47,12 @@ public class Winery {
 	 * @param province
 	 * @param country
 	 */
-	public Winery(int id, String name, String region, String province, String country) {
+	public Winery(int id, String name, Region region, Province province) {
 		this.id = id;
 		this.name = name;
 		this.region = region;
 		this.province = province;
-		this.country = country;
+
 	}
 
 	
@@ -89,29 +89,23 @@ public class Winery {
         name = newName; 
     }
 
-	public String getRegion() {
+	public Region getRegion() {
 		return region;
 	}
 
-	public void setRegion(String region) {
+	public void setRegion(Region region) {
 		this.region = region;
 	}
 
-	public String getProvince() {
+	public Province getProvince() {
 		return province;
 	}
 
-	public void setProvince(String province) {
+	public void setProvince(Province province) {
 		this.province = province;
 	}
 
-	public String getCountry() {
-		return country;
-	}
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
     
 
 }
