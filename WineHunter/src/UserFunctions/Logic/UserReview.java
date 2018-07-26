@@ -1,4 +1,4 @@
-package UserFunctions;
+package UserFunctions.Logic;
 
 /**
  * This class contains methods to retrieve and update user reviews.

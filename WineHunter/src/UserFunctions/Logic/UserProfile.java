@@ -1,4 +1,4 @@
-package UserFunctions;
+package UserFunctions.Logic;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -6,10 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import Core.WineHunterApplication;
-import WineObjects.Keyword;
-import WineObjects.User;
-import WineObjects.Variety;
+import Core.*;
+import WineObjects.*;
+
 
 /**
  * This class contains methods to retrieve and update a user's profile.
@@ -68,6 +67,7 @@ public class UserProfile {
 		
 		return result;
 	}
+	
 	
 	/**
 	 * Gets a user's information, and feeds it into a user object

@@ -1,4 +1,8 @@
-package UserFunctions;
+package UserFunctions.GUI;
+
+import Core.*;
+import WineObjects.*;
+import Search.*;
 
 import javax.swing.JPanel;
 

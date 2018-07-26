@@ -1,4 +1,4 @@
-package UserFunctions;
+package UserFunctions.GUI;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

@@ -1,4 +1,4 @@
-package UserFunctions;
+package UserFunctions.Logic;
 
 
 import java.io.*;

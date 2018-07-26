@@ -6,8 +6,9 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-import UserFunctions.UserCreate;
-import UserFunctions.UserLogin;
+import Core.*;
+import WineObjects.*;
+import Search.*;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -28,9 +29,9 @@ public class WineHunterApplication {
 	
 	
 	public static Core.Connect connection;
-	public static UserFunctions.UserSession userSession;
-	public static UserLogin userLogin;
-	public static UserCreate userCreate;
+	public static UserFunctions.Logic.UserSession userSession;
+	public static UserFunctions.GUI.UserLogin userLogin;
+	public static UserFunctions.GUI.UserCreate userCreate;
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	private static JPanel toolbarPanel;
@@ -48,27 +49,27 @@ public class WineHunterApplication {
 		WineHunterApplication.connection = connection;
 	}
 
-	public UserFunctions.UserSession getUserSession() {
+	public UserFunctions.Logic.UserSession getUserSession() {
 		return WineHunterApplication.userSession;
 	}
 
-	public void setUserSession(UserFunctions.UserSession userSession) {
+	public void setUserSession(UserFunctions.Logic.UserSession userSession) {
 		WineHunterApplication.userSession = userSession;
 	}
 
-	public UserLogin getUserLogin() {
+	public UserFunctions.GUI.UserLogin getUserLogin() {
 		return WineHunterApplication.userLogin;
 	}
 
-	public void setUserLogin(UserLogin userLogin) {
+	public void setUserLogin(UserFunctions.GUI.UserLogin userLogin) {
 		WineHunterApplication.userLogin = userLogin;
 	}
 
-	public UserCreate getUserCreate() {
+	public UserFunctions.GUI.UserCreate getUserCreate() {
 		return WineHunterApplication.userCreate;
 	}
 
-	public void setUserCreate(UserCreate userCreate) {
+	public void setUserCreate(UserFunctions.GUI.UserCreate userCreate) {
 		WineHunterApplication.userCreate = userCreate;
 	}
 
@@ -99,7 +100,7 @@ public class WineHunterApplication {
 			
 			connection = new Core.Connect();
 			connection.init();
-			userSession = new UserFunctions.UserSession();
+			userSession = new UserFunctions.Logic.UserSession();
 			initialize();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -160,7 +161,7 @@ public class WineHunterApplication {
 	public static void userCreation(int attemptFlag) {
 		
 		WineHunterApplication.cleanPanel();
-		userCreate = new UserCreate(attemptFlag);
+		userCreate = new UserFunctions.GUI.UserCreate(attemptFlag);
 	
 		mainPanel.setVisible(true);
 		mainPanel.add(userCreate);
@@ -218,7 +219,7 @@ public class WineHunterApplication {
 		
 		WineHunterApplication.cleanPanel();
 		
-		userLogin = new UserLogin(attemptFlag);
+		userLogin = new UserFunctions.GUI.UserLogin(attemptFlag);
 		mainPanel.setVisible(true);
 		mainPanel.add(userLogin);
 		
