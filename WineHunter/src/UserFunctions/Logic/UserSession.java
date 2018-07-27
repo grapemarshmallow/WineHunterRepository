@@ -21,7 +21,7 @@ public class UserSession {
 	 */
 	public UserSession() {
 		loggedIn = false;
-		user = new User(null, null, -1, 0, 0);
+		user = new User(null, null, -1, 0, 0, null);
 	}
 
 	
@@ -67,6 +67,7 @@ public class UserSession {
 			user.setId(rs.getInt("UserID"));
 			user.setUsername(rs.getString("Username"));
 			user.setSuperAdmin(rs.getInt("SuperAdminUser"));
+			user.setEmail(rs.getString("EmailAddress"));
 			
 			result = true;
 			

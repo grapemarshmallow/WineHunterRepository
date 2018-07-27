@@ -162,7 +162,7 @@ public class UserLogin extends JPanel {
 						WineHunterApplication.userLogin(1);
 					} 
 				} catch (Exception e2) {
-					// TODO: handle exception
+					WineHunterApplication.userLogin(1); // try to login again
 				}
 			}
 		});

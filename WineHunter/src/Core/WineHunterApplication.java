@@ -9,6 +9,8 @@ import javax.swing.*;
 import Core.*;
 import WineObjects.*;
 import Search.*;
+import UserFunctions.GUI.ViewUserProfile;
+
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -34,6 +36,7 @@ public class WineHunterApplication {
 	public static UserFunctions.GUI.UserCreate userCreate;
 	public static Toolbar toolbar;
 	public static MainMenu splash;
+	public static ViewUserProfile viewUserProfile;
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	
@@ -241,6 +244,16 @@ public class WineHunterApplication {
 		frmWinehunter.pack();
 		
 		
+	}
+	
+	public static void viewUserProfile(User user) {
+		WineHunterApplication.cleanPanel();
+		viewUserProfile = new ViewUserProfile(user);
+		mainPanel.setVisible(true);
+		mainPanel.add(viewUserProfile);
+		
+		frmWinehunter.pack();
+
 	}
 	
 	/**

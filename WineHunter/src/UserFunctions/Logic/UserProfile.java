@@ -1,6 +1,5 @@
 package UserFunctions.Logic;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,14 +17,20 @@ import WineObjects.*;
 public class UserProfile {
 	
 	/**
+	 * do nothing constructor
+	 */
+	public UserProfile() {
+		// do nothing constructor
+	}
+	
+	/**
 	 * Gets a user's information, and feeds it into two arrays provided by caller.
 	 * @param userId ID of user that will be searched for
 	 * @param user the user object returned by the query
 	 * @return 1 if a match was found, -1 for insufficient security, 0 otherwise
 	 * @throws SQLException
-	 * @throws IOException
 	 */
-	public int getUserInfo(int userId, User user) throws SQLException, IOException {
+	public int getUserInfo(int userId, User user) throws SQLException {
 		
 		int result = 0;
 		
@@ -74,9 +79,8 @@ public class UserProfile {
 	 * @param user object to get info for
 	 * @return -1 for insufficient security
 	 * @throws SQLException
-	 * @throws IOException
 	 */
-	public int getTasterProfile(User user) throws SQLException, IOException {
+	public int getTasterProfile(User user) throws SQLException {
 		
 		int result = 0;
 		
@@ -96,14 +100,14 @@ public class UserProfile {
 				+ " FROM KeywordLike kl"
 				+ " INNER JOIN Keyword k"
 				+ " ON kl.LikeKeywordID = k.KeywordID"
-				+ " WHERE KeywordLike.KeywordLikeUserID = '" + user.getId() + "'"
+				+ " WHERE kl.KeywordLikeUserID = " + user.getId()
 				+ " ORDER BY kl.Rank";
-		
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		
 		while(rs.next()) {
+			rs.toString();
 			if (rs.getInt("KeywordLikeUser") == 1) {
 				user.getUserLikeKeywordList().add(new Keyword(rs.getInt("KeywordID"), rs.getString("Word")));
 			}
@@ -112,17 +116,20 @@ public class UserProfile {
 			}
 		}
 		
+		rs.close();
+		
 		sql = "SELECT *"
 				+ " FROM KeywordDislike kd"
 				+ " INNER JOIN Keyword k"
 				+ " ON kd.DislikeKeywordID = k.KeywordID"
 				+ " WHERE kd.DislikeKeywordUserID = '" + user.getId() + "'"
 				+ " ORDER BY kd.Rank";
-		
+	
 		
 		rs = stmt.executeQuery(sql);
 		
 		while(rs.next()) {
+			rs.toString();
 			if (rs.getInt("KeywordDislikeUser") == 1) {
 				user.getUserDislikeKeywordList().add(new Keyword(rs.getInt("KeywordID"), rs.getString("Word")));
 			}
@@ -141,10 +148,10 @@ public class UserProfile {
 				+ " WHERE vd.DislikeUserID = '" + user.getId() + "'"
 				+ " ORDER BY vd.Rank";
 		
-		
 		rs = stmt.executeQuery(sql);
 		
 		while(rs.next()) {
+			rs.toString();
 			if (rs.getInt("VarietyDislikeUser") == 1) {
 				user.getUserDislikeVarietyList().add(new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName")));
 			}
@@ -163,10 +170,10 @@ public class UserProfile {
 				+ " WHERE vl.LikeUserID = '" + user.getId() + "'"
 				+ " ORDER BY vl.Rank";
 		
-		
 		rs = stmt.executeQuery(sql);
 		
 		while(rs.next()) {
+			rs.toString();
 			if (rs.getInt("VarietyLikeUser") == 1) {
 				user.getUserLikeVarietyList().add(new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName")));
 			}
@@ -188,9 +195,8 @@ public class UserProfile {
 	 * @param user object to get info for
 	 * @return -1 for insufficient security
 	 * @throws SQLException
-	 * @throws IOException
 	 */
-	public int setTasterProfile(User user) throws SQLException, IOException {
+	public int setTasterProfile(User user) throws SQLException {
 		
 		int result = 0;
 		

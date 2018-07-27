@@ -8,6 +8,7 @@ public class User {
 	private int id;
 	private int admin;
 	private int superAdmin;
+	private String email;
 	private ArrayList<Keyword> userLikeKeywordList = new ArrayList<Keyword>();
 	private ArrayList<Keyword> userDislikeKeywordList = new ArrayList<Keyword>();
 	private ArrayList<Keyword> sysLikeKeywordList = new ArrayList<Keyword>();
@@ -24,12 +25,13 @@ public class User {
 	 * @param admin
 	 * @param superAdmin
 	 */
-	public User(String username, String fullName, int id, int admin, int superAdmin) {
+	public User(String username, String fullName, int id, int admin, int superAdmin, String email) {
 		this.username = username;
 		this.fullName = fullName;
 		this.id = id;
 		this.admin = admin;
 		this.superAdmin = superAdmin;
+		this.setEmail(email);
 	}
 	
 	public ArrayList<Keyword> getUserLikeKeywordList() {
@@ -115,6 +117,8 @@ public class User {
 	 * refreshes our users lists for filling
 	 */
 	public void cleanLists() {
+		
+		
 		userLikeKeywordList = new ArrayList<Keyword>();
 		userDislikeKeywordList = new ArrayList<Keyword>();
 		sysLikeKeywordList = new ArrayList<Keyword>();
@@ -123,6 +127,15 @@ public class User {
 		userDislikeVarietyList = new ArrayList<Variety>();
 		sysLikeVarietyList = new ArrayList<Variety>();
 		sysDislikeVarietyList = new ArrayList<Variety>();
+		
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

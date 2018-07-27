@@ -9,11 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.JSplitPane;
 import java.awt.GridLayout;
+
 
 public class Toolbar extends JPanel {
 	
@@ -59,18 +56,10 @@ public class Toolbar extends JPanel {
 			JButton btnUser = new JButton("User Profile");
 			btnUser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					WineHunterApplication.viewUserProfile(WineHunterApplication.userSession.getUser());
 				}
 			});
 			toolBar.add(btnUser);
-		}
-		
-		if (WineHunterApplication.userSession.getUser().getSuperAdmin() == 1) {
-			JButton btnSuperAdmin = new JButton("Super Admin");
-			btnSuperAdmin.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				}
-			});
-			toolBar.add(btnSuperAdmin);
 		}
 		
 		if (WineHunterApplication.userSession.getUser().getAdmin() == 1) {

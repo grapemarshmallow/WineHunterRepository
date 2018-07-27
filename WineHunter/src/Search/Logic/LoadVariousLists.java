@@ -1,16 +1,12 @@
 package Search.Logic;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
 import Core.WineHunterApplication;
-import WineObjects.Country;
-import WineObjects.Keyword;
-import WineObjects.User;
-import WineObjects.Variety;
+import WineObjects.*;
 
 public class LoadVariousLists {
 	
@@ -18,10 +14,9 @@ public class LoadVariousLists {
 	 * Loads all keywords and returns them in an ArrayList
 	 * @param keywords ArrayList of Keyword objects
 	 * @return false if an error occurred
-	 * @throws SQLException
-	 * @throws IOException
+	 * @throws SQLException 
 	 */
-	public boolean loadAllKeywords(LinkedList<Keyword> keywords) throws SQLException, IOException {
+	public boolean loadAllKeywords(LinkedList<Keyword> keywords) throws SQLException  {
 		
 		boolean result = false;
 
@@ -50,10 +45,9 @@ public class LoadVariousLists {
 	 * Loads all varieties and returns them in an ArrayList
 	 * @param varieties ArrayList of Variety objects
 	 * @return false if an error occurred
-	 * @throws SQLException
-	 * @throws IOException
+	 * @throws SQLException 
 	 */
-	public boolean loadAllVarieties(LinkedList<Variety> varieties) throws SQLException, IOException {
+	public boolean loadAllVarieties(LinkedList<Variety> varieties) throws SQLException  {
 		
 		boolean result = false;
 
@@ -83,9 +77,8 @@ public class LoadVariousLists {
 	 * @param countries ArrayList of Country objects
 	 * @return false if an error occurred
 	 * @throws SQLException
-	 * @throws IOException
 	 */
-	public boolean loadAllCountries(LinkedList<Country> countries) throws SQLException, IOException {
+	public boolean loadAllCountries(LinkedList<Country> countries) throws SQLException  {
 		
 		boolean result = false;
 
@@ -109,4 +102,6 @@ public class LoadVariousLists {
 		
 		return result;
 	}
+	
+	
 }

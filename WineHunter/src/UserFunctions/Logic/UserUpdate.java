@@ -1,6 +1,5 @@
 package UserFunctions.Logic;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,9 +20,8 @@ public class UserUpdate {
 	 * @param newField String to set the field to
 	 * @return 1 if successfully changed, 0 if not, -1 for insufficient security, -2 for invalid change type
 	 * @throws SQLException
-	 * @throws IOException
 	 */
-	public int setUserInfoString(int userId, int changeType, String newField) throws SQLException, IOException {
+	public int setUserInfoString(int userId, int changeType, String newField) throws SQLException {
 		
 		int result = 0;
 		
@@ -69,14 +67,12 @@ public class UserUpdate {
 	
 	
 	/**
-	 * Method to change admin security
+	 * Method to change admin security, switches security from current value to opposite
 	 * @param userId ID of user that will be changed
-	 * @param grant 1 to grant, 0 to revoke
 	 * @return 1 if successfully changed, 0 if not, -1 for insufficient security 
 	 * @throws SQLException
-	 * @throws IOException
 	 */
-	public int setAdminSecurity(int userId, int grant) throws SQLException, IOException {
+	public int setAdminSecurity(int userId) throws SQLException {
 		
 		int result = 0;
 		
@@ -90,11 +86,27 @@ public class UserUpdate {
 		
 			
 		String sql;
+		
+		sql = "Select AdminUser"
+				+ " From User"
+				+ " WHERE User.UserID = '" + userId + "'";
+		
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		if (!rs.next()) {
+			rs.close();
+			return 0;
+		}
+		
+		int grant = rs.getInt("AdminUser");
+				
+		rs.close();
+		
 		sql = "UPDATE User"
 				+ " SET User.AdminUser = '" + grant + "'"
 				+ " WHERE User.UserID = '" + userId + "'";
 		
-		ResultSet rs = stmt.executeQuery(sql);
+		rs = stmt.executeQuery(sql);
 		
 		if (rs.next()) { // success!
 			result = 1;
@@ -113,9 +125,8 @@ public class UserUpdate {
 	 * @param userId ID of user that will be changed
 	 * @return 1 if successfully deleted, 0 if not, -1 for insufficient security 
 	 * @throws SQLException
-	 * @throws IOException
 	 */
-	public int deleteUser(int userId) throws SQLException, IOException {
+	public int deleteUser(int userId) throws SQLException {
 		
 		int result = 0;
 		

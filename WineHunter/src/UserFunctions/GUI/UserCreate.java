@@ -187,7 +187,7 @@ public class UserCreate extends JPanel {
 					result = WineHunterApplication.userSession.createUser(nameIn, emailIn, usernameIn, passwordIn, 0, 0);
 	
 				} catch (Exception e2) {
-					e2.printStackTrace();
+					// do nothing, we catch this with the result catchall
 				}
 				
 				if (result == 1) {
