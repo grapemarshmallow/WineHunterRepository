@@ -1,6 +1,7 @@
 package Core;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.sql.SQLException;
 
@@ -48,6 +49,19 @@ public class WineHunterApplication {
 	
 	public final static int APPLICATION_WIDTH = 1000;
 	public final static int APPLICATION_HEIGHT = 800;
+=======
+	public static Search.Logic.WineSearch wineSearch; //added
+	public static Search.GUI.ViewWineResults viewWineResults; //added
+	public static Search.GUI.ViewWineSearch viewWineSearch; //added
+	public static AdminUserSearch adminUserSearch; 
+	public static Formatting format;
+	private static JPanel toolbarPanel;
+	private static JPanel mainPanel;
+	
+
+	public final static int APPLICATION_WIDTH = 1000;
+	public final static int APPLICATION_HEIGHT = 650;
+>>>>>>> 766e7774aba8bdbe2ca083fafe3a18c7a671a929
 	
 	
 	public Core.Connect getConnection() {
@@ -129,11 +143,11 @@ public class WineHunterApplication {
 	private void initialize() {
 		frmWinehunter = new JFrame();
 		frmWinehunter.setTitle("WineHunter");
-		frmWinehunter.setBounds(100, 100, APPLICATION_WIDTH, APPLICATION_HEIGHT);
+		frmWinehunter.setPreferredSize(new Dimension(APPLICATION_WIDTH, APPLICATION_HEIGHT));
 		frmWinehunter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{APPLICATION_WIDTH, 0};
-		gridBagLayout.rowHeights = new int[]{20, 120};
+		gridBagLayout.rowHeights = new int[]{20, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		frmWinehunter.getContentPane().setLayout(gridBagLayout);
@@ -295,6 +309,10 @@ public class WineHunterApplication {
 		WineHunterApplication.cleanPanel();
 <<<<<<< HEAD
 		viewUserProfile = new ViewUserProfile(user, subsequent);
+=======
+		
+		viewUserProfile = new ViewUserProfile(user, subsequent);
+
 >>>>>>> 766e7774aba8bdbe2ca083fafe3a18c7a671a929
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
@@ -315,6 +333,17 @@ public class WineHunterApplication {
 
 	}
 =======
+		
+		adminUserSearch = new AdminUserSearch(subsequent);
+
+		mainPanel.setVisible(true);
+		mainPanel.add(adminUserSearch);
+		
+		
+		frmWinehunter.pack();
+
+	}
+
 >>>>>>> 766e7774aba8bdbe2ca083fafe3a18c7a671a929
 	
 	/**
