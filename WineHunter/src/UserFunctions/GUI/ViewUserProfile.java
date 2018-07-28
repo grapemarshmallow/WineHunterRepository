@@ -495,6 +495,7 @@ public class ViewUserProfile extends JPanel {
 		panel.add(lblTitlePreferences, gbc_lblTitlePreferences);
 		
 		JLabel lblGap3Pref = new JLabel();
+		lblGap3Pref.setMinimumSize(new Dimension(5,5));
 		GridBagConstraints gbc_lblGap3Pref = new GridBagConstraints();
 		gbc_lblGap3Pref.insets = new Insets(5, 5, 5, 5);
 		gbc_lblGap3Pref.gridx = 0;
@@ -505,6 +506,7 @@ public class ViewUserProfile extends JPanel {
 		buildListPanel(panel, sysLikeLabels, userLikeLabels, "Likes", 2);
 		
 		JLabel lblGapPref = new JLabel();
+		lblGapPref.setMinimumSize(new Dimension(5,5));
 		GridBagConstraints gbc_lblGapPref = new GridBagConstraints();
 		gbc_lblGapPref.insets = new Insets(5, 5, 5, 5);
 		gbc_lblGapPref.gridx = 0;
@@ -515,6 +517,7 @@ public class ViewUserProfile extends JPanel {
 		buildListPanel(panel, sysDislikeLabels, userDislikeLabels, "Dislikes", 5);
 		
 		JLabel lblGap2Pref = new JLabel();
+		lblGap2Pref.setMinimumSize(new Dimension(5,5));
 		GridBagConstraints gbc_lblGap2Pref = new GridBagConstraints();
 		gbc_lblGap2Pref.insets = new Insets(5, 5, 5, 5);
 		gbc_lblGap2Pref.gridx = 0;
