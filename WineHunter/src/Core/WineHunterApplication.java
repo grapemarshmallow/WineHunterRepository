@@ -10,6 +10,7 @@ import javax.swing.*;
 import Core.*;
 import WineObjects.*;
 import Search.*;
+import UserFunctions.GUI.AdminUserSearch;
 import UserFunctions.GUI.ViewUserProfile;
 
 import java.awt.GridLayout;
@@ -21,7 +22,7 @@ public class WineHunterApplication {
 	private static JFrame frmWinehunter;
 	
 	
-	public JFrame getFrmWinehunter() {
+	public static JFrame getFrmWinehunter() {
 		return WineHunterApplication.frmWinehunter;
 	}
 
@@ -38,21 +39,17 @@ public class WineHunterApplication {
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	public static ViewUserProfile viewUserProfile;
-<<<<<<< HEAD
 	public static Search.Logic.WineSearch wineSearch; //added
 	public static Search.GUI.ViewWineResults viewWineResults; //added
 	public static Search.GUI.ViewWineSearch viewWineSearch; //added
->>>>>>> 9f58996baa2750ee810a37f9d6a38a67bac83ec6
+	public static AdminUserSearch adminUserSearch; 
+	public static Formatting format;
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	
-<<<<<<< HEAD
+
 	public final static int APPLICATION_WIDTH = 1000;
 	public final static int APPLICATION_HEIGHT = 650;
-=======
-	public final static int APPLICATION_WIDTH = 600;
-	public final static int APPLICATION_HEIGHT = 400;
->>>>>>> fa038b63da07e0576d3890a9f59b907e93b9c575
 	
 	
 	public Core.Connect getConnection() {
@@ -115,6 +112,7 @@ public class WineHunterApplication {
 			connection = new Core.Connect();
 			connection.init();
 			userSession = new UserFunctions.Logic.UserSession();
+			format = new Core.Formatting();
 			initialize();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -283,10 +281,10 @@ public class WineHunterApplication {
 	/**
 	* Draws splash page
 	 */
-	public static void splash() {
+	public static void splash(int subsequent) {
 		
 		WineHunterApplication.cleanPanel();
-		splash = new MainMenu();
+		splash = new MainMenu(subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(splash);
 		
@@ -295,14 +293,11 @@ public class WineHunterApplication {
 		
 	}
 	
-	public static void viewUserProfile(User user) {
+	public static void viewUserProfile(User user, int subsequent) {
 		WineHunterApplication.cleanPanel();
-<<<<<<< HEAD
 		
 		viewUserProfile = new ViewUserProfile(user, subsequent);
-=======
-		viewUserProfile = new ViewUserProfile(user);
->>>>>>> fa038b63da07e0576d3890a9f59b907e93b9c575
+
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
 		
@@ -310,6 +305,20 @@ public class WineHunterApplication {
 		frmWinehunter.pack();
 
 	}
+	
+	public static void adminUserSearch(int subsequent) {
+		WineHunterApplication.cleanPanel();
+		
+		adminUserSearch = new AdminUserSearch(subsequent);
+
+		mainPanel.setVisible(true);
+		mainPanel.add(adminUserSearch);
+		
+		
+		frmWinehunter.pack();
+
+	}
+
 	
 	/**
 	 * Reloads main toolbar
