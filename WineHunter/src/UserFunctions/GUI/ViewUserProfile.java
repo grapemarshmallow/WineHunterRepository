@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 
 
@@ -29,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Color;
 
 public class ViewUserProfile extends JPanel {
 	
@@ -56,6 +58,9 @@ public class ViewUserProfile extends JPanel {
 		}
 		else if (subsequent == 3) {
 			add(new JLabel("Update successful!"));
+		}
+		else if (subsequent == 4) {
+			add(new JLabel("Insufficient security for update."));
 		}
 		
 		JPanel userInfoScroll = new JPanel();
@@ -199,14 +204,19 @@ public class ViewUserProfile extends JPanel {
 				buttonText = "Remove Admin";
 			}
 			JButton btnToggleAdmin = new JButton(buttonText);
+			btnToggleAdmin.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 			btnToggleAdmin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						if (userUpdate.setAdminSecurity(user.getId()) != 0) {
-							WineHunterApplication.viewUserProfile(user, 2);
+						int res = userUpdate.setAdminSecurity(user);
+						if (res == 1) {
+							WineHunterApplication.viewUserProfile(user, 3);
+						}
+						else if (res == 0) {
+							WineHunterApplication.viewUserProfile(user, 4);
 						}
 						else {
-							WineHunterApplication.viewUserProfile(user, 3);
+							WineHunterApplication.viewUserProfile(user, 2);
 						}
 					} catch (SQLException e1) {
 						WineHunterApplication.viewUserProfile(user, 2);
@@ -224,16 +234,25 @@ public class ViewUserProfile extends JPanel {
 			btnDeleteUser.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 			btnDeleteUser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					try {
-						if (userUpdate.deleteUser(user.getId()) != 1) {
+					int result = JOptionPane.showConfirmDialog(WineHunterApplication.getFrmWinehunter(), 
+							new JLabel("Are you sure you would like to delete " + user.getId() + " (" + user.getUsername() + ")? "
+									+ "Any reviews written by this user will also be deleted. This change cannot be undone."), 
+							"Confirm Delete", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
+					if (result == JOptionPane.YES_OPTION) {
+						try {
+							if (userUpdate.deleteUser(user.getId()) != 1) {
+								WineHunterApplication.viewUserProfile(user, 2);
+							}
+							else {
+								WineHunterApplication.splash(1);
+							}
+						} catch (SQLException e1) {
 							WineHunterApplication.viewUserProfile(user, 2);
+							e1.printStackTrace();
 						}
-						else {
-							WineHunterApplication.splash(1);
-						}
-					} catch (SQLException e1) {
-						WineHunterApplication.viewUserProfile(user, 2);
-						e1.printStackTrace();
+					}
+					else {
+						WineHunterApplication.viewUserProfile(user, 0);
 					}
 				}
 			});
@@ -260,7 +279,7 @@ public class ViewUserProfile extends JPanel {
 		lblUsername.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblUsername.setFont(new Font("Lucida Grande", Font.BOLD, 17));
 		GridBagConstraints gbc_lblUsername = new GridBagConstraints();
-		gbc_lblUsername.anchor = GridBagConstraints.LINE_START;
+		gbc_lblUsername.anchor = GridBagConstraints.EAST;
 		gbc_lblUsername.insets = new Insets(5, 5, 5, 5);
 		gbc_lblUsername.gridx = 0;
 		gbc_lblUsername.gridy = 0;
@@ -268,7 +287,19 @@ public class ViewUserProfile extends JPanel {
 		
 		JLabel lblNameText = new JLabel(user.getUsername());
 		lblNameText.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
+		if (user.getSuperAdmin() == 1) {
+			lblNameText.setForeground(Color.RED);
+			lblNameText.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+			lblNameText.setText(user.getUsername() + " (SUPERADMIN)");
+		}
+		else if (user.getAdmin() == 1) {
+			lblNameText.setForeground(Color.BLUE);
+			lblNameText.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+			lblNameText.setText(user.getUsername() + " (ADMIN)");
+		}
+		lblNameText.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
 		GridBagConstraints gbc_lblNameText = new GridBagConstraints();
+		gbc_lblNameText.anchor = GridBagConstraints.WEST;
 		gbc_lblNameText.insets = new Insets(5, 5, 5, 5);
 		gbc_lblNameText.gridx = 1;
 		gbc_lblNameText.gridy = 0;
@@ -279,6 +310,7 @@ public class ViewUserProfile extends JPanel {
 		lblFullName.setFont(new Font("Lucida Grande", Font.BOLD, 17));
 		GridBagConstraints gbc_lblFullName = new GridBagConstraints();
 		gbc_lblFullName.insets = new Insets(5, 5, 5, 5);
+		gbc_lblFullName.anchor = GridBagConstraints.EAST;
 		gbc_lblFullName.gridx = 0;
 		gbc_lblFullName.gridy = 1;
 		profileBucket.add(lblFullName, gbc_lblFullName);
@@ -287,6 +319,7 @@ public class ViewUserProfile extends JPanel {
 		lblUsernameText.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
 		GridBagConstraints gbc_lblUsernameText = new GridBagConstraints();
 		gbc_lblUsernameText.insets = new Insets(5, 5, 5, 5);
+		gbc_lblUsernameText.anchor = GridBagConstraints.WEST;
 		gbc_lblUsernameText.gridx = 1;
 		gbc_lblUsernameText.gridy = 1;
 		profileBucket.add(lblUsernameText, gbc_lblUsernameText);
@@ -295,6 +328,7 @@ public class ViewUserProfile extends JPanel {
 		btnEditName.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnEditName = new GridBagConstraints();
 		gbc_btnEditName.insets = new Insets(5, 5, 5, 5);
+		gbc_btnEditName.anchor = GridBagConstraints.WEST;
 		gbc_btnEditName.gridx = 2;
 		gbc_btnEditName.gridy = 1;
 		profileBucket.add(btnEditName, gbc_btnEditName);
@@ -304,6 +338,7 @@ public class ViewUserProfile extends JPanel {
 		lblEmail.setFont(new Font("Lucida Grande", Font.BOLD, 17));
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
 		gbc_lblEmail.insets = new Insets(5, 5, 5, 5);
+		gbc_lblEmail.anchor = GridBagConstraints.EAST;
 		gbc_lblEmail.gridx = 0;
 		gbc_lblEmail.gridy = 2;
 		profileBucket.add(lblEmail, gbc_lblEmail);
@@ -312,6 +347,7 @@ public class ViewUserProfile extends JPanel {
 		lblEmailtext.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
 		GridBagConstraints gbc_lblEmailtext = new GridBagConstraints();
 		gbc_lblEmailtext.insets = new Insets(5, 5, 5, 5);
+		gbc_lblEmailtext.anchor = GridBagConstraints.WEST;
 		gbc_lblEmailtext.gridx = 1;
 		gbc_lblEmailtext.gridy = 2;
 		profileBucket.add(lblEmailtext, gbc_lblEmailtext);
@@ -321,6 +357,7 @@ public class ViewUserProfile extends JPanel {
 		lblPassword.setFont(new Font("Lucida Grande", Font.BOLD, 17));
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.insets = new Insets(5, 5, 5, 5);
+		gbc_lblPassword.anchor = GridBagConstraints.EAST;
 		gbc_lblPassword.gridx = 0;
 		gbc_lblPassword.gridy = 3;
 		profileBucket.add(lblPassword, gbc_lblPassword);
@@ -329,6 +366,7 @@ public class ViewUserProfile extends JPanel {
 		lblPasswordText.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
 		GridBagConstraints gbc_lblPasswordText = new GridBagConstraints();
 		gbc_lblPasswordText.insets = new Insets(5, 5, 5, 5);
+		gbc_lblPasswordText.anchor = GridBagConstraints.WEST;
 		gbc_lblPasswordText.gridx = 1;
 		gbc_lblPasswordText.gridy = 3;
 		profileBucket.add(lblPasswordText, gbc_lblPasswordText);
@@ -337,6 +375,7 @@ public class ViewUserProfile extends JPanel {
 		btnEditPassword.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnEditPassword = new GridBagConstraints();
 		gbc_btnEditPassword.insets = new Insets(5, 5, 5, 5);
+		gbc_btnEditPassword.anchor = GridBagConstraints.WEST;
 		gbc_btnEditPassword.gridx = 2;
 		gbc_btnEditPassword.gridy = 3;
 		profileBucket.add(btnEditPassword, gbc_btnEditPassword);

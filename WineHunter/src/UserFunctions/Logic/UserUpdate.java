@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Core.WineHunterApplication;
+import WineObjects.User;
 
 /**
  * This class contains functions for users to update attributes about themselves and other users
@@ -49,16 +50,14 @@ public class UserUpdate {
 		String sql;
 		sql = "UPDATE User"
 				+ " SET " + column + " = '" + newField + "'"
-				+ " WHERE User.UserID = '" + userId + "'";
+				+ " WHERE User.UserID = " + userId;
 		
-		ResultSet rs = stmt.executeQuery(sql);
+		int ret = stmt.executeUpdate(sql);
 		
-		if (rs.next()) { // success!
+		if (ret > 0) { // success!
 			result = 1;
 		}
 
-		
-		rs.close();
 		
 		stmt.close();
 		
@@ -68,11 +67,11 @@ public class UserUpdate {
 	
 	/**
 	 * Method to change admin security, switches security from current value to opposite
-	 * @param userId ID of user that will be changed
+	 * @param  user that will be changed
 	 * @return 1 if successfully changed, 0 if not, -1 for insufficient security 
 	 * @throws SQLException
 	 */
-	public int setAdminSecurity(int userId) throws SQLException {
+	public int setAdminSecurity(User user) throws SQLException {
 		
 		int result = 0;
 		
@@ -84,36 +83,44 @@ public class UserUpdate {
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
 		
+		int userId = user.getId();
 			
 		String sql;
 		
-		sql = "Select AdminUser"
+		sql = "Select *"
 				+ " From User"
-				+ " WHERE User.UserID = '" + userId + "'";
+				+ " WHERE User.UserID = " + userId;
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		if (!rs.next()) {
+			System.out.println("Empty result set");
 			rs.close();
 			return 0;
 		}
 		
 		int grant = rs.getInt("AdminUser");
+		
+		if (grant == 0) {
+			grant = 1;
+		}
+		else {
+			grant = 0;
+		}
 				
 		rs.close();
 		
 		sql = "UPDATE User"
-				+ " SET User.AdminUser = '" + grant + "'"
-				+ " WHERE User.UserID = '" + userId + "'";
+				+ " SET User.AdminUser = " + grant
+				+ " WHERE User.UserID = " + userId;
 		
-		rs = stmt.executeQuery(sql);
+		int ret = stmt.executeUpdate(sql);
 		
-		if (rs.next()) { // success!
+		if (ret > 0) { // success!
+			user.setAdmin(grant);
 			result = 1;
 		}
 
-		
-		rs.close();
 		
 		stmt.close();
 		
@@ -141,16 +148,14 @@ public class UserUpdate {
 			
 		String sql;
 		sql = "DELETE FROM User"
-				+ " WHERE User.UserID = '" + userId + "'";
+				+ " WHERE User.UserID = " + userId;
 		
-		ResultSet rs = stmt.executeQuery(sql);
+		int ret = stmt.executeUpdate(sql);
 		
-		if (rs.next()) { // success!
+		if (ret > 0) { // success!
 			result = 1;
 		}
-
 		
-		rs.close();
 		
 		stmt.close();
 		

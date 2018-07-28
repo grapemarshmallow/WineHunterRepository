@@ -66,6 +66,7 @@ public class Toolbar extends JPanel {
 			JButton btnAdminFunctions = new JButton("Admin");
 			btnAdminFunctions.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					WineHunterApplication.adminUserSearch(0);
 				}
 			});
 			toolBar.add(btnAdminFunctions);

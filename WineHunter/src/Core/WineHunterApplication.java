@@ -9,6 +9,7 @@ import javax.swing.*;
 import Core.*;
 import WineObjects.*;
 import Search.*;
+import UserFunctions.GUI.AdminUserSearch;
 import UserFunctions.GUI.ViewUserProfile;
 
 import java.awt.GridLayout;
@@ -20,7 +21,7 @@ public class WineHunterApplication {
 	private static JFrame frmWinehunter;
 	
 	
-	public JFrame getFrmWinehunter() {
+	public static JFrame getFrmWinehunter() {
 		return WineHunterApplication.frmWinehunter;
 	}
 
@@ -37,6 +38,7 @@ public class WineHunterApplication {
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	public static ViewUserProfile viewUserProfile;
+	public static AdminUserSearch adminUserSearch;
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	
@@ -251,6 +253,16 @@ public class WineHunterApplication {
 		viewUserProfile = new ViewUserProfile(user, subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
+		
+		frmWinehunter.pack();
+
+	}
+	
+	public static void adminUserSearch(int subsequent) {
+		WineHunterApplication.cleanPanel();
+		adminUserSearch = new AdminUserSearch(subsequent);
+		mainPanel.setVisible(true);
+		mainPanel.add(adminUserSearch);
 		
 		frmWinehunter.pack();
 
