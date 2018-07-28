@@ -60,6 +60,13 @@ public class UserLogin extends JPanel {
 		gbc_lblNewLabel.gridy = 0;
 		
 		if (attemptFlag != 0) {
+			JPanel subsPanel = new JPanel();
+			GridBagConstraints gbc_subsPanel = new GridBagConstraints();
+			gbc_subsPanel.insets = new Insets(0, 0, 5, 0);
+			gbc_subsPanel.fill = GridBagConstraints.BOTH;
+			gbc_subsPanel.gridx = 0;
+			gbc_subsPanel.gridy = 2;
+			this.add(subsPanel, gbc_subsPanel);
 			JLabel reprompt = new JLabel();
 			reprompt.setHorizontalAlignment(SwingConstants.CENTER);
 			GridBagConstraints gbc_lblReprompt = new GridBagConstraints();
@@ -75,7 +82,7 @@ public class UserLogin extends JPanel {
 			else if (attemptFlag == 2) {
 				reprompt.setText("User creation successful! Now, you can login with your new credentials.");
 			}
-			this.add(reprompt, gbc_lblReprompt);
+			subsPanel.add(reprompt, gbc_lblReprompt);
 		}
 		
 		
@@ -91,8 +98,6 @@ public class UserLogin extends JPanel {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] {0};
 		gbl_panel.rowHeights = new int[] {0};
-		gbl_panel.columnWeights = new double[]{1.0};
-		gbl_panel.rowWeights = new double[]{0.0};
 		panel.setLayout(gbl_panel);
 		
 		JLabel lblUsername = new JLabel("Username: ");

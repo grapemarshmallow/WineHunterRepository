@@ -2,6 +2,7 @@ package Core;
 
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -42,19 +43,22 @@ public class Toolbar extends JPanel {
 			loginPanel.setLayout(gbl_loginLayout);
 			
 			GridBagConstraints gbc_Login = new GridBagConstraints();
-			gbc_Login.anchor = GridBagConstraints.EAST;
+			gbc_Login.anchor = GridBagConstraints.WEST;
 			gbc_Login.gridx = column;
 			gbc_Login.gridy = 0;
+			gbc_Login.weightx = 1;
 			
 			JLabel lblLoggedInAs = new JLabel("Logged in as ");
+			lblLoggedInAs.setHorizontalAlignment(SwingConstants.LEFT);
 			lblLoggedInAs.setFont(WineHunterApplication.format.getBaseFont());
 			
 			GridBagConstraints gbc_lblLoginText = new GridBagConstraints();
-			gbc_lblLoginText.anchor = GridBagConstraints.EAST;
+			gbc_lblLoginText.anchor = GridBagConstraints.WEST;
 			gbc_lblLoginText.gridx = 0;
 			gbc_lblLoginText.gridy = 0;
 			
 			JLabel lblLoginName = new JLabel(WineHunterApplication.userSession.getUser().getUsername());
+			lblLoginName.setHorizontalAlignment(SwingConstants.LEFT);
 			if (WineHunterApplication.userSession.getUser().getSuperAdmin() == 1) {
 				lblLoginName.setForeground(Color.RED);
 				lblLoginName.setFont(WineHunterApplication.format.getBoldFont());
@@ -65,9 +69,10 @@ public class Toolbar extends JPanel {
 			}
 			
 			GridBagConstraints gbc_lblLoginName = new GridBagConstraints();
-			gbc_lblLoginName.anchor = GridBagConstraints.EAST;
+			gbc_lblLoginName.anchor = GridBagConstraints.WEST;
 			gbc_lblLoginName.gridx = 1;
 			gbc_lblLoginName.gridy = 0;
+			gbc_lblLoginName.weightx = 1;
 			
 			gbl_toolbarLayout.columnWeights = new double[] {0.5, 0.5};
 			this.setLayout(gbl_toolbarLayout);
@@ -87,6 +92,7 @@ public class Toolbar extends JPanel {
 		gbc_lblToolbar.anchor = GridBagConstraints.EAST;
 		gbc_lblToolbar.gridx = column;
 		gbc_lblToolbar.gridy = 0;
+		gbc_lblToolbar.weightx = 1;
 		
 		if (WineHunterApplication.userSession.isLoggedIn()) {
 			JButton btnWineSearch = new JButton("Wine Search");
