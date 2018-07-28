@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 
 
@@ -28,7 +29,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.Color;
 
 public class ViewUserProfile extends JPanel {
 	
@@ -38,31 +39,41 @@ public class ViewUserProfile extends JPanel {
 	/**
 	 * Create the panel with a specific user object.
 	 * @param user the user object to generate the profile for
+	 * @param subsequent 0 for the first visit, 1 if a delete failed, 2 if an update failed
 	 */
-	public ViewUserProfile(User user) {
+	public ViewUserProfile(User user, int subsequent) {
 	
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0};
 		setLayout(gridBagLayout);
 		
+		if (subsequent == 1) {
+			add(new JLabel("User deletion failed."));
+		}
+		else if (subsequent == 2) {
+			add(new JLabel("User update failed."));
+		}
+		else if (subsequent == 3) {
+			add(new JLabel("Update successful!"));
+		}
+		else if (subsequent == 4) {
+			add(new JLabel("Insufficient security for update."));
+		}
 		
 		JPanel userInfoScroll = new JPanel();
-		GridBagConstraints gbc_userInfoScroll = new GridBagConstraints();
-		gbc_userInfoScroll.insets = new Insets(5, 5, 5, 5);
-		gbc_userInfoScroll.fill = GridBagConstraints.VERTICAL;
-		gbc_userInfoScroll.gridx = 0;
-		gbc_userInfoScroll.gridy = 1;
+		
+		GridBagLayout gbl_userInfoScroll = new GridBagLayout();
+		userInfoScroll.setLayout(gbl_userInfoScroll);
 		
 		JScrollPane userScroll = new JScrollPane(userInfoScroll, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		userScroll.setPreferredSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_HEIGHT));
 
 		
-		add(userScroll, gbc_userInfoScroll);
-		GridBagLayout gbl_userInfoScroll = new GridBagLayout();
-		userInfoScroll.setLayout(gbl_userInfoScroll);
+		add(userScroll);
+		
 		
 		int other = 0;
 		
@@ -114,6 +125,7 @@ public class ViewUserProfile extends JPanel {
 		
 		
 		JLabel userProfileTitle = DefaultComponentFactory.getInstance().createTitle(profileString);
+		userProfileTitle.setFont(WineHunterApplication.format.getHeadingFont());
 		userProfileTitle.setLabelFor(userInfoScroll);
 		GridBagConstraints gbc_userProfileTitle = new GridBagConstraints();
 		gbc_userProfileTitle.fill = GridBagConstraints.VERTICAL;
@@ -136,7 +148,7 @@ public class ViewUserProfile extends JPanel {
 		buttonPanel.setLayout(gbl_buttonPanel);
 		
 		JButton btnViewUserReviews = new JButton("View User Reviews");
-		btnViewUserReviews.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		btnViewUserReviews.setFont(WineHunterApplication.format.getBaseFont());
 		btnViewUserReviews.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -148,7 +160,7 @@ public class ViewUserProfile extends JPanel {
 		buttonPanel.add(btnViewUserReviews, gbc_btnViewUserReviews);
 		
 		JButton btnViewUserFavorites = new JButton("View User Favorites");
-		btnViewUserFavorites.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		btnViewUserFavorites.setFont(WineHunterApplication.format.getBaseFont());
 		btnViewUserFavorites.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -160,7 +172,7 @@ public class ViewUserProfile extends JPanel {
 		buttonPanel.add(btnViewUserFavorites, gbc_btnViewUserFavorites);
 		
 		JButton btnEditTasterProfile = new JButton("Edit Taster Profile");
-		btnEditTasterProfile.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		btnEditTasterProfile.setFont(WineHunterApplication.format.getBaseFont());
 		btnEditTasterProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -172,7 +184,7 @@ public class ViewUserProfile extends JPanel {
 		buttonPanel.add(btnEditTasterProfile, gbc_btnEditTasterProfile);
 		
 		JButton btnSearchTasterProfile = new JButton("Search With Taster Profile");
-		btnSearchTasterProfile.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		btnSearchTasterProfile.setFont(WineHunterApplication.format.getBaseFont());
 		btnSearchTasterProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -189,26 +201,63 @@ public class ViewUserProfile extends JPanel {
 				buttonText = "Remove Admin";
 			}
 			JButton btnToggleAdmin = new JButton(buttonText);
+			btnToggleAdmin.setFont(WineHunterApplication.format.getBaseFont());
 			btnToggleAdmin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						userUpdate.setAdminSecurity(user.getId());
+						int res = userUpdate.setAdminSecurity(user);
+						if (res == 1) {
+							WineHunterApplication.viewUserProfile(user, 3);
+						}
+						else if (res == 0) {
+							WineHunterApplication.viewUserProfile(user, 4);
+						}
+						else {
+							WineHunterApplication.viewUserProfile(user, 2);
+						}
 					} catch (SQLException e1) {
-						JLabel lblAdminRes = new JLabel("Could not update admin security.");
-						GridBagConstraints gbc_lblAdminRes = new GridBagConstraints();
-						gbc_lblAdminRes.insets = new Insets(5, 5, 5, 5);
-						gbc_lblAdminRes.gridx = 2;
-						gbc_lblAdminRes.gridy = 2;
-						buttonPanel.add(lblAdminRes, gbc_lblAdminRes);
+						WineHunterApplication.viewUserProfile(user, 2);
 						e1.printStackTrace();
 					}
 				}
 			});
 			GridBagConstraints gbc_btnToggleAdmin = new GridBagConstraints();
 			gbc_btnToggleAdmin.insets = new Insets(5, 5, 5, 5);
-			gbc_btnToggleAdmin.gridx = 1;
+			gbc_btnToggleAdmin.gridx = 0;
 			gbc_btnToggleAdmin.gridy = 2;
 			buttonPanel.add(btnToggleAdmin, gbc_btnToggleAdmin);
+			
+			JButton btnDeleteUser = new JButton("Delete User");
+			btnDeleteUser.setFont(WineHunterApplication.format.getBaseFont());
+			btnDeleteUser.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int result = JOptionPane.showConfirmDialog(WineHunterApplication.getFrmWinehunter(), 
+							new JLabel("Are you sure you would like to delete " + user.getId() + " (" + user.getUsername() + ")? "
+									+ "Any reviews written by this user will also be deleted. This change cannot be undone."), 
+							"Confirm Delete", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
+					if (result == JOptionPane.YES_OPTION) {
+						try {
+							if (userUpdate.deleteUser(user.getId()) != 1) {
+								WineHunterApplication.viewUserProfile(user, 2);
+							}
+							else {
+								WineHunterApplication.splash(1);
+							}
+						} catch (SQLException e1) {
+							WineHunterApplication.viewUserProfile(user, 2);
+							e1.printStackTrace();
+						}
+					}
+					else {
+						WineHunterApplication.viewUserProfile(user, 0);
+					}
+				}
+			});
+			GridBagConstraints gbc_btnDeleteUser = new GridBagConstraints();
+			gbc_btnDeleteUser.insets = new Insets(5, 5, 5, 5);
+			gbc_btnDeleteUser.gridx = 1;
+			gbc_btnDeleteUser.gridy = 2;
+			buttonPanel.add(btnDeleteUser, gbc_btnDeleteUser);
 		}
 		
 		JPanel profileBucket = new JPanel();
@@ -225,17 +274,18 @@ public class ViewUserProfile extends JPanel {
 		
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblUsername.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		lblUsername.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblUsername = new GridBagConstraints();
-		gbc_lblUsername.anchor = GridBagConstraints.LINE_START;
+		gbc_lblUsername.anchor = GridBagConstraints.EAST;
 		gbc_lblUsername.insets = new Insets(5, 5, 5, 5);
 		gbc_lblUsername.gridx = 0;
 		gbc_lblUsername.gridy = 0;
 		profileBucket.add(lblUsername, gbc_lblUsername);
 		
 		JLabel lblNameText = new JLabel(user.getUsername());
-		lblNameText.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
+		lblNameText.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblNameText = new GridBagConstraints();
+		gbc_lblNameText.anchor = GridBagConstraints.WEST;
 		gbc_lblNameText.insets = new Insets(5, 5, 5, 5);
 		gbc_lblNameText.gridx = 1;
 		gbc_lblNameText.gridy = 0;
@@ -243,70 +293,107 @@ public class ViewUserProfile extends JPanel {
 		
 		JLabel lblFullName = new JLabel("Full Name:");
 		lblFullName.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblFullName.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		lblFullName.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblFullName = new GridBagConstraints();
 		gbc_lblFullName.insets = new Insets(5, 5, 5, 5);
+		gbc_lblFullName.anchor = GridBagConstraints.EAST;
 		gbc_lblFullName.gridx = 0;
 		gbc_lblFullName.gridy = 1;
 		profileBucket.add(lblFullName, gbc_lblFullName);
 		
 		JLabel lblUsernameText = new JLabel(user.getFullName());
-		lblUsernameText.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
+		lblUsernameText.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblUsernameText = new GridBagConstraints();
 		gbc_lblUsernameText.insets = new Insets(5, 5, 5, 5);
+		gbc_lblUsernameText.anchor = GridBagConstraints.WEST;
 		gbc_lblUsernameText.gridx = 1;
 		gbc_lblUsernameText.gridy = 1;
 		profileBucket.add(lblUsernameText, gbc_lblUsernameText);
 		
 		JButton btnEditName = new JButton("Edit Name");
-		btnEditName.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		btnEditName.setFont(WineHunterApplication.format.getBaseFont());
 		GridBagConstraints gbc_btnEditName = new GridBagConstraints();
 		gbc_btnEditName.insets = new Insets(5, 5, 5, 5);
+		gbc_btnEditName.anchor = GridBagConstraints.WEST;
 		gbc_btnEditName.gridx = 2;
 		gbc_btnEditName.gridy = 1;
 		profileBucket.add(btnEditName, gbc_btnEditName);
 		
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblEmail.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		lblEmail.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
 		gbc_lblEmail.insets = new Insets(5, 5, 5, 5);
+		gbc_lblEmail.anchor = GridBagConstraints.EAST;
 		gbc_lblEmail.gridx = 0;
 		gbc_lblEmail.gridy = 2;
 		profileBucket.add(lblEmail, gbc_lblEmail);
 		
 		JLabel lblEmailtext = new JLabel(user.getEmail());
-		lblEmailtext.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
+		lblEmailtext.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblEmailtext = new GridBagConstraints();
 		gbc_lblEmailtext.insets = new Insets(5, 5, 5, 5);
+		gbc_lblEmailtext.anchor = GridBagConstraints.WEST;
 		gbc_lblEmailtext.gridx = 1;
 		gbc_lblEmailtext.gridy = 2;
 		profileBucket.add(lblEmailtext, gbc_lblEmailtext);
 		
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblPassword.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		lblPassword.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.insets = new Insets(5, 5, 5, 5);
+		gbc_lblPassword.anchor = GridBagConstraints.EAST;
 		gbc_lblPassword.gridx = 0;
 		gbc_lblPassword.gridy = 3;
 		profileBucket.add(lblPassword, gbc_lblPassword);
 		
 		JLabel lblPasswordText = new JLabel("(protected)");
-		lblPasswordText.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
+		lblPasswordText.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblPasswordText = new GridBagConstraints();
 		gbc_lblPasswordText.insets = new Insets(5, 5, 5, 5);
+		gbc_lblPasswordText.anchor = GridBagConstraints.WEST;
 		gbc_lblPasswordText.gridx = 1;
 		gbc_lblPasswordText.gridy = 3;
 		profileBucket.add(lblPasswordText, gbc_lblPasswordText);
 		
 		JButton btnEditPassword = new JButton("Edit Password");
-		btnEditPassword.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		btnEditPassword.setFont(WineHunterApplication.format.getBaseFont());
 		GridBagConstraints gbc_btnEditPassword = new GridBagConstraints();
 		gbc_btnEditPassword.insets = new Insets(5, 5, 5, 5);
+		gbc_btnEditPassword.anchor = GridBagConstraints.WEST;
 		gbc_btnEditPassword.gridx = 2;
 		gbc_btnEditPassword.gridy = 3;
 		profileBucket.add(btnEditPassword, gbc_btnEditPassword);
+		
+		JLabel lblAdmin = new JLabel("User Type:");
+		lblAdmin.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblAdmin.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblAdmin = new GridBagConstraints();
+		gbc_lblAdmin.insets = new Insets(5, 5, 5, 5);
+		gbc_lblAdmin.anchor = GridBagConstraints.EAST;
+		gbc_lblAdmin.gridx = 0;
+		gbc_lblAdmin.gridy = 4;
+		profileBucket.add(lblAdmin, gbc_lblAdmin);
+		
+		JLabel lblAdminText = new JLabel("No");
+		lblAdminText.setFont(WineHunterApplication.format.getSubheadingFontBase());
+		if (user.getSuperAdmin() == 1) {
+			lblAdminText.setForeground(Color.RED);
+			lblAdminText.setFont(WineHunterApplication.format.getSubheadingFont());
+			lblAdminText.setText("Administrator");
+		}
+		else if (user.getAdmin() == 1) {
+			lblAdminText.setForeground(Color.BLUE);
+			lblAdminText.setFont(WineHunterApplication.format.getSubheadingFont());
+			lblAdminText.setText("Moderator");
+		}
+		GridBagConstraints gbc_lblAdminText = new GridBagConstraints();
+		gbc_lblAdminText.insets = new Insets(5, 5, 5, 5);
+		gbc_lblAdminText.anchor = GridBagConstraints.WEST;
+		gbc_lblAdminText.gridx = 1;
+		gbc_lblAdminText.gridy = 4;
+		profileBucket.add(lblAdminText, gbc_lblAdminText);
 		
 		// our taster profile panel
 		JPanel tasterProfile = new JPanel();
@@ -366,7 +453,7 @@ public class ViewUserProfile extends JPanel {
 		panel.setLayout(gbl_panel);
 		
 		JLabel lblTitlePreferences = DefaultComponentFactory.getInstance().createTitle(title);
-		lblTitlePreferences.setFont(new Font("Lucida Grande", Font.BOLD, 20));
+		lblTitlePreferences.setFont(WineHunterApplication.format.getHeadingFont());
 		lblTitlePreferences.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblTitlePreferences = new GridBagConstraints();
 		gbc_lblTitlePreferences.insets = new Insets(5, 5, 5, 5);
@@ -414,7 +501,7 @@ public class ViewUserProfile extends JPanel {
 		JPanel panel = new JPanel();
 		
 		JLabel lblPanels = new JLabel(title);
-		lblPanels.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		lblPanels.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblPanels = new GridBagConstraints();
 		gbc_lblPanels.insets = new Insets(5, 5, 5, 5);
 		gbc_lblPanels.gridx = 0;
@@ -430,7 +517,7 @@ public class ViewUserProfile extends JPanel {
 		panel.setLayout(new GridLayout(0, 2, 15, 2));
 		
 		JLabel lblSysGenPanel = new JLabel("System-Generated");
-		lblSysGenPanel.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblSysGenPanel.setFont(WineHunterApplication.format.getSubheadingFont2());
 		GridBagConstraints gbc_lblSysGenPanel = new GridBagConstraints();
 		gbc_lblSysGenPanel.insets = new Insets(5, 5, 5, 5);
 		gbc_lblSysGenPanel.gridx = 0;
@@ -439,7 +526,7 @@ public class ViewUserProfile extends JPanel {
 		panel.add(lblSysGenPanel, gbc_lblSysGenPanel);
 		
 		JLabel lblUserGenPanel = new JLabel("User-Generated");
-		lblUserGenPanel.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblUserGenPanel.setFont(WineHunterApplication.format.getSubheadingFont2());
 		GridBagConstraints gbc_lblUserGenPanel = new GridBagConstraints();
 		gbc_lblUserGenPanel.insets = new Insets(5, 5, 5, 5);
 		gbc_lblUserGenPanel.gridx = 0;
@@ -481,6 +568,7 @@ public class ViewUserProfile extends JPanel {
 	 */
 	public void buildListMemberPanel(JPanel panel, String text, int row, int column) {
 		JLabel newLabel = new JLabel(text);
+		newLabel.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_newLabel = new GridBagConstraints();
 		gbc_newLabel.insets = new Insets(5, 5, 5, 5);
 		gbc_newLabel.gridx = column;

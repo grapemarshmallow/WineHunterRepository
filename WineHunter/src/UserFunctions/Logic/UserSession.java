@@ -21,7 +21,7 @@ public class UserSession {
 	 */
 	public UserSession() {
 		loggedIn = false;
-		user = new User(null, null, -1, 0, 0, null);
+		user = new User();
 	}
 
 	

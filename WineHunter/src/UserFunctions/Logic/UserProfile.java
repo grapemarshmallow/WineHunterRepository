@@ -24,7 +24,7 @@ public class UserProfile {
 	}
 	
 	/**
-	 * Gets a user's information, and feeds it into two arrays provided by caller.
+	 * Find a user by user ID
 	 * @param userId ID of user that will be searched for
 	 * @param user the user object returned by the query
 	 * @return 1 if a match was found, -1 for insufficient security, 0 otherwise
@@ -46,8 +46,8 @@ public class UserProfile {
 
 		String sql;
 		sql = "SELECT *"
-				+ " FROM User'"
-				+ " WHERE User.UserID = '" + userId + "'";
+				+ " FROM User"
+				+ " WHERE User.UserID = " + userId;
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		
@@ -64,6 +64,109 @@ public class UserProfile {
 			user.setId(rs.getInt("UserID"));
 			user.setUsername(rs.getString("Username"));
 			user.setSuperAdmin(rs.getInt("SuperAdminUser"));
+			user.setEmail(rs.getString("EmailAddress"));
+			
+			result = 1;
+		}
+		
+		rs.close();
+		
+		stmt.close();
+		
+		return result;
+	}
+	
+	/**
+	 * Finds a user by username.
+	 * @param userId ID of user that will be searched for
+	 * @param user the user object returned by the query
+	 * @return 1 if a match was found, -1 for insufficient security, 0 otherwise
+	 * @throws SQLException
+	 */
+	public int getUserInfoByUsername (String username, User user) throws SQLException {
+		
+		int result = 0;
+		
+		if ((WineHunterApplication.userSession.getUser().getAdmin() == 0) && ((WineHunterApplication.userSession.getUser().getSuperAdmin() == 0))) {
+			return -1; // insufficient security
+		}
+
+		
+		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+		
+
+		String sql;
+		sql = "SELECT *"
+				+ " FROM User"
+				+ " WHERE User.Username = '" + username + "'";
+		
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		rs.last(); 
+		
+		int size = rs.getRow();
+		
+		rs.beforeFirst();
+		
+		if (size == 1) {
+			rs.next();
+			user.setAdmin(rs.getInt("AdminUser"));
+			user.setFullName(rs.getString("UserFullName"));
+			user.setId(rs.getInt("UserID"));
+			user.setUsername(rs.getString("Username"));
+			user.setSuperAdmin(rs.getInt("SuperAdminUser"));
+			user.setEmail(rs.getString("EmailAddress"));
+			result = 1;
+		}
+		
+		rs.close();
+		
+		stmt.close();
+		
+		return result;
+	}
+	
+	/**
+	 * Finds a user by email
+	 * @param userId ID of user that will be searched for
+	 * @param user the user object returned by the query
+	 * @return 1 if a match was found, -1 for insufficient security, 0 otherwise
+	 * @throws SQLException
+	 */
+	public int getUserInfoByEmail(String email, User user) throws SQLException {
+		
+		int result = 0;
+		
+		if ((WineHunterApplication.userSession.getUser().getAdmin() == 0) && ((WineHunterApplication.userSession.getUser().getSuperAdmin() == 0))) {
+			return -1; // insufficient security
+		}
+
+		
+		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+		
+
+		String sql;
+		sql = "SELECT *"
+				+ " FROM User"
+				+ " WHERE User.EmailAddress = '" + email + "'";
+		
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		rs.last(); 
+		
+		int size = rs.getRow();
+		
+		rs.beforeFirst();
+		
+		if (size == 1) {
+			rs.next();
+			user.setAdmin(rs.getInt("AdminUser"));
+			user.setFullName(rs.getString("UserFullName"));
+			user.setId(rs.getInt("UserID"));
+			user.setUsername(rs.getString("Username"));
+			user.setSuperAdmin(rs.getInt("SuperAdminUser"));
+			user.setEmail(rs.getString("EmailAddress"));
+			result = 1;
 		}
 		
 		rs.close();

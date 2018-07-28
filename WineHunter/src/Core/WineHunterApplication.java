@@ -37,9 +37,11 @@ public class WineHunterApplication {
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	public static ViewUserProfile viewUserProfile;
+<<<<<<< HEAD
 	public static Search.Logic.WineSearch wineSearch; //added
 	public static Search.GUI.ViewWineResults viewWineResults; //added
 	public static Search.GUI.ViewWineSearch viewWineSearch; //added
+>>>>>>> 9f58996baa2750ee810a37f9d6a38a67bac83ec6
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	

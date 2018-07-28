@@ -34,6 +34,15 @@ public class User {
 		this.setEmail(email);
 	}
 	
+	public User() {
+		this.username = null;
+		this.fullName = null;
+		this.id = -1;
+		this.admin = 0;
+		this.superAdmin = 0;
+		this.setEmail(null);
+	}
+
 	public ArrayList<Keyword> getUserLikeKeywordList() {
 		return this.userLikeKeywordList;
 	}
