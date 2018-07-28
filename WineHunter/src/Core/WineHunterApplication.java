@@ -9,6 +9,7 @@ import javax.swing.*;
 import Core.*;
 import WineObjects.*;
 import Search.*;
+import UserFunctions.GUI.AdminUserSearch;
 import UserFunctions.GUI.ViewUserProfile;
 
 import java.awt.GridLayout;
@@ -20,7 +21,7 @@ public class WineHunterApplication {
 	private static JFrame frmWinehunter;
 	
 	
-	public JFrame getFrmWinehunter() {
+	public static JFrame getFrmWinehunter() {
 		return WineHunterApplication.frmWinehunter;
 	}
 
@@ -28,8 +29,7 @@ public class WineHunterApplication {
 		WineHunterApplication.frmWinehunter = frmWinehunter;
 	}
 
-	
-	
+	public static Formatting format;
 	public static Core.Connect connection;
 	public static UserFunctions.Logic.UserSession userSession;
 	public static UserFunctions.GUI.UserLogin userLogin;
@@ -37,14 +37,16 @@ public class WineHunterApplication {
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	public static ViewUserProfile viewUserProfile;
-	public static Search.Logic.WineSearch wineSearch; //added
-	public static Search.GUI.ViewWineResults viewWineResults; //added
-	public static Search.GUI.ViewWineSearch viewWineSearch; //added
+	public static Search.Logic.WineSearch wineSearch; 
+	public static Search.GUI.ViewWineResults viewWineResults; 
+	public static Search.GUI.ViewWineSearch viewWineSearch; 
+	public static AdminUserSearch adminUserSearch;
+
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	
-	public final static int APPLICATION_WIDTH = 600;
-	public final static int APPLICATION_HEIGHT = 400;
+	public final static int APPLICATION_WIDTH = 1000;
+	public final static int APPLICATION_HEIGHT = 800;
 	
 	
 	public Core.Connect getConnection() {
@@ -107,6 +109,7 @@ public class WineHunterApplication {
 			connection = new Core.Connect();
 			connection.init();
 			userSession = new UserFunctions.Logic.UserSession();
+			format = new Core.Formatting();
 			initialize();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -181,11 +184,11 @@ public class WineHunterApplication {
 	/**
 	 * Search for wines and draw wine results page
 	 */
-	public static void searchWines() {
+	public static void searchWines(int empty) {
 		//draw wine search page
 		WineHunterApplication.cleanPanel();
 		
-		viewWineSearch = new Search.GUI.ViewWineSearch();
+		viewWineSearch = new Search.GUI.ViewWineSearch(empty);
 		
 		wineSearch = new Search.Logic.WineSearch();
 	
@@ -202,7 +205,7 @@ public class WineHunterApplication {
 	 * Draw wine results page
 	 */
 	public static void showWines(String[][] data, String[] columnNames) {
-		//draw wine search page
+		
 		WineHunterApplication.cleanPanel();
 
 		viewWineResults = new Search.GUI.ViewWineResults(data, columnNames); 
@@ -275,10 +278,10 @@ public class WineHunterApplication {
 	/**
 	* Draws splash page
 	 */
-	public static void splash() {
+	public static void splash(int subsequent) {
 		
 		WineHunterApplication.cleanPanel();
-		splash = new MainMenu();
+		splash = new MainMenu(subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(splash);
 		
@@ -287,11 +290,21 @@ public class WineHunterApplication {
 		
 	}
 	
-	public static void viewUserProfile(User user) {
+	public static void viewUserProfile(User user, int subsequent) {
 		WineHunterApplication.cleanPanel();
-		viewUserProfile = new ViewUserProfile(user);
+		viewUserProfile = new ViewUserProfile(user, subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
+		
+		frmWinehunter.pack();
+
+	}
+	
+	public static void adminUserSearch(int subsequent) {
+		WineHunterApplication.cleanPanel();
+		adminUserSearch = new AdminUserSearch(subsequent);
+		mainPanel.setVisible(true);
+		mainPanel.add(adminUserSearch);
 		
 		frmWinehunter.pack();
 
