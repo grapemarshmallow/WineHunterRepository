@@ -2,6 +2,7 @@ package UserFunctions.GUI;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.ScrollPaneConstants;
 
 import java.awt.GridBagLayout;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 
@@ -25,11 +27,11 @@ import WineObjects.User;
 import WineObjects.Variety;
 
 import javax.swing.SwingConstants;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.Color;
+import net.miginfocom.swing.MigLayout;
 
 public class ViewUserProfile extends JPanel {
 	
@@ -42,38 +44,35 @@ public class ViewUserProfile extends JPanel {
 	 * @param subsequent 0 for the first visit, 1 if a delete failed, 2 if an update failed
 	 */
 	public ViewUserProfile(User user, int subsequent) {
-	
-		
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0};
-		gridBagLayout.rowHeights = new int[]{0};
-		setLayout(gridBagLayout);
-		
-		if (subsequent == 1) {
-			add(new JLabel("User deletion failed."));
-		}
-		else if (subsequent == 2) {
-			add(new JLabel("User update failed."));
-		}
-		else if (subsequent == 3) {
-			add(new JLabel("Update successful!"));
-		}
-		else if (subsequent == 4) {
-			add(new JLabel("Insufficient security for update."));
-		}
+		this.setBorder(BorderFactory.createBevelBorder(2));
+		setLayout(new MigLayout("", "[" + (WineHunterApplication.APPLICATION_WIDTH - 100) + "] px", "[" + (WineHunterApplication.APPLICATION_HEIGHT - 100) + "] px"));
 		
 		JPanel userInfoScroll = new JPanel();
 		
 		GridBagLayout gbl_userInfoScroll = new GridBagLayout();
+		gbl_userInfoScroll.columnWidths = new int[]{0};
+		gbl_userInfoScroll.rowHeights = new int[]{0};
 		userInfoScroll.setLayout(gbl_userInfoScroll);
+		userInfoScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 300, WineHunterApplication.APPLICATION_HEIGHT - 200));
 		
-		JScrollPane userScroll = new JScrollPane(userInfoScroll, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane userScroll = new JScrollPane(userInfoScroll, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		userScroll.setViewportBorder(null);
+		userScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 100, WineHunterApplication.APPLICATION_HEIGHT - 100));
 		
-		userScroll.setPreferredSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_HEIGHT));
-
+		this.add(userScroll, "cell 0 0,grow");
 		
-		add(userScroll);
-		
+		if (subsequent == 1) {
+			userInfoScroll.add(new JLabel("User deletion failed."));
+		}
+		else if (subsequent == 2) {
+			userInfoScroll.add(new JLabel("User update failed."));
+		}
+		else if (subsequent == 3) {
+			userInfoScroll.add(new JLabel("Update successful!"));
+		}
+		else if (subsequent == 4) {
+			userInfoScroll.add(new JLabel("Insufficient security for update."));
+		}
 		
 		int other = 0;
 		
@@ -86,10 +85,11 @@ public class ViewUserProfile extends JPanel {
 				JLabel userSecurityMessage = DefaultComponentFactory.getInstance().createTitle("Insufficent security to view user " + user.getId() + " (" + user.getUsername() + ").");
 				userSecurityMessage.setLabelFor(userInfoScroll);
 				GridBagConstraints gbc_userSecurityMessage = new GridBagConstraints();
-				gbc_userSecurityMessage.fill = GridBagConstraints.VERTICAL;
+				gbc_userSecurityMessage.fill = GridBagConstraints.BOTH;
 				gbc_userSecurityMessage.insets = new Insets(5, 5, 5, 5);
 				gbc_userSecurityMessage.gridx = 0;
 				gbc_userSecurityMessage.gridy = 0;
+				gbc_userSecurityMessage.weightx = 1;
 				userInfoScroll.add(userSecurityMessage, gbc_userSecurityMessage);
 				userSecurityMessage.setHorizontalAlignment(SwingConstants.CENTER);
 				
@@ -97,12 +97,18 @@ public class ViewUserProfile extends JPanel {
 			}
 		}
 
-		
+		JSeparator sep = new JSeparator(SwingConstants.HORIZONTAL);
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    sep.setMinimumSize(new Dimension(5,5));
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    gbc.weightx = 1;
+	    
 		String profileString = "Your User Profile";
 		
 		if (other == 1) {
 			profileString = "User Profile for user "+ user.getId() + " (" + user.getUsername() + ")";
 		}
+		
 		
 		UserProfile userProfile = new UserProfile();
 		UserUpdate userUpdate = new UserUpdate();
@@ -110,12 +116,13 @@ public class ViewUserProfile extends JPanel {
 			userProfile.getTasterProfile(user);
 		} catch (SQLException e) {
 			JLabel userSQLError = DefaultComponentFactory.getInstance().createTitle("Could not load user " + user.getId() + " (" + user.getUsername() + ").");
-			userSQLError.setLabelFor(userInfoScroll);
 			GridBagConstraints gbc_userSQLError = new GridBagConstraints();
-			gbc_userSQLError.fill = GridBagConstraints.VERTICAL;
+			userSQLError.setHorizontalAlignment(SwingConstants.CENTER);
+			gbc_userSQLError.fill = GridBagConstraints.BOTH;
 			gbc_userSQLError.insets = new Insets(5, 5, 5, 5);
 			gbc_userSQLError.gridx = 0;
 			gbc_userSQLError.gridy = 0;
+			gbc_userSQLError.weightx = 1;
 			userInfoScroll.add(userSQLError, gbc_userSQLError);
 			userSQLError.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -123,23 +130,41 @@ public class ViewUserProfile extends JPanel {
 			return;
 		}
 		
+		JPanel profileTitle = new JPanel();
+		GridBagConstraints gbc_profileTitle = new GridBagConstraints();
+		gbc_profileTitle.fill = GridBagConstraints.BOTH;
+		gbc_profileTitle.insets = new Insets(5, 5, 5, 5);
+		gbc_profileTitle.gridx = 0;
+		gbc_profileTitle.gridy = 0;
+		gbc_profileTitle.weightx = 1;
+		userInfoScroll.add(profileTitle, gbc_profileTitle);
+		GridBagLayout gbl_profileTitle = new GridBagLayout();
+		gbl_profileTitle.columnWidths = new int[]{0};
+		gbl_profileTitle.rowHeights = new int[] {0};
+		profileTitle.setLayout(gbl_profileTitle);
 		
-		JLabel userProfileTitle = DefaultComponentFactory.getInstance().createTitle(profileString);
+		
+		JLabel userProfileTitle = new JLabel(profileString);
+		userProfileTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		userProfileTitle.setFont(WineHunterApplication.format.getHeadingFont());
-		userProfileTitle.setLabelFor(userInfoScroll);
 		GridBagConstraints gbc_userProfileTitle = new GridBagConstraints();
-		gbc_userProfileTitle.fill = GridBagConstraints.VERTICAL;
+		gbc_userProfileTitle.fill = GridBagConstraints.BOTH;
 		gbc_userProfileTitle.insets = new Insets(5, 5, 5, 5);
+		gbc_userProfileTitle.anchor = GridBagConstraints.CENTER;
 		gbc_userProfileTitle.gridx = 0;
 		gbc_userProfileTitle.gridy = 0;
-		userInfoScroll.add(userProfileTitle, gbc_userProfileTitle);
-		userProfileTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		gbc_userProfileTitle.weightx = 1;
+		profileTitle.add(userProfileTitle, gbc_userProfileTitle);
+		
+		gbc.gridy = 1;
+		userInfoScroll.add(sep, gbc);
 		
 		JPanel buttonPanel = new JPanel();
 		GridBagConstraints gbc_buttonPanel = new GridBagConstraints();
-		gbc_buttonPanel.fill = GridBagConstraints.VERTICAL;
+		gbc_buttonPanel.fill = GridBagConstraints.BOTH;
 		gbc_buttonPanel.gridx = 0;
-		gbc_buttonPanel.gridy = 1;
+		gbc_buttonPanel.gridy = 2;
+		gbc_buttonPanel.weightx = 1;
 		userInfoScroll.add(buttonPanel, gbc_buttonPanel);
 		GridBagLayout gbl_buttonPanel = new GridBagLayout();
 		gbl_buttonPanel.columnWidths = new int[]{0};
@@ -179,8 +204,8 @@ public class ViewUserProfile extends JPanel {
 		});
 		GridBagConstraints gbc_btnEditTasterProfile = new GridBagConstraints();
 		gbc_btnEditTasterProfile.insets = new Insets(5, 5, 5, 5);
-		gbc_btnEditTasterProfile.gridx = 0;
-		gbc_btnEditTasterProfile.gridy = 1;
+		gbc_btnEditTasterProfile.gridx = 2;
+		gbc_btnEditTasterProfile.gridy = 0;
 		buttonPanel.add(btnEditTasterProfile, gbc_btnEditTasterProfile);
 		
 		JButton btnSearchTasterProfile = new JButton("Search With Taster Profile");
@@ -191,8 +216,8 @@ public class ViewUserProfile extends JPanel {
 		});
 		GridBagConstraints gbc_btnSearchTasterProfile = new GridBagConstraints();
 		gbc_btnSearchTasterProfile.insets = new Insets(5, 5, 5, 5);
-		gbc_btnSearchTasterProfile.gridx = 1;
-		gbc_btnSearchTasterProfile.gridy = 1;
+		gbc_btnSearchTasterProfile.gridx = 3;
+		gbc_btnSearchTasterProfile.gridy = 0;
 		buttonPanel.add(btnSearchTasterProfile, gbc_btnSearchTasterProfile);
 		
 		if ((user != WineHunterApplication.userSession.getUser()) && isSuperAdmin) {
@@ -260,12 +285,16 @@ public class ViewUserProfile extends JPanel {
 			buttonPanel.add(btnDeleteUser, gbc_btnDeleteUser);
 		}
 		
+		gbc.gridy = 3;
+		userInfoScroll.add(sep, gbc);
+		
 		JPanel profileBucket = new JPanel();
 		GridBagConstraints gbc_profileBucket = new GridBagConstraints();
-		gbc_profileBucket.fill = GridBagConstraints.VERTICAL;
+		gbc_profileBucket.fill = GridBagConstraints.BOTH;
 		gbc_profileBucket.insets = new Insets(5, 5, 5, 5);
 		gbc_profileBucket.gridx = 0;
-		gbc_profileBucket.gridy = 2;
+		gbc_profileBucket.gridy = 4;
+		gbc_profileBucket.weightx = 1;
 		userInfoScroll.add(profileBucket, gbc_profileBucket);
 		GridBagLayout gbl_profileBucket = new GridBagLayout();
 		gbl_profileBucket.columnWidths = new int[]{0};
@@ -395,19 +424,23 @@ public class ViewUserProfile extends JPanel {
 		gbc_lblAdminText.gridy = 4;
 		profileBucket.add(lblAdminText, gbc_lblAdminText);
 		
-		// our taster profile panel
+		gbc.gridy = 5;
+		userInfoScroll.add(sep, gbc);
+		
+		//our taster profile panel
 		JPanel tasterProfile = new JPanel();
 		GridBagConstraints gbc_tasterProfile = new GridBagConstraints();
 		gbc_tasterProfile.insets = new Insets(5, 5, 5, 5);
-		gbc_tasterProfile.fill = GridBagConstraints.VERTICAL;
+		gbc_tasterProfile.fill = GridBagConstraints.BOTH;
 		gbc_tasterProfile.gridx = 0;
-		gbc_tasterProfile.gridy = 3;
+		gbc_tasterProfile.gridy = 6;
+		gbc_tasterProfile.weightx = 1;
 		userInfoScroll.add(tasterProfile, gbc_tasterProfile);
 		GridBagLayout gbl_tasterProfile = new GridBagLayout();
 		gbl_tasterProfile.columnWidths = new int[] {0};
 		gbl_tasterProfile.rowHeights = new int[]{0};
-		gbl_tasterProfile.columnWeights = new double[]{0.0};
-		gbl_tasterProfile.rowWeights = new double[]{0.0};
+		gbl_tasterProfile.columnWeights = new double[]{1.0};
+		gbl_tasterProfile.rowWeights = new double[]{1.0};
 		tasterProfile.setLayout(gbl_tasterProfile);
 		
 		String[] sysVarietyLikeLabels = createVarietyLabelArray(user.getSysLikeVarietyList(), "No system-generated liked varieties.");
@@ -419,15 +452,15 @@ public class ViewUserProfile extends JPanel {
 		String[] userKeywordLikeLabels = createKeywordLabelArray(user.getUserLikeKeywordList(), "No user-generated liked keywords.");
 		String[] userKeywordDislikeLabels = createKeywordLabelArray(user.getUserDislikeKeywordList(), "No user-generated disliked keywords.");
 		
-		// set up variety panel
+		//set up variety panel
 		buildCategoryPanel(tasterProfile, sysVarietyLikeLabels, sysVarietyDislikeLabels, userVarietyLikeLabels,
 				userVarietyDislikeLabels, "Grape Variety Preferences",0);
 		
-		// set up keyword panel
+		//set up keyword panel
 		buildCategoryPanel(tasterProfile, sysKeywordLikeLabels, sysKeywordDislikeLabels, userKeywordLikeLabels,
 				userKeywordDislikeLabels, "Wine Keyword Preferences",1);
 		
-		
+
 	}
 
 	/**
@@ -443,9 +476,9 @@ public class ViewUserProfile extends JPanel {
 			String[] userLikeLabels, String[] userDislikeLabels, String title, int row) {
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.fill = GridBagConstraints.VERTICAL;
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = row;
+		gbc_panel.weightx = 1;
 		parentPanel.add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0};
@@ -468,7 +501,7 @@ public class ViewUserProfile extends JPanel {
 		gbc_lblGap3Pref.gridy = 1;
 		panel.add(lblGap3Pref, gbc_lblGap3Pref);
 		
-		// build out our liked panel
+		//build out our liked panel
 		buildListPanel(panel, sysLikeLabels, userLikeLabels, "Likes", 2);
 		
 		JLabel lblGapPref = new JLabel();
@@ -501,37 +534,45 @@ public class ViewUserProfile extends JPanel {
 		JPanel panel = new JPanel();
 		
 		JLabel lblPanels = new JLabel(title);
+		lblPanels.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPanels.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblPanels = new GridBagConstraints();
 		gbc_lblPanels.insets = new Insets(5, 5, 5, 5);
 		gbc_lblPanels.gridx = 0;
 		gbc_lblPanels.gridy = row;
+		gbc_lblPanels.weightx = 1;
 		panelParent.add(lblPanels, gbc_lblPanels);
 		
 		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.anchor = GridBagConstraints.LINE_START;
-		gbc_panel.fill = GridBagConstraints.VERTICAL;
+		gbc_panel.anchor = GridBagConstraints.CENTER;
+		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = row + 1;
+		gbc_panel.weightx = 1;
 		panelParent.add(panel, gbc_panel);
-		panel.setLayout(new GridLayout(0, 2, 15, 2));
+		
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWeights = new double[] {0.5, 0.5};
+		panel.setLayout(gbl_panel);
 		
 		JLabel lblSysGenPanel = new JLabel("System-Generated");
+		lblSysGenPanel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSysGenPanel.setFont(WineHunterApplication.format.getSubheadingFont2());
 		GridBagConstraints gbc_lblSysGenPanel = new GridBagConstraints();
 		gbc_lblSysGenPanel.insets = new Insets(5, 5, 5, 5);
 		gbc_lblSysGenPanel.gridx = 0;
 		gbc_lblSysGenPanel.gridy = 0;
-		lblSysGenPanel.setPreferredSize(new Dimension((WineHunterApplication.APPLICATION_WIDTH / 2), 30));
+		gbc_lblSysGenPanel.weightx = 1;
 		panel.add(lblSysGenPanel, gbc_lblSysGenPanel);
 		
 		JLabel lblUserGenPanel = new JLabel("User-Generated");
+		lblSysGenPanel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserGenPanel.setFont(WineHunterApplication.format.getSubheadingFont2());
 		GridBagConstraints gbc_lblUserGenPanel = new GridBagConstraints();
 		gbc_lblUserGenPanel.insets = new Insets(5, 5, 5, 5);
-		gbc_lblUserGenPanel.gridx = 0;
-		gbc_lblUserGenPanel.gridy = 1;
-		lblUserGenPanel.setPreferredSize(new Dimension((WineHunterApplication.APPLICATION_WIDTH / 2), 30));
+		gbc_lblUserGenPanel.gridx = 1;
+		gbc_lblUserGenPanel.gridy = 0;
+		gbc_lblUserGenPanel.weightx = 1;
 		panel.add(lblUserGenPanel, gbc_lblUserGenPanel);
 		
 		buildList(panel, sysLabels, userLabels);
@@ -568,12 +609,13 @@ public class ViewUserProfile extends JPanel {
 	 */
 	public void buildListMemberPanel(JPanel panel, String text, int row, int column) {
 		JLabel newLabel = new JLabel(text);
-		newLabel.setFont(WineHunterApplication.format.getSubheadingFont());
+		newLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		newLabel.setFont(WineHunterApplication.format.getSubheadingFont3Base());
 		GridBagConstraints gbc_newLabel = new GridBagConstraints();
-		gbc_newLabel.insets = new Insets(5, 5, 5, 5);
+		gbc_newLabel.insets = new Insets(1, 5, 1, 5);
 		gbc_newLabel.gridx = column;
 		gbc_newLabel.gridy = row;
-		newLabel.setPreferredSize(new Dimension((WineHunterApplication.APPLICATION_WIDTH / 2), 30));
+		gbc_newLabel.weightx = 1;
 		panel.add(newLabel, gbc_newLabel);
 	}
 

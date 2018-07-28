@@ -37,6 +37,7 @@ public class WineHunterApplication {
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	public static ViewUserProfile viewUserProfile;
+<<<<<<< HEAD
 	public static Search.Logic.WineSearch wineSearch; 
 	public static Search.GUI.ViewWineResults viewWineResults; 
 	public static Search.GUI.ViewWineSearch viewWineSearch; 
@@ -292,9 +293,12 @@ public class WineHunterApplication {
 	
 	public static void viewUserProfile(User user, int subsequent) {
 		WineHunterApplication.cleanPanel();
+<<<<<<< HEAD
 		viewUserProfile = new ViewUserProfile(user, subsequent);
+>>>>>>> 766e7774aba8bdbe2ca083fafe3a18c7a671a929
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
+		
 		
 		frmWinehunter.pack();
 
@@ -302,6 +306,7 @@ public class WineHunterApplication {
 	
 	public static void adminUserSearch(int subsequent) {
 		WineHunterApplication.cleanPanel();
+<<<<<<< HEAD
 		adminUserSearch = new AdminUserSearch(subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(adminUserSearch);
@@ -309,6 +314,8 @@ public class WineHunterApplication {
 		frmWinehunter.pack();
 
 	}
+=======
+>>>>>>> 766e7774aba8bdbe2ca083fafe3a18c7a671a929
 	
 	/**
 	 * Reloads main toolbar
