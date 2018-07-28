@@ -92,6 +92,7 @@ public class Toolbar extends JPanel {
 			JButton btnWineSearch = new JButton("Wine Search");
 			btnWineSearch.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					WineHunterApplication.searchWines(1); 
 				}
 			});
 			toolBar.add(btnWineSearch);

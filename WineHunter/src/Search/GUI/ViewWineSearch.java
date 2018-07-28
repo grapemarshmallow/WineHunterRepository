@@ -41,16 +41,17 @@ public class ViewWineSearch extends JPanel{
 	private JTextField vintage;
 	private JTextField country;
 	private JTextField province;
+	private int notEmpty; 
 	
 
 	/**
 	 * Create the panel to search for wines
 	 */
 	
-	public ViewWineSearch() {
-
+	public ViewWineSearch(int empty) {
 		
 		setBounds(100, 100, WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_HEIGHT);
+		notEmpty = 0; 
 
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -72,6 +73,24 @@ public class ViewWineSearch extends JPanel{
 		gbc_lblNewLabel.gridy = 1;
 		
 		this.add(lblNewLabel, gbc_lblNewLabel);
+		
+		JLabel lblempty = new JLabel("Please enter valid search criteria before searching.");
+		GridBagConstraints gbc_lblempty = new GridBagConstraints();
+		gbc_lblempty.insets = new Insets(0, 0, 5, 0);
+		gbc_lblempty.gridx = 0;
+		gbc_lblempty.gridy = 2;
+		if(empty == 2) {
+			add(lblempty, gbc_lblempty);
+		}
+		
+		JLabel lblnoresults = new JLabel("No results found. You may search again.");
+		GridBagConstraints gbc_lblnoresults = new GridBagConstraints();
+		gbc_lblnoresults.insets = new Insets(0, 0, 5, 0);
+		gbc_lblnoresults.gridx = 0;
+		gbc_lblnoresults.gridy = 2;
+		if(empty == 0) {
+			add(lblnoresults, gbc_lblnoresults);
+		}
 		
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
@@ -110,15 +129,34 @@ public class ViewWineSearch extends JPanel{
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String vtext = vintage.getText();
-				String ctext = country.getText(); 
-				String ptext = province.getText(); 
-				try {
-					WineHunterApplication.wineSearch.wineSearch(vtext, ctext, ptext);
-				} catch (SQLException e) {
-					WineHunterApplication.searchWines(); //go back to search screen
+				String vtext = ""; 
+				String ctext = ""; 
+				String ptext = ""; 
+				if (!vintage.getText().isEmpty()) {
+					vtext=vintage.getText();
 				}
-				WineHunterApplication.showWines(WineHunterApplication.wineSearch.getResults(), WineHunterApplication.wineSearch.getColumns()); 
+				if (!country.getText().isEmpty()) {
+					ctext=country.getText();
+				}
+				if (!province.getText().isEmpty()) {
+					ptext=province.getText();
+				}
+				try {
+					notEmpty = WineHunterApplication.wineSearch.wineSearch(vtext, ctext, ptext);
+				} catch (SQLException e) {
+					WineHunterApplication.searchWines(2); //go back to search screen
+				}
+				if(notEmpty == 2) {
+					WineHunterApplication.searchWines(2);
+				}
+				else if(notEmpty == 0) {
+					WineHunterApplication.searchWines(0);
+				}
+				else {
+					String[][] data = WineHunterApplication.wineSearch.getResults();
+					String[] columnNames = WineHunterApplication.wineSearch.getColumns();
+					WineHunterApplication.showWines(data,columnNames); 
+				}
 			}
 		});
 		panel.add(btnSearch);

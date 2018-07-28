@@ -10,7 +10,7 @@ import WineObjects.*;
 
 public class WineSearch {
 	private String[][] data; 
-	private String[] columnNames= {"Wine Name", "Vintage", "Price", "Winery Name", "Country Name", "Province Name"}; 
+	private String[] columnNames= {"Wine", "Vintage", "Price ($)", "Winery", "Country", "Province"}; 
 	
 	/**
 	 * do nothing constructor
@@ -43,7 +43,7 @@ public class WineSearch {
 	 * @param vintage
 	 * @param country
 	 * @param province
-	 * @return 1 if successful, 0 error, 2 if no user input
+	 * @return 1 if successful, 0 error, 2 no user input
 	 * 
 	 */
 	
@@ -51,7 +51,7 @@ public class WineSearch {
 	
 	public int wineSearch(String vintage, String country, String province) throws SQLException {
 		
-		if((vintage == null) && (country == null) && (province == null)) {
+		if((vintage == "") && (country == "") && (province == "")) {
 			return 2; //no user input for criteria, so don't search
 		}
 
@@ -61,11 +61,11 @@ public class WineSearch {
 		String sql; 
 		String wheresql = "WHERE "; 
 		int needAnd = 0; //set to 1 when need an and
-		if(vintage != null) {
+		if(vintage != "") {
 			wheresql = wheresql + "vintage = " + vintage;
 			needAnd = 1; 
 		}
-		if(country != null) {
+		if(country != "") {
 			if (needAnd == 1) {
 				wheresql = wheresql + " AND ";
 			}
@@ -74,7 +74,7 @@ public class WineSearch {
 			}
 			wheresql = wheresql + "countryName LIKE '" + country + "%'";
 		}
-		if(province != null) {
+		if(province != "") {
 			if (needAnd == 1) {
 				wheresql = wheresql + " AND ";
 			}
@@ -83,11 +83,11 @@ public class WineSearch {
 			}
 			wheresql = wheresql + "provinceName LIKE '" + province + "%'";
 		}
-		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, wy.countryName, wy.provinceName" + 
+		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
 				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
 				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
-				" INNER JOIN country c ON c.CountryID = p.CountryID" + wheresql; 
-		
+				" INNER JOIN country c ON c.CountryID = p.CountryID " + wheresql; 
+
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		rs.last(); 
@@ -95,6 +95,7 @@ public class WineSearch {
 		int size = rs.getRow();
 		
 		rs.beforeFirst();
+		
 		
 		if (size <= 0) {
 			rs.close();
@@ -117,8 +118,18 @@ public class WineSearch {
 			String provinceName = rs.getString("provinceName");
 			
 			data[row][0] = wineName;
-			data[row][1] = Integer.toString(vintageval);
-			data[row][2] = Double.toString(price);
+			if(vintageval == 0) {
+				data[row][1] = "UNKNOWN";
+			}
+			else {
+				data[row][1] = Integer.toString(vintageval);
+			}
+			if(price == -1) {
+				data[row][2] = "UNKNOWN";
+			}
+			else {
+				data[row][2] = Double.toString(price);
+			}
 			data[row][3] = wineryName;
 			data[row][4] = countryName;
 			data[row][5] = provinceName;
@@ -126,21 +137,6 @@ public class WineSearch {
 			++row;
 
 		}
-		
-		/**
-		JTable table = new JTable(data, columnNames);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		scrollPane.setPreferredSize(new Dimension(800, 1000));
-		table.setFillsViewportHeight(false);
-
-		WineHunterMain.myGui.getFrame().getContentPane().add(scrollPane, BorderLayout.CENTER);
-		
-		WineHunterMain.myGui.getFrame().pack();
-		
-		WineHunterMain.myGui.getFrame().setVisible(true);
-		**/
-
 		
 		rs.close();
 

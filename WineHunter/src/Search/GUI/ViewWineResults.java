@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 
@@ -34,6 +35,7 @@ import java.awt.Label;
 import javax.swing.JTextField;
 import java.awt.FlowLayout;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class ViewWineResults extends JPanel {
 
@@ -42,6 +44,9 @@ public class ViewWineResults extends JPanel {
 	
 	/**
 	 * Create the panel to view results
+	 * @param data
+	 * @param columnNames
+	 * @param empty
 	 */
 	public ViewWineResults(String[][] data, String[] columnNames) {
 		
@@ -58,6 +63,7 @@ public class ViewWineResults extends JPanel {
 		
 		
 		JLabel lblNewLabel = new JLabel("Your results");
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -69,11 +75,12 @@ public class ViewWineResults extends JPanel {
 		this.add(lblNewLabel, gbc_lblNewLabel);
 		
 		table = new JTable(data,columnNames);
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.fill = GridBagConstraints.BOTH;
-		gbc_table.gridx = 0;
-		gbc_table.gridy = 3;
-		add(table, gbc_table);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table.setAutoCreateRowSorter(true);
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setPreferredSize(new Dimension(600, 402));
+		this.add(scrollPane);
+		
 		
 	}
 
