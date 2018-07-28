@@ -16,8 +16,9 @@ public class MainMenu extends JPanel {
 
 	/**
 	 * Create the panel.
+	 * @param messages for subsequent visits to this page. 1 if a use was successfully deleted.
 	 */
-	public MainMenu() {
+	public MainMenu(int subsequent) {
 		
 		String labelText = "Welcome, " + WineHunterApplication.userSession.getUser().getFullName() + "!";
 		
@@ -27,6 +28,12 @@ public class MainMenu extends JPanel {
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
+		
+		if (subsequent == 1) {
+			add(new JLabel("User successfully deleted."));
+		}
+	
+		
 		JLabel lblWelcome = new JLabel(labelText);
 		GridBagConstraints gbc_lblWelcome = new GridBagConstraints();
 		gbc_lblWelcome.insets = new Insets(0, 0, 5, 0);

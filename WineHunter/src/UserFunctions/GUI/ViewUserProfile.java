@@ -38,15 +38,25 @@ public class ViewUserProfile extends JPanel {
 	/**
 	 * Create the panel with a specific user object.
 	 * @param user the user object to generate the profile for
+	 * @param subsequent 0 for the first visit, 1 if a delete failed, 2 if an update failed
 	 */
-	public ViewUserProfile(User user) {
+	public ViewUserProfile(User user, int subsequent) {
 	
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{00};
 		setLayout(gridBagLayout);
 		
+		if (subsequent == 1) {
+			add(new JLabel("User deletion failed."));
+		}
+		else if (subsequent == 2) {
+			add(new JLabel("User update failed."));
+		}
+		else if (subsequent == 3) {
+			add(new JLabel("Update successful!"));
+		}
 		
 		JPanel userInfoScroll = new JPanel();
 		GridBagConstraints gbc_userInfoScroll = new GridBagConstraints();
@@ -192,23 +202,46 @@ public class ViewUserProfile extends JPanel {
 			btnToggleAdmin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						userUpdate.setAdminSecurity(user.getId());
+						if (userUpdate.setAdminSecurity(user.getId()) != 0) {
+							WineHunterApplication.viewUserProfile(user, 2);
+						}
+						else {
+							WineHunterApplication.viewUserProfile(user, 3);
+						}
 					} catch (SQLException e1) {
-						JLabel lblAdminRes = new JLabel("Could not update admin security.");
-						GridBagConstraints gbc_lblAdminRes = new GridBagConstraints();
-						gbc_lblAdminRes.insets = new Insets(5, 5, 5, 5);
-						gbc_lblAdminRes.gridx = 2;
-						gbc_lblAdminRes.gridy = 2;
-						buttonPanel.add(lblAdminRes, gbc_lblAdminRes);
+						WineHunterApplication.viewUserProfile(user, 2);
 						e1.printStackTrace();
 					}
 				}
 			});
 			GridBagConstraints gbc_btnToggleAdmin = new GridBagConstraints();
 			gbc_btnToggleAdmin.insets = new Insets(5, 5, 5, 5);
-			gbc_btnToggleAdmin.gridx = 1;
+			gbc_btnToggleAdmin.gridx = 0;
 			gbc_btnToggleAdmin.gridy = 2;
 			buttonPanel.add(btnToggleAdmin, gbc_btnToggleAdmin);
+			
+			JButton btnDeleteUser = new JButton("Delete User");
+			btnDeleteUser.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+			btnDeleteUser.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						if (userUpdate.deleteUser(user.getId()) != 1) {
+							WineHunterApplication.viewUserProfile(user, 2);
+						}
+						else {
+							WineHunterApplication.splash(1);
+						}
+					} catch (SQLException e1) {
+						WineHunterApplication.viewUserProfile(user, 2);
+						e1.printStackTrace();
+					}
+				}
+			});
+			GridBagConstraints gbc_btnDeleteUser = new GridBagConstraints();
+			gbc_btnDeleteUser.insets = new Insets(5, 5, 5, 5);
+			gbc_btnDeleteUser.gridx = 1;
+			gbc_btnDeleteUser.gridy = 2;
+			buttonPanel.add(btnDeleteUser, gbc_btnDeleteUser);
 		}
 		
 		JPanel profileBucket = new JPanel();

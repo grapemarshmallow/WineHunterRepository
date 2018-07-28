@@ -56,7 +56,7 @@ public class Toolbar extends JPanel {
 			JButton btnUser = new JButton("User Profile");
 			btnUser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					WineHunterApplication.viewUserProfile(WineHunterApplication.userSession.getUser());
+					WineHunterApplication.viewUserProfile(WineHunterApplication.userSession.getUser(), 0);
 				}
 			});
 			toolBar.add(btnUser);

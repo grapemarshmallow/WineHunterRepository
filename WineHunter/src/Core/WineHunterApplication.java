@@ -234,10 +234,10 @@ public class WineHunterApplication {
 	/**
 	* Draws splash page
 	 */
-	public static void splash() {
+	public static void splash(int subsequent) {
 		
 		WineHunterApplication.cleanPanel();
-		splash = new MainMenu();
+		splash = new MainMenu(subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(splash);
 		
@@ -246,9 +246,9 @@ public class WineHunterApplication {
 		
 	}
 	
-	public static void viewUserProfile(User user) {
+	public static void viewUserProfile(User user, int subsequent) {
 		WineHunterApplication.cleanPanel();
-		viewUserProfile = new ViewUserProfile(user);
+		viewUserProfile = new ViewUserProfile(user, subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
 		

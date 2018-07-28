@@ -131,7 +131,7 @@ public class UserUpdate {
 		int result = 0;
 		
 
-		if (WineHunterApplication.userSession.getUser().getSuperAdmin() == 0) {
+		if ((userId == WineHunterApplication.userSession.getUser().getId()) || (WineHunterApplication.userSession.getUser().getSuperAdmin() == 0)) {
 			return -1; // insufficient security
 		}
 

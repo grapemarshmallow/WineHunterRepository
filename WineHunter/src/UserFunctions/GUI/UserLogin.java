@@ -44,8 +44,8 @@ public class UserLogin extends JPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		this.setLayout(gridBagLayout);
 		
-		gridBagLayout.columnWidths = new int[] {450};
-		gridBagLayout.rowHeights = new int[]{16, 0, 0, 0, 0};
+		gridBagLayout.columnWidths = new int[] {0};
+		gridBagLayout.rowHeights = new int[]{0};
 		gridBagLayout.columnWeights = new double[]{1.0};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		
@@ -83,8 +83,8 @@ public class UserLogin extends JPanel {
 		gbc_panel.gridy = 2;
 		this.add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] {0, 30, 0, 100, 0};
-		gbl_panel.rowHeights = new int[] {30, 0, 0, 0, 30};
+		gbl_panel.columnWidths = new int[] {0};
+		gbl_panel.rowHeights = new int[] {0};
 		gbl_panel.columnWeights = new double[]{1.0, 0.0, 0.0};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0};
 		panel.setLayout(gbl_panel);
@@ -157,7 +157,7 @@ public class UserLogin extends JPanel {
 
 				try {
 					if (WineHunterApplication.userSession.validateUser(usernameIn, passwordIn)) {
-						WineHunterApplication.splash();
+						WineHunterApplication.splash(0);
 					} else {
 						WineHunterApplication.userLogin(1);
 					} 
