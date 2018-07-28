@@ -1,4 +1,4 @@
-package Search;
+package Search.Objects;
 import WineObjects.*;
 
 public class WineSearchResult {

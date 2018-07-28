@@ -10,7 +10,6 @@ import javax.swing.*;
 import Core.*;
 import WineObjects.*;
 import Search.*;
-import UserFunctions.GUI.AdminUserSearch;
 import UserFunctions.GUI.ViewUserProfile;
 
 import java.awt.GridLayout;
@@ -22,7 +21,6 @@ public class WineHunterApplication {
 	private static JFrame frmWinehunter;
 	
 	
-	public static JFrame getFrmWinehunter() {
 		return WineHunterApplication.frmWinehunter;
 	}
 
@@ -30,7 +28,6 @@ public class WineHunterApplication {
 		WineHunterApplication.frmWinehunter = frmWinehunter;
 	}
 
-	public static Formatting format;
 	public static Core.Connect connection;
 	public static UserFunctions.Logic.UserSession userSession;
 	public static UserFunctions.GUI.UserLogin userLogin;
@@ -38,7 +35,6 @@ public class WineHunterApplication {
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	public static ViewUserProfile viewUserProfile;
-	public static AdminUserSearch adminUserSearch;
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	
@@ -106,7 +102,6 @@ public class WineHunterApplication {
 			connection = new Core.Connect();
 			connection.init();
 			userSession = new UserFunctions.Logic.UserSession();
-			format = new Core.Formatting();
 			initialize();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -237,10 +232,8 @@ public class WineHunterApplication {
 	/**
 	* Draws splash page
 	 */
-	public static void splash(int subsequent) {
 		
 		WineHunterApplication.cleanPanel();
-		splash = new MainMenu(subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(splash);
 		
@@ -249,23 +242,12 @@ public class WineHunterApplication {
 		
 	}
 	
-	public static void viewUserProfile(User user, int subsequent) {
 		WineHunterApplication.cleanPanel();
 		
 		viewUserProfile = new ViewUserProfile(user, subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
 		
-		
-		frmWinehunter.pack();
-
-	}
-	
-	public static void adminUserSearch(int subsequent) {
-		WineHunterApplication.cleanPanel();
-		adminUserSearch = new AdminUserSearch(subsequent);
-		mainPanel.setVisible(true);
-		mainPanel.add(adminUserSearch);
 		
 		frmWinehunter.pack();
 
