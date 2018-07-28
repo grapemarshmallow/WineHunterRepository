@@ -21,6 +21,7 @@ public class WineHunterApplication {
 	private static JFrame frmWinehunter;
 	
 	
+	public JFrame getFrmWinehunter() {
 		return WineHunterApplication.frmWinehunter;
 	}
 
@@ -28,6 +29,8 @@ public class WineHunterApplication {
 		WineHunterApplication.frmWinehunter = frmWinehunter;
 	}
 
+	
+	
 	public static Core.Connect connection;
 	public static UserFunctions.Logic.UserSession userSession;
 	public static UserFunctions.GUI.UserLogin userLogin;
@@ -35,11 +38,21 @@ public class WineHunterApplication {
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	public static ViewUserProfile viewUserProfile;
+<<<<<<< HEAD
+	public static Search.Logic.WineSearch wineSearch; //added
+	public static Search.GUI.ViewWineResults viewWineResults; //added
+	public static Search.GUI.ViewWineSearch viewWineSearch; //added
+>>>>>>> 9f58996baa2750ee810a37f9d6a38a67bac83ec6
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	
+<<<<<<< HEAD
 	public final static int APPLICATION_WIDTH = 1000;
 	public final static int APPLICATION_HEIGHT = 650;
+=======
+	public final static int APPLICATION_WIDTH = 600;
+	public final static int APPLICATION_HEIGHT = 400;
+>>>>>>> fa038b63da07e0576d3890a9f59b907e93b9c575
 	
 	
 	public Core.Connect getConnection() {
@@ -174,6 +187,44 @@ public class WineHunterApplication {
 	}
 	
 	/**
+	 * Search for wines and draw wine results page
+	 */
+	public static void searchWines() {
+		//draw wine search page
+		WineHunterApplication.cleanPanel();
+		
+		viewWineSearch = new Search.GUI.ViewWineSearch();
+		
+		wineSearch = new Search.Logic.WineSearch();
+	
+		mainPanel.setVisible(true);
+		mainPanel.add(viewWineSearch);
+		
+		
+		frmWinehunter.pack();
+		
+		
+	}
+	
+	/**
+	 * Draw wine results page
+	 */
+	public static void showWines(String[][] data, String[] columnNames) {
+		//draw wine search page
+		WineHunterApplication.cleanPanel();
+
+		viewWineResults = new Search.GUI.ViewWineResults(data, columnNames); 
+	
+		mainPanel.setVisible(true);
+		mainPanel.add(viewWineResults);
+		
+		
+		frmWinehunter.pack();
+		
+		
+	}
+	
+	/**
 	 * quit safely
 	 */
 	public static void quit() {
@@ -232,8 +283,10 @@ public class WineHunterApplication {
 	/**
 	* Draws splash page
 	 */
+	public static void splash() {
 		
 		WineHunterApplication.cleanPanel();
+		splash = new MainMenu();
 		mainPanel.setVisible(true);
 		mainPanel.add(splash);
 		
@@ -242,9 +295,14 @@ public class WineHunterApplication {
 		
 	}
 	
+	public static void viewUserProfile(User user) {
 		WineHunterApplication.cleanPanel();
+<<<<<<< HEAD
 		
 		viewUserProfile = new ViewUserProfile(user, subsequent);
+=======
+		viewUserProfile = new ViewUserProfile(user);
+>>>>>>> fa038b63da07e0576d3890a9f59b907e93b9c575
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
 		
