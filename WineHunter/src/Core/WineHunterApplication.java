@@ -37,6 +37,9 @@ public class WineHunterApplication {
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	public static ViewUserProfile viewUserProfile;
+	public static Search.Logic.WineSearch wineSearch; //added
+	public static Search.GUI.ViewWineResults viewWineResults; //added
+	public static Search.GUI.ViewWineSearch viewWineSearch; //added
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	
@@ -168,6 +171,44 @@ public class WineHunterApplication {
 	
 		mainPanel.setVisible(true);
 		mainPanel.add(userCreate);
+		
+		
+		frmWinehunter.pack();
+		
+		
+	}
+	
+	/**
+	 * Search for wines and draw wine results page
+	 */
+	public static void searchWines() {
+		//draw wine search page
+		WineHunterApplication.cleanPanel();
+		
+		viewWineSearch = new Search.GUI.ViewWineSearch();
+		
+		wineSearch = new Search.Logic.WineSearch();
+	
+		mainPanel.setVisible(true);
+		mainPanel.add(viewWineSearch);
+		
+		
+		frmWinehunter.pack();
+		
+		
+	}
+	
+	/**
+	 * Draw wine results page
+	 */
+	public static void showWines(String[][] data, String[] columnNames) {
+		//draw wine search page
+		WineHunterApplication.cleanPanel();
+
+		viewWineResults = new Search.GUI.ViewWineResults(data, columnNames); 
+	
+		mainPanel.setVisible(true);
+		mainPanel.add(viewWineResults);
 		
 		
 		frmWinehunter.pack();
