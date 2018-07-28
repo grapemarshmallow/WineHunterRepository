@@ -2,40 +2,26 @@ package Search.GUI;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.sql.SQLException;
-import java.util.ArrayList;
+
 
 import javax.swing.JLabel;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-
-
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import Core.WineHunterApplication;
-import UserFunctions.Logic.UserProfile;
-import UserFunctions.Logic.UserUpdate;
-import WineObjects.Keyword;
-import WineObjects.User;
-import WineObjects.Variety;
+
 
 import javax.swing.SwingConstants;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 import java.awt.Dimension;
-import java.awt.Font;
+
 import javax.swing.border.EmptyBorder;
-import java.awt.Label;
-import javax.swing.JTextField;
-import java.awt.FlowLayout;
+
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+
 
 public class ViewWineResults extends JPanel {
 

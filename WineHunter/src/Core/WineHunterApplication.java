@@ -7,9 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-import Core.*;
 import WineObjects.*;
-import Search.*;
 import UserFunctions.GUI.AdminUserSearch;
 import UserFunctions.GUI.ViewUserProfile;
 
@@ -38,7 +36,6 @@ public class WineHunterApplication {
 	public static Toolbar toolbar;
 	public static MainMenu splash;
 	public static ViewUserProfile viewUserProfile;
-<<<<<<< HEAD
 	public static Search.Logic.WineSearch wineSearch; 
 	public static Search.GUI.ViewWineResults viewWineResults; 
 	public static Search.GUI.ViewWineSearch viewWineSearch; 
@@ -49,19 +46,7 @@ public class WineHunterApplication {
 	
 	public final static int APPLICATION_WIDTH = 1000;
 	public final static int APPLICATION_HEIGHT = 800;
-=======
-	public static Search.Logic.WineSearch wineSearch; //added
-	public static Search.GUI.ViewWineResults viewWineResults; //added
-	public static Search.GUI.ViewWineSearch viewWineSearch; //added
-	public static AdminUserSearch adminUserSearch; 
-	public static Formatting format;
-	private static JPanel toolbarPanel;
-	private static JPanel mainPanel;
-	
 
-	public final static int APPLICATION_WIDTH = 1000;
-	public final static int APPLICATION_HEIGHT = 650;
->>>>>>> 766e7774aba8bdbe2ca083fafe3a18c7a671a929
 	
 	
 	public Core.Connect getConnection() {
@@ -307,13 +292,12 @@ public class WineHunterApplication {
 	
 	public static void viewUserProfile(User user, int subsequent) {
 		WineHunterApplication.cleanPanel();
-<<<<<<< HEAD
+
 		viewUserProfile = new ViewUserProfile(user, subsequent);
-=======
+
 		
 		viewUserProfile = new ViewUserProfile(user, subsequent);
 
->>>>>>> 766e7774aba8bdbe2ca083fafe3a18c7a671a929
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
 		
@@ -324,7 +308,7 @@ public class WineHunterApplication {
 	
 	public static void adminUserSearch(int subsequent) {
 		WineHunterApplication.cleanPanel();
-<<<<<<< HEAD
+
 		adminUserSearch = new AdminUserSearch(subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(adminUserSearch);
@@ -332,19 +316,7 @@ public class WineHunterApplication {
 		frmWinehunter.pack();
 
 	}
-=======
-		
-		adminUserSearch = new AdminUserSearch(subsequent);
 
-		mainPanel.setVisible(true);
-		mainPanel.add(adminUserSearch);
-		
-		
-		frmWinehunter.pack();
-
-	}
-
->>>>>>> 766e7774aba8bdbe2ca083fafe3a18c7a671a929
 	
 	/**
 	 * Reloads main toolbar

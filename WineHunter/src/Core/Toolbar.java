@@ -98,6 +98,7 @@ public class Toolbar extends JPanel {
 			JButton btnWineSearch = new JButton("Wine Search");
 			btnWineSearch.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					System.out.println("wine search clicked");
 					WineHunterApplication.searchWines(1); 
 				}
 			});
@@ -108,6 +109,7 @@ public class Toolbar extends JPanel {
 			JButton btnUser = new JButton("User Profile");
 			btnUser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					
 					WineHunterApplication.viewUserProfile(WineHunterApplication.userSession.getUser(), 0);
 				}
 			});
