@@ -1,21 +1,26 @@
 package UserFunctions.GUI;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.ScrollPaneConstants;
-
-import java.awt.GridBagLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
@@ -25,25 +30,18 @@ import UserFunctions.Logic.UserUpdate;
 import WineObjects.Keyword;
 import WineObjects.User;
 import WineObjects.Variety;
-
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Dimension;
-import java.awt.Color;
 import net.miginfocom.swing.MigLayout;
 
-public class ViewUserProfile extends JPanel {
+public class UserEditPassword extends JPanel {
 	
-	//fields
-	private static final long serialVersionUID = -4768934525868550643L;
+	//
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Create the panel with a specific user object.
-	 * @param user the user object to generate the profile for
-	 * @param subsequent 0 for the first visit, 1 if a delete failed, 2 if an update failed
+	 * Create the panel where a user can edit a user's name.
+	 * @param User to edit
 	 */
-	public ViewUserProfile(User user, int subsequent) {
+	public UserEditPassword(User user) {
 		this.setBorder(BorderFactory.createBevelBorder(2));
 		setLayout(new MigLayout("", "[" + (WineHunterApplication.APPLICATION_WIDTH - 100) + "] px", "[" + (WineHunterApplication.APPLICATION_HEIGHT - 100) + "] px"));
 		
@@ -61,19 +59,6 @@ public class ViewUserProfile extends JPanel {
 		
 		this.add(userScroll, "cell 0 0,grow");
 		
-		if (subsequent == 1) {
-			userInfoScroll.add(new JLabel("User deletion failed."));
-		}
-		else if (subsequent == 2) {
-			userInfoScroll.add(new JLabel("User update failed."));
-		}
-		else if (subsequent == 3) {
-			userInfoScroll.add(new JLabel("Update successful!"));
-		}
-		else if (subsequent == 4) {
-			userInfoScroll.add(new JLabel("Insufficient security for update."));
-		}
-		
 		int other = 0;
 		
 		boolean isSuperAdmin = (WineHunterApplication.userSession.getUser().getSuperAdmin() == 1);
@@ -82,7 +67,7 @@ public class ViewUserProfile extends JPanel {
 		if (user.getId() != WineHunterApplication.userSession.getUser().getId()) {
 			other = 1;
 			if ((!isSuperAdmin) && (!isAdmin)) {
-				JLabel userSecurityMessage = DefaultComponentFactory.getInstance().createTitle("Insufficent security to view user " + user.getId() + " (" + user.getUsername() + ").");
+				JLabel userSecurityMessage = DefaultComponentFactory.getInstance().createTitle("Insufficent security to edit user " + user.getId() + " (" + user.getUsername() + ").");
 				userSecurityMessage.setLabelFor(userInfoScroll);
 				GridBagConstraints gbc_userSecurityMessage = new GridBagConstraints();
 				gbc_userSecurityMessage.fill = GridBagConstraints.BOTH;
@@ -159,7 +144,7 @@ public class ViewUserProfile extends JPanel {
 		gbc.gridy = 1;
 		userInfoScroll.add(sep, gbc);
 		
-		buildButtonPanel(user, userInfoScroll, isSuperAdmin, userUpdate);
+		ViewUserProfile.buildButtonPanel(user, userInfoScroll, isSuperAdmin, userUpdate);
 		
 		gbc.gridy = 3;
 		userInfoScroll.add(sep, gbc);
@@ -173,6 +158,7 @@ public class ViewUserProfile extends JPanel {
 		gbc_profileBucket.weightx = 1;
 		userInfoScroll.add(profileBucket, gbc_profileBucket);
 		GridBagLayout gbl_profileBucket = new GridBagLayout();
+		gbl_profileBucket.columnWeights = new double[]{0.0, 0.0, 1.0};
 		gbl_profileBucket.columnWidths = new int[]{0};
 		gbl_profileBucket.rowHeights = new int[] {0};
 		profileBucket.setLayout(gbl_profileBucket);
@@ -190,11 +176,12 @@ public class ViewUserProfile extends JPanel {
 		JLabel lblNameText = new JLabel(user.getUsername());
 		lblNameText.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblNameText = new GridBagConstraints();
-		gbc_lblNameText.anchor = GridBagConstraints.WEST;
+		gbc_lblNameText.anchor = GridBagConstraints.EAST;
 		gbc_lblNameText.insets = new Insets(5, 5, 5, 5);
 		gbc_lblNameText.gridx = 1;
 		gbc_lblNameText.gridy = 0;
 		profileBucket.add(lblNameText, gbc_lblNameText);
+		
 		
 		JLabel lblFullName = new JLabel("Full Name:");
 		lblFullName.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -258,24 +245,43 @@ public class ViewUserProfile extends JPanel {
 		gbc_lblPassword.gridy = 3;
 		profileBucket.add(lblPassword, gbc_lblPassword);
 		
-		JLabel lblPasswordText = new JLabel("(protected)");
-		lblPasswordText.setFont(WineHunterApplication.format.getSubheadingFontBase());
-		GridBagConstraints gbc_lblPasswordText = new GridBagConstraints();
-		gbc_lblPasswordText.insets = new Insets(5, 5, 5, 5);
-		gbc_lblPasswordText.anchor = GridBagConstraints.WEST;
-		gbc_lblPasswordText.gridx = 1;
-		gbc_lblPasswordText.gridy = 3;
-		profileBucket.add(lblPasswordText, gbc_lblPasswordText);
+		JPasswordField passwordField = new JPasswordField();
+		passwordField.setToolTipText("Enter your password.");
+		passwordField.setActionCommand("password");
+		GridBagConstraints gbc_passwordField = new GridBagConstraints();
+		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
+		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_passwordField.gridx = 1;
+		gbc_passwordField.gridy = 3;
+		profileBucket.add(passwordField, gbc_passwordField);
 		
-		JButton btnEditPassword = new JButton("Edit Password");
+		JButton btnEditPassword = new JButton("Save Password");
 		btnEditPassword.setFont(WineHunterApplication.format.getBaseFont());
 		btnEditPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WineHunterApplication.userEditPassword(user);
+				int result = 0;
+				try {
+					result = userUpdate.setUserInfoString(user, 3, new String(passwordField.getPassword()));
+					
+					
+				} catch (SQLException e1) {
+					
+					e1.printStackTrace();
+				}
+				
+				if (result == 1) {
+					WineHunterApplication.viewUserProfile(user, 3);
+				}
+				else if (result == -1) {
+					WineHunterApplication.viewUserProfile(user, 4);
+				}
+				else {
+					WineHunterApplication.viewUserProfile(user, 2);
+				}
 			}
 		});
 		GridBagConstraints gbc_btnEditPassword = new GridBagConstraints();
-		gbc_btnEditPassword.insets = new Insets(5, 5, 5, 5);
+		gbc_btnEditPassword.insets = new Insets(5, 5, 5, 0);
 		gbc_btnEditPassword.anchor = GridBagConstraints.WEST;
 		gbc_btnEditPassword.gridx = 2;
 		gbc_btnEditPassword.gridy = 3;
@@ -285,7 +291,7 @@ public class ViewUserProfile extends JPanel {
 		lblAdmin.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblAdmin.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblAdmin = new GridBagConstraints();
-		gbc_lblAdmin.insets = new Insets(5, 5, 5, 5);
+		gbc_lblAdmin.insets = new Insets(5, 5, 0, 5);
 		gbc_lblAdmin.anchor = GridBagConstraints.EAST;
 		gbc_lblAdmin.gridx = 0;
 		gbc_lblAdmin.gridy = 4;
@@ -304,7 +310,7 @@ public class ViewUserProfile extends JPanel {
 			lblAdminText.setText("Moderator");
 		}
 		GridBagConstraints gbc_lblAdminText = new GridBagConstraints();
-		gbc_lblAdminText.insets = new Insets(5, 5, 5, 5);
+		gbc_lblAdminText.insets = new Insets(5, 5, 0, 5);
 		gbc_lblAdminText.anchor = GridBagConstraints.WEST;
 		gbc_lblAdminText.gridx = 1;
 		gbc_lblAdminText.gridy = 4;
@@ -314,183 +320,9 @@ public class ViewUserProfile extends JPanel {
 		userInfoScroll.add(sep, gbc);
 		
 		//our taster profile panel
-		buildTasterProfile(user, userInfoScroll);
+		ViewUserProfile.buildTasterProfile(user, userInfoScroll);
 		
 
-	}
-
-	/**
-	 * Modularizes building the taster profile panel for use everywhere.
-	 * @param user we are building the taster profile for
-	 * @param userInfoScroll parent panel
-	 */
-	public static void buildTasterProfile(User user, JPanel userInfoScroll) {
-		JPanel tasterProfile = new JPanel();
-		GridBagConstraints gbc_tasterProfile = new GridBagConstraints();
-		gbc_tasterProfile.insets = new Insets(5, 5, 5, 5);
-		gbc_tasterProfile.fill = GridBagConstraints.BOTH;
-		gbc_tasterProfile.gridx = 0;
-		gbc_tasterProfile.gridy = 6;
-		gbc_tasterProfile.weightx = 1;
-		userInfoScroll.add(tasterProfile, gbc_tasterProfile);
-		GridBagLayout gbl_tasterProfile = new GridBagLayout();
-		gbl_tasterProfile.columnWidths = new int[] {0};
-		gbl_tasterProfile.rowHeights = new int[]{0};
-		gbl_tasterProfile.columnWeights = new double[]{1.0};
-		gbl_tasterProfile.rowWeights = new double[]{1.0};
-		tasterProfile.setLayout(gbl_tasterProfile);
-		
-		String[] sysVarietyLikeLabels = createVarietyLabelArray(user.getSysLikeVarietyList(), "No system-generated liked varieties.");
-		String[] sysVarietyDislikeLabels = createVarietyLabelArray(user.getSysDislikeVarietyList(), "No system-generated disliked varieties.");
-		String[] userVarietyLikeLabels = createVarietyLabelArray(user.getUserLikeVarietyList(), "No user-generated liked varieties.");
-		String[] userVarietyDislikeLabels = createVarietyLabelArray(user.getUserDislikeVarietyList(), "No user-generated disliked varieties.");
-		String[] sysKeywordLikeLabels = createKeywordLabelArray(user.getSysLikeKeywordList(), "No system-generated liked keywords.");
-		String[] sysKeywordDislikeLabels = createKeywordLabelArray(user.getSysDislikeKeywordList(), "No system-generated disliked keywords.");
-		String[] userKeywordLikeLabels = createKeywordLabelArray(user.getUserLikeKeywordList(), "No user-generated liked keywords.");
-		String[] userKeywordDislikeLabels = createKeywordLabelArray(user.getUserDislikeKeywordList(), "No user-generated disliked keywords.");
-		
-		//set up variety panel
-		buildCategoryPanel(tasterProfile, sysVarietyLikeLabels, sysVarietyDislikeLabels, userVarietyLikeLabels,
-				userVarietyDislikeLabels, "Grape Variety Preferences",0);
-		
-		//set up keyword panel
-		buildCategoryPanel(tasterProfile, sysKeywordLikeLabels, sysKeywordDislikeLabels, userKeywordLikeLabels,
-				userKeywordDislikeLabels, "Wine Keyword Preferences",1);
-	}
-
-	/**
-	 * Modularizes building the button panel for reuse everywhere
-	 * @param user we are building the panel for
-	 * @param userInfoScroll parent panel
-	 * @param isSuperAdmin if viewing user is a super admin
-	 * @param userUpdate a userUpdate object
-	 */
-	public static void buildButtonPanel(User user, JPanel userInfoScroll, boolean isSuperAdmin, UserUpdate userUpdate) {
-		JPanel buttonPanel = new JPanel();
-		GridBagConstraints gbc_buttonPanel = new GridBagConstraints();
-		gbc_buttonPanel.fill = GridBagConstraints.BOTH;
-		gbc_buttonPanel.gridx = 0;
-		gbc_buttonPanel.gridy = 2;
-		gbc_buttonPanel.weightx = 1;
-		userInfoScroll.add(buttonPanel, gbc_buttonPanel);
-		GridBagLayout gbl_buttonPanel = new GridBagLayout();
-		gbl_buttonPanel.columnWidths = new int[]{0};
-		gbl_buttonPanel.rowHeights = new int[]{0};
-
-		buttonPanel.setLayout(gbl_buttonPanel);
-		
-		JButton btnViewUserReviews = new JButton("View User Reviews");
-		btnViewUserReviews.setFont(WineHunterApplication.format.getBaseFont());
-		btnViewUserReviews.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_btnViewUserReviews = new GridBagConstraints();
-		gbc_btnViewUserReviews.insets = new Insets(5, 5, 5, 5);
-		gbc_btnViewUserReviews.gridx = 0;
-		gbc_btnViewUserReviews.gridy = 0;
-		buttonPanel.add(btnViewUserReviews, gbc_btnViewUserReviews);
-		
-		JButton btnViewUserFavorites = new JButton("View User Favorites");
-		btnViewUserFavorites.setFont(WineHunterApplication.format.getBaseFont());
-		btnViewUserFavorites.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_btnViewUserFavorites = new GridBagConstraints();
-		gbc_btnViewUserFavorites.insets = new Insets(5, 5, 5, 5);
-		gbc_btnViewUserFavorites.gridx = 1;
-		gbc_btnViewUserFavorites.gridy = 0;
-		buttonPanel.add(btnViewUserFavorites, gbc_btnViewUserFavorites);
-		
-		JButton btnEditTasterProfile = new JButton("Edit Taster Profile");
-		btnEditTasterProfile.setFont(WineHunterApplication.format.getBaseFont());
-		btnEditTasterProfile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_btnEditTasterProfile = new GridBagConstraints();
-		gbc_btnEditTasterProfile.insets = new Insets(5, 5, 5, 5);
-		gbc_btnEditTasterProfile.gridx = 2;
-		gbc_btnEditTasterProfile.gridy = 0;
-		buttonPanel.add(btnEditTasterProfile, gbc_btnEditTasterProfile);
-		
-		JButton btnSearchTasterProfile = new JButton("Search With Taster Profile");
-		btnSearchTasterProfile.setFont(WineHunterApplication.format.getBaseFont());
-		btnSearchTasterProfile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_btnSearchTasterProfile = new GridBagConstraints();
-		gbc_btnSearchTasterProfile.insets = new Insets(5, 5, 5, 5);
-		gbc_btnSearchTasterProfile.gridx = 3;
-		gbc_btnSearchTasterProfile.gridy = 0;
-		buttonPanel.add(btnSearchTasterProfile, gbc_btnSearchTasterProfile);
-		
-		if ((user != WineHunterApplication.userSession.getUser()) && isSuperAdmin) {
-			String buttonText = "Make Admin";
-			if (user.getAdmin() == 1) {
-				buttonText = "Remove Admin";
-			}
-			JButton btnToggleAdmin = new JButton(buttonText);
-			btnToggleAdmin.setFont(WineHunterApplication.format.getBaseFont());
-			btnToggleAdmin.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						int res = userUpdate.setAdminSecurity(user);
-						if (res == 1) {
-							WineHunterApplication.viewUserProfile(user, 3);
-						}
-						else if (res == 0) {
-							WineHunterApplication.viewUserProfile(user, 4);
-						}
-						else {
-							WineHunterApplication.viewUserProfile(user, 2);
-						}
-					} catch (SQLException e1) {
-						WineHunterApplication.viewUserProfile(user, 2);
-						e1.printStackTrace();
-					}
-				}
-			});
-			GridBagConstraints gbc_btnToggleAdmin = new GridBagConstraints();
-			gbc_btnToggleAdmin.insets = new Insets(5, 5, 5, 5);
-			gbc_btnToggleAdmin.gridx = 2;
-			gbc_btnToggleAdmin.gridy = 2;
-			buttonPanel.add(btnToggleAdmin, gbc_btnToggleAdmin);
-			
-			JButton btnDeleteUser = new JButton("Delete User");
-			btnDeleteUser.setFont(WineHunterApplication.format.getBaseFont());
-			btnDeleteUser.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					int result = JOptionPane.showConfirmDialog(WineHunterApplication.getFrmWinehunter(), 
-							new JLabel("Are you sure you would like to delete " + user.getId() + " (" + user.getUsername() + ")? "
-									+ "Any reviews written by this user will also be deleted. This change cannot be undone."), 
-							"Confirm Delete", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
-					if (result == JOptionPane.YES_OPTION) {
-						try {
-							if (userUpdate.deleteUser(user.getId()) != 1) {
-								WineHunterApplication.viewUserProfile(user, 2);
-							}
-							else {
-								WineHunterApplication.splash(1);
-							}
-						} catch (SQLException e1) {
-							WineHunterApplication.viewUserProfile(user, 2);
-							e1.printStackTrace();
-						}
-					}
-					else {
-						WineHunterApplication.viewUserProfile(user, 0);
-					}
-				}
-			});
-			GridBagConstraints gbc_btnDeleteUser = new GridBagConstraints();
-			gbc_btnDeleteUser.insets = new Insets(5, 5, 5, 5);
-			gbc_btnDeleteUser.gridx = 3;
-			gbc_btnDeleteUser.gridy = 2;
-			buttonPanel.add(btnDeleteUser, gbc_btnDeleteUser);
-		}
 	}
 
 	/**
@@ -502,7 +334,7 @@ public class ViewUserProfile extends JPanel {
 	 * @param userDislikeLabels labels for the user dislike columns
 	 * @param row in the taster profile
 	 */
-	public static void buildCategoryPanel(JPanel parentPanel, String[] sysLikeLabels, String[] sysDislikeLabels,
+	public void buildCategoryPanel(JPanel parentPanel, String[] sysLikeLabels, String[] sysDislikeLabels,
 			String[] userLikeLabels, String[] userDislikeLabels, String title, int row) {
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -563,7 +395,7 @@ public class ViewUserProfile extends JPanel {
 	 * @param row where to add the list
 	 * @param title Like or dislike
 	 */
-	public static void buildListPanel(JPanel panelParent, String[] sysLabels, String[] userLabels, String title, int row) {
+	public void buildListPanel(JPanel panelParent, String[] sysLabels, String[] userLabels, String title, int row) {
 		JPanel panel = new JPanel();
 		
 		JLabel lblPanels = new JLabel(title);
@@ -618,7 +450,7 @@ public class ViewUserProfile extends JPanel {
 	 * @param labels array of labels to be added
 	 * @param userLabels column where we should add the list (0 for user, 1 for system)
 	 */
-	public static void buildList(JPanel panel, String[] sysLabels, String[] userLabels) {
+	public void buildList(JPanel panel, String[] sysLabels, String[] userLabels) {
 	
 	for (int i = 0; i < 5; ++i) {
 		String sysText = sysLabels[i];
@@ -640,7 +472,7 @@ public class ViewUserProfile extends JPanel {
 	 * @param column column where we should add the list (1 for user, 2 for system)
 	 * 
 	 */
-	public static void buildListMemberPanel(JPanel panel, String text, int row, int column) {
+	public void buildListMemberPanel(JPanel panel, String text, int row, int column) {
 		JLabel newLabel = new JLabel(text);
 		newLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		newLabel.setFont(WineHunterApplication.format.getSubheadingFont3Base());
@@ -652,7 +484,7 @@ public class ViewUserProfile extends JPanel {
 		panel.add(newLabel, gbc_newLabel);
 	}
 
-	private static String[] createVarietyLabelArray(ArrayList<Variety> varietyList, String string) {
+	private String[] createVarietyLabelArray(ArrayList<Variety> varietyList, String string) {
 		String[] returnArray = new String[5];
 		int size = varietyList.size();
 		
@@ -671,7 +503,7 @@ public class ViewUserProfile extends JPanel {
 		return returnArray;
 	}
 	
-	private static String[] createKeywordLabelArray(ArrayList<Keyword> keywordList, String string) {
+	private String[] createKeywordLabelArray(ArrayList<Keyword> keywordList, String string) {
 		String[] returnArray = new String[5];
 		int size = keywordList.size();
 		
@@ -690,6 +522,5 @@ public class ViewUserProfile extends JPanel {
 		
 		return returnArray;
 	}
-
 	
 }

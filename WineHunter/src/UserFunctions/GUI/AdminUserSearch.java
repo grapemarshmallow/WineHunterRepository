@@ -217,7 +217,7 @@ public class AdminUserSearch extends JPanel {
 		gbc_txtSearchText.gridx = 1;
 		gbc_txtSearchText.gridy = 0;
 		panel.add(searchText, gbc_txtSearchText);
-		searchText.setColumns(20);
+		searchText.setColumns(10);
 		
 		
 		JButton search = new JButton("Search");

@@ -9,6 +9,8 @@ import javax.swing.*;
 
 import WineObjects.*;
 import UserFunctions.GUI.AdminUserSearch;
+import UserFunctions.GUI.UserEditName;
+import UserFunctions.GUI.UserEditPassword;
 import UserFunctions.GUI.ViewUserProfile;
 
 import java.awt.GridLayout;
@@ -40,6 +42,8 @@ public class WineHunterApplication {
 	public static Search.GUI.ViewWineResults viewWineResults; 
 	public static Search.GUI.ViewWineSearch viewWineSearch; 
 	public static AdminUserSearch adminUserSearch;
+	public static UserEditName userEditName;
+	public static UserEditPassword userEditPassword;
 
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
@@ -312,6 +316,28 @@ public class WineHunterApplication {
 		adminUserSearch = new AdminUserSearch(subsequent);
 		mainPanel.setVisible(true);
 		mainPanel.add(adminUserSearch);
+		
+		frmWinehunter.pack();
+
+	}
+	
+	public static void userEditName(User user) {
+		WineHunterApplication.cleanPanel();
+
+		userEditName = new UserEditName(user);
+		mainPanel.setVisible(true);
+		mainPanel.add(userEditName);
+		
+		frmWinehunter.pack();
+
+	}
+	
+	public static void userEditPassword(User user) {
+		WineHunterApplication.cleanPanel();
+
+		userEditPassword = new UserEditPassword(user);
+		mainPanel.setVisible(true);
+		mainPanel.add(userEditPassword);
 		
 		frmWinehunter.pack();
 

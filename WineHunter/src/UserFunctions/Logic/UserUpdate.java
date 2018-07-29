@@ -16,15 +16,17 @@ public class UserUpdate {
 	
 	/**
 	 * Method to change a user's name or password
-	 * @param userId ID of user that will be changed
+	 * @param  user that will be changed
 	 * @param changeType set to 1 for a password change and 2 for a name change
 	 * @param newField String to set the field to
 	 * @return 1 if successfully changed, 0 if not, -1 for insufficient security, -2 for invalid change type
 	 * @throws SQLException
 	 */
-	public int setUserInfoString(int userId, int changeType, String newField) throws SQLException {
+	public int setUserInfoString(User user, int changeType, String newField) throws SQLException {
 		
 		int result = 0;
+		
+		int userId = user.getId();
 		
 		if (userId != WineHunterApplication.userSession.getUser().getId()) {
 			if ((WineHunterApplication.userSession.getUser().getAdmin() == 0) && ((WineHunterApplication.userSession.getUser().getSuperAdmin() == 0))) {
@@ -46,6 +48,7 @@ public class UserUpdate {
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
 		
+	
 
 		String sql;
 		sql = "UPDATE User"
@@ -55,6 +58,9 @@ public class UserUpdate {
 		int ret = stmt.executeUpdate(sql);
 		
 		if (ret > 0) { // success!
+			if (changeType == 2) {
+				user.setFullName(newField);
+			}
 			result = 1;
 		}
 

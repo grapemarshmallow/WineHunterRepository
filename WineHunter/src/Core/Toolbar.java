@@ -58,6 +58,7 @@ public class Toolbar extends JPanel {
 			gbc_lblLoginText.gridy = 0;
 			
 			JLabel lblLoginName = new JLabel(WineHunterApplication.userSession.getUser().getUsername());
+			lblLoginName.setFont(WineHunterApplication.format.getBaseFont());
 			lblLoginName.setHorizontalAlignment(SwingConstants.LEFT);
 			if (WineHunterApplication.userSession.getUser().getSuperAdmin() == 1) {
 				lblLoginName.setForeground(Color.RED);
