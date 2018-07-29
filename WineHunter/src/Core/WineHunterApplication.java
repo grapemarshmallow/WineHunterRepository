@@ -48,8 +48,8 @@ public class WineHunterApplication {
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
 	
-	public final static int APPLICATION_WIDTH = 1000;
-	public final static int APPLICATION_HEIGHT = 800;
+	public final static int APPLICATION_WIDTH = 900;
+	public final static int APPLICATION_HEIGHT = 600;
 
 	
 	
