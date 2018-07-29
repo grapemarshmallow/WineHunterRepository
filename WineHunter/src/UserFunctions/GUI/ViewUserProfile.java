@@ -1,8 +1,10 @@
 package UserFunctions.GUI;
 
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 import java.awt.GridBagLayout;
@@ -42,10 +44,11 @@ public class ViewUserProfile extends JPanel {
 	 * Create the panel with a specific user object.
 	 * @param user the user object to generate the profile for
 	 * @param subsequent 0 for the first visit, 1 if a delete failed, 2 if an update failed
+	 * @param editMode 0 for view, 1 for password, 2 for full name
 	 */
-	public ViewUserProfile(User user, int subsequent) {
-		this.setBorder(BorderFactory.createBevelBorder(2));
+	public ViewUserProfile(User user, int subsequent, int editMode) {
 		setLayout(new MigLayout("", "[" + (WineHunterApplication.APPLICATION_WIDTH - 100) + "] px", "[" + (WineHunterApplication.APPLICATION_HEIGHT - 100) + "] px"));
+		
 		
 		JPanel userInfoScroll = new JPanel();
 		
@@ -60,19 +63,6 @@ public class ViewUserProfile extends JPanel {
 		userScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 100, WineHunterApplication.APPLICATION_HEIGHT - 100));
 		
 		this.add(userScroll, "cell 0 0,grow");
-		
-		if (subsequent == 1) {
-			userInfoScroll.add(new JLabel("User deletion failed."));
-		}
-		else if (subsequent == 2) {
-			userInfoScroll.add(new JLabel("User update failed."));
-		}
-		else if (subsequent == 3) {
-			userInfoScroll.add(new JLabel("Update successful!"));
-		}
-		else if (subsequent == 4) {
-			userInfoScroll.add(new JLabel("Insufficient security for update."));
-		}
 		
 		int other = 0;
 		
@@ -105,10 +95,30 @@ public class ViewUserProfile extends JPanel {
 	    
 		String profileString = "Your User Profile";
 		
-		if (other == 1) {
-			profileString = "User Profile for user "+ user.getId() + " (" + user.getUsername() + ")";
-		}
 		
+		if (subsequent == 0) {
+			if (other == 1) {
+				profileString = "User Profile for user "+ user.getId() + " (" + user.getUsername() + ")";
+			}
+		}
+		else {
+			if (subsequent == 1) {
+				profileString = "User deletion failed.";
+				
+			}
+			else if (subsequent == 2) {
+				profileString = "User update failed.";
+				
+			}
+			else if (subsequent == 3) {
+				profileString = "Update successful!";
+				
+			}
+			else if (subsequent == 4) {
+				profileString = "Insufficient security for update.";
+				
+			}
+		}
 		
 		UserProfile userProfile = new UserProfile();
 		UserUpdate userUpdate = new UserUpdate();
@@ -164,9 +174,29 @@ public class ViewUserProfile extends JPanel {
 		gbc.gridy = 3;
 		userInfoScroll.add(sep, gbc);
 		
+		buildProfileBucket(user, userInfoScroll, editMode, userUpdate);
+		
+		gbc.gridy = 5;
+		userInfoScroll.add(sep, gbc);
+		
+		//our taster profile panel
+		buildTasterProfile(user, userInfoScroll);
+		
+
+	}
+
+	/**
+	 * Modularizes building our profile bucket
+	 * @param user the profile is for
+	 * @param userInfoScroll parent panel
+	 * @param editMode 0 for view, 1 for password, 2 for full name
+	 * @param the userupdate object
+	 */
+	public static void buildProfileBucket(User user, JPanel userInfoScroll, int editMode, UserUpdate userUpdate) {
 		JPanel profileBucket = new JPanel();
 		GridBagConstraints gbc_profileBucket = new GridBagConstraints();
 		gbc_profileBucket.fill = GridBagConstraints.BOTH;
+		gbc_profileBucket.anchor = GridBagConstraints.CENTER;
 		gbc_profileBucket.insets = new Insets(5, 5, 5, 5);
 		gbc_profileBucket.gridx = 0;
 		gbc_profileBucket.gridy = 4;
@@ -188,6 +218,7 @@ public class ViewUserProfile extends JPanel {
 		profileBucket.add(lblUsername, gbc_lblUsername);
 		
 		JLabel lblNameText = new JLabel(user.getUsername());
+		lblUsername.setHorizontalAlignment(SwingConstants.LEADING);
 		lblNameText.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblNameText = new GridBagConstraints();
 		gbc_lblNameText.anchor = GridBagConstraints.WEST;
@@ -206,28 +237,75 @@ public class ViewUserProfile extends JPanel {
 		gbc_lblFullName.gridy = 1;
 		profileBucket.add(lblFullName, gbc_lblFullName);
 		
-		JLabel lblUsernameText = new JLabel(user.getFullName());
-		lblUsernameText.setFont(WineHunterApplication.format.getSubheadingFontBase());
-		GridBagConstraints gbc_lblUsernameText = new GridBagConstraints();
-		gbc_lblUsernameText.insets = new Insets(5, 5, 5, 5);
-		gbc_lblUsernameText.anchor = GridBagConstraints.WEST;
-		gbc_lblUsernameText.gridx = 1;
-		gbc_lblUsernameText.gridy = 1;
-		profileBucket.add(lblUsernameText, gbc_lblUsernameText);
-		
-		JButton btnEditName = new JButton("Edit Name");
-		btnEditName.setFont(WineHunterApplication.format.getBaseFont());
-		btnEditName.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				WineHunterApplication.userEditName(user);
-			}
-		});
-		GridBagConstraints gbc_btnEditName = new GridBagConstraints();
-		gbc_btnEditName.insets = new Insets(5, 5, 5, 5);
-		gbc_btnEditName.anchor = GridBagConstraints.WEST;
-		gbc_btnEditName.gridx = 2;
-		gbc_btnEditName.gridy = 1;
-		profileBucket.add(btnEditName, gbc_btnEditName);
+		if (editMode == 2) {
+			JTextField usernameField = new JTextField();
+			usernameField.setText(user.getFullName());
+			GridBagConstraints gbc_usernameField = new GridBagConstraints();
+			gbc_usernameField.insets = new Insets(5, 5, 5, 5);
+			gbc_usernameField.fill = GridBagConstraints.WEST;
+			gbc_usernameField.gridx = 1;
+			gbc_usernameField.gridy = 1;
+			profileBucket.add(usernameField, gbc_usernameField);
+			usernameField.setColumns(10);
+			
+			JButton btnEditName = new JButton("Save Name");
+			btnEditName.setFont(WineHunterApplication.format.getBaseFont());
+			btnEditName.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int result = 0;
+					try {
+						result = userUpdate.setUserInfoString(user, 2, usernameField.getText());
+						
+						
+					} catch (SQLException e1) {
+						
+						e1.printStackTrace();
+					}
+					
+					if (result == 1) {
+						WineHunterApplication.viewUserProfile(user, 3, 0);
+					}
+					else if (result == -1) {
+						WineHunterApplication.viewUserProfile(user, 4, 0);
+					}
+					else {
+						WineHunterApplication.viewUserProfile(user, 2, 0);
+					}
+				}
+			});
+			GridBagConstraints gbc_btnEditName = new GridBagConstraints();
+			gbc_btnEditName.insets = new Insets(5, 5, 5, 0);
+			gbc_btnEditName.anchor = GridBagConstraints.WEST;
+			gbc_btnEditName.gridx = 2;
+			gbc_btnEditName.gridy = 1;
+			profileBucket.add(btnEditName, gbc_btnEditName);
+		}
+		else {
+			
+			JLabel lblUsernameText = new JLabel(user.getFullName());
+			lblUsernameText.setHorizontalAlignment(SwingConstants.LEADING);
+			lblUsernameText.setFont(WineHunterApplication.format.getSubheadingFontBase());
+			GridBagConstraints gbc_lblUsernameText = new GridBagConstraints();
+			gbc_lblUsernameText.insets = new Insets(5, 5, 5, 5);
+			gbc_lblUsernameText.anchor = GridBagConstraints.WEST;
+			gbc_lblUsernameText.gridx = 1;
+			gbc_lblUsernameText.gridy = 1;
+			profileBucket.add(lblUsernameText, gbc_lblUsernameText);
+			
+			JButton btnEditName = new JButton("Edit Name");
+			btnEditName.setFont(WineHunterApplication.format.getBaseFont());
+			btnEditName.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					WineHunterApplication.viewUserProfile(user, 0, 2);
+				}
+			});
+			GridBagConstraints gbc_btnEditName = new GridBagConstraints();
+			gbc_btnEditName.insets = new Insets(5, 5, 5, 5);
+			gbc_btnEditName.anchor = GridBagConstraints.WEST;
+			gbc_btnEditName.gridx = 2;
+			gbc_btnEditName.gridy = 1;
+			profileBucket.add(btnEditName, gbc_btnEditName);
+		}
 		
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -240,6 +318,7 @@ public class ViewUserProfile extends JPanel {
 		profileBucket.add(lblEmail, gbc_lblEmail);
 		
 		JLabel lblEmailtext = new JLabel(user.getEmail());
+		lblEmailtext.setHorizontalAlignment(SwingConstants.LEADING);
 		lblEmailtext.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblEmailtext = new GridBagConstraints();
 		gbc_lblEmailtext.insets = new Insets(5, 5, 5, 5);
@@ -258,28 +337,76 @@ public class ViewUserProfile extends JPanel {
 		gbc_lblPassword.gridy = 3;
 		profileBucket.add(lblPassword, gbc_lblPassword);
 		
-		JLabel lblPasswordText = new JLabel("(protected)");
-		lblPasswordText.setFont(WineHunterApplication.format.getSubheadingFontBase());
-		GridBagConstraints gbc_lblPasswordText = new GridBagConstraints();
-		gbc_lblPasswordText.insets = new Insets(5, 5, 5, 5);
-		gbc_lblPasswordText.anchor = GridBagConstraints.WEST;
-		gbc_lblPasswordText.gridx = 1;
-		gbc_lblPasswordText.gridy = 3;
-		profileBucket.add(lblPasswordText, gbc_lblPasswordText);
+		if (editMode == 1) { // updating password
 		
-		JButton btnEditPassword = new JButton("Edit Password");
-		btnEditPassword.setFont(WineHunterApplication.format.getBaseFont());
-		btnEditPassword.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				WineHunterApplication.userEditPassword(user);
-			}
-		});
-		GridBagConstraints gbc_btnEditPassword = new GridBagConstraints();
-		gbc_btnEditPassword.insets = new Insets(5, 5, 5, 5);
-		gbc_btnEditPassword.anchor = GridBagConstraints.WEST;
-		gbc_btnEditPassword.gridx = 2;
-		gbc_btnEditPassword.gridy = 3;
-		profileBucket.add(btnEditPassword, gbc_btnEditPassword);
+			JPasswordField passwordField = new JPasswordField();
+			passwordField.setToolTipText("Enter your password.");
+			passwordField.setActionCommand("password");
+			GridBagConstraints gbc_passwordField = new GridBagConstraints();
+			gbc_passwordField.insets = new Insets(0, 0, 5, 5);
+			gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_passwordField.gridx = 1;
+			gbc_passwordField.gridy = 3;
+			profileBucket.add(passwordField, gbc_passwordField);
+			
+			JButton btnEditPassword = new JButton("Save Password");
+			btnEditPassword.setFont(WineHunterApplication.format.getBaseFont());
+			btnEditPassword.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int result = 0;
+					try {
+						result = userUpdate.setUserInfoString(user, 3, new String(passwordField.getPassword()));
+						
+						
+					} catch (SQLException e1) {
+						
+						e1.printStackTrace();
+					}
+					
+					if (result == 1) {
+						WineHunterApplication.viewUserProfile(user, 3, 0);
+					}
+					else if (result == -1) {
+						WineHunterApplication.viewUserProfile(user, 4, 0);
+					}
+					else {
+						WineHunterApplication.viewUserProfile(user, 2, 0);
+					}
+				}
+			});
+			GridBagConstraints gbc_btnEditPassword = new GridBagConstraints();
+			gbc_btnEditPassword.insets = new Insets(5, 5, 5, 0);
+			gbc_btnEditPassword.anchor = GridBagConstraints.WEST;
+			gbc_btnEditPassword.gridx = 2;
+			gbc_btnEditPassword.gridy = 3;
+			profileBucket.add(btnEditPassword, gbc_btnEditPassword);
+		}
+		else {
+			
+			JLabel lblPasswordText = new JLabel("(protected)");
+			lblPasswordText.setHorizontalAlignment(SwingConstants.LEADING);
+			lblPasswordText.setFont(WineHunterApplication.format.getSubheadingFontBase());
+			GridBagConstraints gbc_lblPasswordText = new GridBagConstraints();
+			gbc_lblPasswordText.insets = new Insets(5, 5, 5, 5);
+			gbc_lblPasswordText.anchor = GridBagConstraints.WEST;
+			gbc_lblPasswordText.gridx = 1;
+			gbc_lblPasswordText.gridy = 3;
+			profileBucket.add(lblPasswordText, gbc_lblPasswordText);
+			
+			JButton btnEditPassword = new JButton("Edit Password");
+			btnEditPassword.setFont(WineHunterApplication.format.getBaseFont());
+			btnEditPassword.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					WineHunterApplication.viewUserProfile(user, 0, 1);
+				}
+			});
+			GridBagConstraints gbc_btnEditPassword = new GridBagConstraints();
+			gbc_btnEditPassword.insets = new Insets(5, 5, 5, 5);
+			gbc_btnEditPassword.anchor = GridBagConstraints.WEST;
+			gbc_btnEditPassword.gridx = 2;
+			gbc_btnEditPassword.gridy = 3;
+			profileBucket.add(btnEditPassword, gbc_btnEditPassword);
+		}
 		
 		JLabel lblAdmin = new JLabel("User Type:");
 		lblAdmin.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -291,7 +418,8 @@ public class ViewUserProfile extends JPanel {
 		gbc_lblAdmin.gridy = 4;
 		profileBucket.add(lblAdmin, gbc_lblAdmin);
 		
-		JLabel lblAdminText = new JLabel("No");
+		JLabel lblAdminText = new JLabel("Member");
+		lblAdminText.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblAdminText.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		if (user.getSuperAdmin() == 1) {
 			lblAdminText.setForeground(Color.RED);
@@ -309,14 +437,6 @@ public class ViewUserProfile extends JPanel {
 		gbc_lblAdminText.gridx = 1;
 		gbc_lblAdminText.gridy = 4;
 		profileBucket.add(lblAdminText, gbc_lblAdminText);
-		
-		gbc.gridy = 5;
-		userInfoScroll.add(sep, gbc);
-		
-		//our taster profile panel
-		buildTasterProfile(user, userInfoScroll);
-		
-
 	}
 
 	/**
@@ -439,16 +559,16 @@ public class ViewUserProfile extends JPanel {
 					try {
 						int res = userUpdate.setAdminSecurity(user);
 						if (res == 1) {
-							WineHunterApplication.viewUserProfile(user, 3);
+							WineHunterApplication.viewUserProfile(user, 3, 0);
 						}
 						else if (res == 0) {
-							WineHunterApplication.viewUserProfile(user, 4);
+							WineHunterApplication.viewUserProfile(user, 4, 0);
 						}
 						else {
-							WineHunterApplication.viewUserProfile(user, 2);
+							WineHunterApplication.viewUserProfile(user, 2, 0);
 						}
 					} catch (SQLException e1) {
-						WineHunterApplication.viewUserProfile(user, 2);
+						WineHunterApplication.viewUserProfile(user, 2, 0);
 						e1.printStackTrace();
 					}
 				}
@@ -470,18 +590,18 @@ public class ViewUserProfile extends JPanel {
 					if (result == JOptionPane.YES_OPTION) {
 						try {
 							if (userUpdate.deleteUser(user.getId()) != 1) {
-								WineHunterApplication.viewUserProfile(user, 2);
+								WineHunterApplication.viewUserProfile(user, 2, 0);
 							}
 							else {
 								WineHunterApplication.splash(1);
 							}
 						} catch (SQLException e1) {
-							WineHunterApplication.viewUserProfile(user, 2);
+							WineHunterApplication.viewUserProfile(user, 2, 0);
 							e1.printStackTrace();
 						}
 					}
 					else {
-						WineHunterApplication.viewUserProfile(user, 0);
+						WineHunterApplication.viewUserProfile(user, 0, 0);
 					}
 				}
 			});

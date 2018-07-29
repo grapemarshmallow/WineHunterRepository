@@ -234,7 +234,7 @@ public class AdminUserSearch extends JPanel {
 					try {
 						int searchId = Integer.parseInt(searchTextIn);
 						if (userProfile.getUserInfo(searchId, searchUser) == 1) {
-							WineHunterApplication.viewUserProfile(searchUser, 0);
+							WineHunterApplication.viewUserProfile(searchUser, 0, 0);
 						} else {
 							WineHunterApplication.adminUserSearch(1);
 						} 
@@ -250,7 +250,7 @@ public class AdminUserSearch extends JPanel {
 					try {
 						
 						if (userProfile.getUserInfoByUsername(searchTextIn, searchUser) == 1) {
-							WineHunterApplication.viewUserProfile(searchUser, 0);
+							WineHunterApplication.viewUserProfile(searchUser, 0, 0);
 						} else {
 							WineHunterApplication.adminUserSearch(1);
 						} 
@@ -263,7 +263,7 @@ public class AdminUserSearch extends JPanel {
 					try {
 						
 						if (userProfile.getUserInfoByEmail(searchTextIn, searchUser) == 1) {
-							WineHunterApplication.viewUserProfile(searchUser, 0);
+							WineHunterApplication.viewUserProfile(searchUser, 0, 0);
 						} else {
 							WineHunterApplication.adminUserSearch(1);
 						} 
