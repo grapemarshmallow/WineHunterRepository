@@ -132,7 +132,6 @@ public class WineHunterApplication {
 		frmWinehunter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{APPLICATION_WIDTH};
-		gridBagLayout.rowHeights = new int[]{20, 0};
 		frmWinehunter.getContentPane().setLayout(gridBagLayout);
 		
 		
@@ -248,8 +247,17 @@ public class WineHunterApplication {
 		//testing
 		
 		System.out.println("\nFrme size: " + frmWinehunter.getSize());
-		System.out.println("\nToolbar size: " + toolbar.getSize());
+		System.out.println("\nToolbar size: " + toolbarPanel.getSize());
+		
+		Component[] componentsTool = toolbarPanel.getComponents();
+		
+		for (int i = 0; i < componentsTool.length; ++i) {
+			System.out.print("\n\t" + componentsTool[i].getName() + " size: " + componentsTool[i].getSize());
+			writeComponents((JComponent) componentsTool[i], 1);
+		}
+		
 		System.out.println("\nMain panel size: " + mainPanel.getSize());
+		
 		for (int i = 0; i < components.length; ++i) {
 			System.out.print("\n\t" + components[i].getName() + " size: " + components[i].getSize());
 			writeComponents((JComponent) components[i], 1);
