@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -26,6 +27,7 @@ public class Toolbar extends JPanel {
 		
 		
 		GridBagLayout gbl_toolbarLayout = new GridBagLayout();
+		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 20, WineHunterApplication.APPLICATION_HEIGHT - 20));
 		gbl_toolbarLayout.columnWidths = new int[]{0};
 		gbl_toolbarLayout.rowHeights = new int[] {0};
 

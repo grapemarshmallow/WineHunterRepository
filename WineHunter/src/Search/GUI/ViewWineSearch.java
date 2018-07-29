@@ -19,6 +19,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.EmptyBorder;
 
 import javax.swing.JTextField;
+
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 public class ViewWineSearch extends JPanel{
@@ -38,17 +40,16 @@ public class ViewWineSearch extends JPanel{
 	
 	public ViewWineSearch(int empty) {
 		
-		setBounds(100, 100, WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_HEIGHT);
+		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 100, WineHunterApplication.APPLICATION_HEIGHT - 100));
+		
 		notEmpty = 0; 
 
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		this.setLayout(gridBagLayout);
 		
-		gridBagLayout.columnWidths = new int[] {450};
-		gridBagLayout.rowHeights = new int[]{16, 0, 0, 169, 0};
-		gridBagLayout.columnWeights = new double[]{1.0};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] {0};
+		gridBagLayout.rowHeights = new int[]{0};
 		
 		
 		JLabel lblNewLabel = new JLabel("Search for wines!");

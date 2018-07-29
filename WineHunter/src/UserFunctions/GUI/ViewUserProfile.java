@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 
@@ -56,11 +55,11 @@ public class ViewUserProfile extends JPanel {
 		gbl_userInfoScroll.columnWidths = new int[]{0};
 		gbl_userInfoScroll.rowHeights = new int[]{0};
 		userInfoScroll.setLayout(gbl_userInfoScroll);
-		userInfoScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 300, WineHunterApplication.APPLICATION_HEIGHT - 200));
+		userInfoScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 200, WineHunterApplication.APPLICATION_HEIGHT - 200));
 		
 		JScrollPane userScroll = new JScrollPane(userInfoScroll, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		userScroll.setViewportBorder(null);
-		userScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 100, WineHunterApplication.APPLICATION_HEIGHT - 100));
+		userScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 120, WineHunterApplication.APPLICATION_HEIGHT - 120));
 		
 		this.add(userScroll, "cell 0 0,grow");
 		
