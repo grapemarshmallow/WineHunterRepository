@@ -27,7 +27,7 @@ public class Toolbar extends JPanel {
 		
 		
 		GridBagLayout gbl_toolbarLayout = new GridBagLayout();
-		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 20, WineHunterApplication.APPLICATION_HEIGHT - 20));
+		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 100, WineHunterApplication.APPLICATION_HEIGHT - 100));
 		gbl_toolbarLayout.columnWidths = new int[]{0};
 		gbl_toolbarLayout.rowHeights = new int[] {0};
 

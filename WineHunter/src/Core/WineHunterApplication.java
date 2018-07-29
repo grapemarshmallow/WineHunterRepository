@@ -131,19 +131,20 @@ public class WineHunterApplication {
 		frmWinehunter.setPreferredSize(new Dimension(APPLICATION_WIDTH, APPLICATION_HEIGHT));
 		frmWinehunter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{APPLICATION_WIDTH, 0};
+		gridBagLayout.columnWidths = new int[]{APPLICATION_WIDTH};
 		gridBagLayout.rowHeights = new int[]{20, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		frmWinehunter.getContentPane().setLayout(gridBagLayout);
 		
 		
 		toolbarPanel = new JPanel();
 		
 		GridBagConstraints gbc_toolbarPanel = new GridBagConstraints();
-		gbc_toolbarPanel.anchor = GridBagConstraints.NORTHEAST;
+		gbc_toolbarPanel.anchor = GridBagConstraints.NORTHWEST;
 		gbc_toolbarPanel.gridx = 0;
 		gbc_toolbarPanel.gridy = 0;
+		gbc_toolbarPanel.weightx = 1;
+		gbc_toolbarPanel.fill = GridBagConstraints.BOTH;
+		toolbarPanel.setPreferredSize(new Dimension(APPLICATION_WIDTH, 42));
 		frmWinehunter.getContentPane().add(toolbarPanel, gbc_toolbarPanel);
 
 		toolbarPanel.setLayout(new GridLayout(1, 1, 0, 0));
@@ -154,6 +155,10 @@ public class WineHunterApplication {
 		gbc_mainPanel.anchor = GridBagConstraints.CENTER;
 		gbc_mainPanel.gridx = 0;
 		gbc_mainPanel.gridy = 1;
+		gbc_mainPanel.weightx = 1;
+		gbc_mainPanel.weighty = 1;
+		gbc_mainPanel.fill = GridBagConstraints.BOTH;
+		mainPanel.setPreferredSize(new Dimension(APPLICATION_WIDTH, APPLICATION_HEIGHT - 20));
 		frmWinehunter.getContentPane().add(mainPanel, gbc_mainPanel);
 		
 		
@@ -171,7 +176,7 @@ public class WineHunterApplication {
 		
 		WineHunterApplication.cleanPanel();
 		userCreate = new UserFunctions.GUI.UserCreate(attemptFlag);
-	
+		userCreate.setName("userCreate");
 		mainPanel.setVisible(true);
 		mainPanel.add(userCreate);
 		
@@ -191,7 +196,7 @@ public class WineHunterApplication {
 		viewWineSearch = new Search.GUI.ViewWineSearch(empty);
 		
 		wineSearch = new Search.Logic.WineSearch();
-	
+		viewWineSearch.setName("wineSearch");
 		mainPanel.setVisible(true);
 		mainPanel.add(viewWineSearch);
 		
@@ -209,7 +214,7 @@ public class WineHunterApplication {
 		WineHunterApplication.cleanPanel();
 
 		viewWineResults = new Search.GUI.ViewWineResults(data, columnNames); 
-	
+		viewWineResults.setName("viewWineResults");
 		mainPanel.setVisible(true);
 		mainPanel.add(viewWineResults);
 		
@@ -240,11 +245,36 @@ public class WineHunterApplication {
 	public static void cleanPanel() {
 		Component[] components = mainPanel.getComponents();
 		
+		//testing
+		
+		System.out.println("\nFrme size: " + frmWinehunter.getSize());
+		System.out.println("\nToolbar size: " + toolbar.getSize());
+		System.out.println("\nMain panel size: " + mainPanel.getSize());
+		for (int i = 0; i < components.length; ++i) {
+			System.out.print("\n\t" + components[i].getName() + " size: " + components[i].getSize());
+			writeComponents((JComponent) components[i], 1);
+		}
+		
+		
 		for (int i = 0; i < components.length; ++i) {
 			mainPanel.remove(components[i]);
 		}
 		
+		mainPanel.repaint();
 		WineHunterApplication.toolbarReload();
+	}
+	
+	public static void writeComponents(JComponent component, int depth) {
+		Component[] components = component.getComponents();
+		
+		for (int i = 0; i < components.length; ++i) {
+			System.out.print("\n");
+			for (int j = 0; j <= depth; ++j) {
+				System.out.print("\t");
+			}
+			System.out.print(components[i].getName() + " size: " + components[i].getSize());
+			writeComponents((JComponent) components[i], depth + 1);
+		}
 	}
 	
 	/**
@@ -267,6 +297,7 @@ public class WineHunterApplication {
 		WineHunterApplication.cleanPanel();
 		
 		userLogin = new UserFunctions.GUI.UserLogin(attemptFlag);
+		userLogin.setName("User Login");
 		mainPanel.setVisible(true);
 		mainPanel.add(userLogin);
 		
@@ -282,6 +313,7 @@ public class WineHunterApplication {
 		
 		WineHunterApplication.cleanPanel();
 		splash = new MainMenu(subsequent);
+		splash.setName("Splash");
 		mainPanel.setVisible(true);
 		mainPanel.add(splash);
 		
@@ -296,7 +328,7 @@ public class WineHunterApplication {
 		viewUserProfile = new ViewUserProfile(user, subsequent, editMode);
 
 		
-		viewUserProfile = new ViewUserProfile(user, subsequent, editMode);
+		viewUserProfile.setName("User Profile");
 
 		mainPanel.setVisible(true);
 		mainPanel.add(viewUserProfile);
@@ -310,6 +342,7 @@ public class WineHunterApplication {
 		WineHunterApplication.cleanPanel();
 
 		adminUserSearch = new AdminUserSearch(subsequent);
+		adminUserSearch.setName("Admin User Search");
 		mainPanel.setVisible(true);
 		mainPanel.add(adminUserSearch);
 		
@@ -337,7 +370,15 @@ public class WineHunterApplication {
 	public static void toolbar() {
 		
 		toolbar = new Toolbar();
-		toolbarPanel.add(toolbar);
+		toolbar.setName("The toolbar");
+		GridBagConstraints gbc_toolbarPanel = new GridBagConstraints();
+		gbc_toolbarPanel.anchor = GridBagConstraints.NORTHEAST;
+		gbc_toolbarPanel.gridx = 0;
+		gbc_toolbarPanel.gridy = 0;
+		gbc_toolbarPanel.weightx = 1;
+		gbc_toolbarPanel.fill = GridBagConstraints.BOTH;
+		toolbarPanel.setPreferredSize(new Dimension(APPLICATION_WIDTH, 42));
+		toolbarPanel.add(toolbar, gbc_toolbarPanel);
 		toolbarPanel.setVisible(true);
 		frmWinehunter.pack();
 		

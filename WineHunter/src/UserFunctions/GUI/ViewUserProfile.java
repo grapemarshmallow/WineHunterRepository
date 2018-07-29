@@ -46,22 +46,25 @@ public class ViewUserProfile extends JPanel {
 	 * @param editMode 0 for view, 1 for password, 2 for full name
 	 */
 	public ViewUserProfile(User user, int subsequent, int editMode) {
-		setLayout(new MigLayout("", "[" + (WineHunterApplication.APPLICATION_WIDTH - 100) + "] px", "[" + (WineHunterApplication.APPLICATION_HEIGHT - 100) + "] px"));
+		this.setPreferredSize(new Dimension(880, 510));
+		setLayout(new MigLayout("filly", "100%" , "100%"));
 		
 		
 		JPanel userInfoScroll = new JPanel();
+		userInfoScroll.setName("userInfoScroll");
 		
 		GridBagLayout gbl_userInfoScroll = new GridBagLayout();
 		gbl_userInfoScroll.columnWidths = new int[]{0};
 		gbl_userInfoScroll.rowHeights = new int[]{0};
 		userInfoScroll.setLayout(gbl_userInfoScroll);
-		userInfoScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 200, WineHunterApplication.APPLICATION_HEIGHT - 200));
+		userInfoScroll.setPreferredSize(new Dimension(880, 510));
 		
 		JScrollPane userScroll = new JScrollPane(userInfoScroll, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		userScroll.setViewportBorder(null);
-		userScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 120, WineHunterApplication.APPLICATION_HEIGHT - 120));
+		userScroll.setPreferredSize(new Dimension(880, 510));
+		userScroll.setName("userScroll");
 		
-		this.add(userScroll, "cell 0 0,grow");
+		this.add(userScroll, "grow, width 90%, height 90%");
 		
 		int other = 0;
 		
@@ -140,6 +143,7 @@ public class ViewUserProfile extends JPanel {
 		}
 		
 		JPanel profileTitle = new JPanel();
+		profileTitle.setName("profileTitle");
 		GridBagConstraints gbc_profileTitle = new GridBagConstraints();
 		gbc_profileTitle.fill = GridBagConstraints.BOTH;
 		gbc_profileTitle.insets = new Insets(5, 5, 5, 5);
@@ -193,6 +197,7 @@ public class ViewUserProfile extends JPanel {
 	 */
 	public static void buildProfileBucket(User user, JPanel userInfoScroll, int editMode, UserUpdate userUpdate) {
 		JPanel profileBucket = new JPanel();
+		profileBucket.setName("profileBucket");
 		GridBagConstraints gbc_profileBucket = new GridBagConstraints();
 		gbc_profileBucket.fill = GridBagConstraints.BOTH;
 		gbc_profileBucket.anchor = GridBagConstraints.CENTER;
@@ -445,6 +450,7 @@ public class ViewUserProfile extends JPanel {
 	 */
 	public static void buildTasterProfile(User user, JPanel userInfoScroll) {
 		JPanel tasterProfile = new JPanel();
+		tasterProfile.setName("tasterProfile");
 		GridBagConstraints gbc_tasterProfile = new GridBagConstraints();
 		gbc_tasterProfile.insets = new Insets(5, 5, 5, 5);
 		gbc_tasterProfile.fill = GridBagConstraints.BOTH;
@@ -486,6 +492,7 @@ public class ViewUserProfile extends JPanel {
 	 */
 	public static void buildButtonPanel(User user, JPanel userInfoScroll, boolean isSuperAdmin, UserUpdate userUpdate) {
 		JPanel buttonPanel = new JPanel();
+		buttonPanel.setName("buttonPanel");
 		GridBagConstraints gbc_buttonPanel = new GridBagConstraints();
 		gbc_buttonPanel.fill = GridBagConstraints.BOTH;
 		gbc_buttonPanel.gridx = 0;

@@ -36,7 +36,7 @@ public class ViewWineResults extends JPanel {
 	 */
 	public ViewWineResults(String[][] data, String[] columnNames) {
 		
-		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 100, WineHunterApplication.APPLICATION_HEIGHT - 100));
+		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 150, WineHunterApplication.APPLICATION_HEIGHT - 150));
 
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -59,11 +59,11 @@ public class ViewWineResults extends JPanel {
 		this.add(lblNewLabel, gbc_lblNewLabel);
 		
 		table = new JTable(data,columnNames);
-		table.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 200, WineHunterApplication.APPLICATION_HEIGHT - 200));
+		table.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 300, WineHunterApplication.APPLICATION_HEIGHT - 300));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 120, WineHunterApplication.APPLICATION_HEIGHT - 120));
+		scrollPane.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 200, WineHunterApplication.APPLICATION_HEIGHT - 200));
 		this.add(scrollPane);
 		
 		
