@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import Core.WineHunterApplication;
+import Search.Logic.WineSearch;
 import UserFunctions.Logic.UserProfile;
 import UserFunctions.Logic.UserUpdate;
 import WineObjects.Keyword;
@@ -42,11 +43,12 @@ public class ViewUserProfile extends JPanel {
 	
 	//fields
 	private static final long serialVersionUID = -4768934525868550643L;
+	
 
 	/**
 	 * Create the panel with a specific user object.
 	 * @param user the user object to generate the profile for
-	 * @param subsequent 0 for the first visit, 1 if a delete failed, 2 if an update failed
+	 * @param subsequent 0 for the first visit, various flags otherwise
 	 * @param editMode 0 for view, 1 for password, 2 for full name
 	 */
 	public ViewUserProfile(User user, int subsequent, int editMode) {
@@ -130,6 +132,18 @@ public class ViewUserProfile extends JPanel {
 			else if (subsequent == 4) {
 				profileString = "Insufficient security for update.";
 				
+			}
+			else if (subsequent == 5) {
+				profileString = "Could not search for user reviews.";
+			}
+			else if (subsequent == 6) {
+				profileString = "Could not search for user favorites.";
+			}
+			else if (subsequent == 7) {
+				profileString = "Could not search for wines using user taster profile.";
+			}
+			else if (subsequent == 8) {
+				profileString = "No wines found.";
 			}
 		}
 		
@@ -558,11 +572,28 @@ public class ViewUserProfile extends JPanel {
 
 		buttonPanel.setLayout(gbl_buttonPanel);
 		
-		JButton btnViewUserReviews = new JButton("View User Reviews");
+		JButton btnViewUserReviews = new JButton("View User-Reviewed Wines");
 		btnViewUserReviews.setName("btnViewUserReviews");
 		btnViewUserReviews.setFont(WineHunterApplication.format.getBaseFont());
 		btnViewUserReviews.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				WineHunterApplication.wineSearch = new WineSearch();
+				try {
+					result = WineHunterApplication.wineSearch.wineSearchUserReviewed(user);
+				} catch (SQLException e2) {
+					WineHunterApplication.viewUserProfile(user, 5, 0);
+					e2.printStackTrace();
+				}
+				
+				if(result == 0) {
+					WineHunterApplication.viewUserProfile(user, 8, 0);
+				}
+				else {
+					String[][] data = WineHunterApplication.wineSearch.getResults();
+					String[] columnNames = WineHunterApplication.wineSearch.getColumns();
+					WineHunterApplication.showWines(data,columnNames); 
+				}
 			}
 		});
 		GridBagConstraints gbc_btnViewUserReviews = new GridBagConstraints();
@@ -576,6 +607,23 @@ public class ViewUserProfile extends JPanel {
 		btnViewUserFavorites.setFont(WineHunterApplication.format.getBaseFont());
 		btnViewUserFavorites.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				WineHunterApplication.wineSearch = new WineSearch();
+				try {
+					result = WineHunterApplication.wineSearch.wineSearchUserFavorites(user);
+				} catch (SQLException e2) {
+					WineHunterApplication.viewUserProfile(user, 6, 0);
+					e2.printStackTrace();
+				}
+				
+				if(result == 0) {
+					WineHunterApplication.viewUserProfile(user, 8, 0);
+				}
+				else {
+					String[][] data = WineHunterApplication.wineSearch.getResults();
+					String[] columnNames = WineHunterApplication.wineSearch.getColumns();
+					WineHunterApplication.showWines(data,columnNames); 
+				}
 			}
 		});
 		GridBagConstraints gbc_btnViewUserFavorites = new GridBagConstraints();
@@ -603,6 +651,24 @@ public class ViewUserProfile extends JPanel {
 		btnSearchTasterProfile.setFont(WineHunterApplication.format.getBaseFont());
 		btnSearchTasterProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				WineHunterApplication.wineSearch = new WineSearch();
+				try {
+					result = WineHunterApplication.wineSearch.wineSearchTasterProfile(user);
+					
+				} catch (SQLException e2) {
+					WineHunterApplication.viewUserProfile(user, 7, 0);
+					e2.printStackTrace();
+				}
+				
+				if (result == 0) {
+					WineHunterApplication.viewUserProfile(user, 8, 0);
+				}
+				else {
+					String[][] data = WineHunterApplication.wineSearch.getResults();
+					String[] columnNames = WineHunterApplication.wineSearch.getColumns();
+					WineHunterApplication.showWines(data,columnNames); 
+				}
 			}
 		});
 		GridBagConstraints gbc_btnSearchTasterProfile = new GridBagConstraints();
