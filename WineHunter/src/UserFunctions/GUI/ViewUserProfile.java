@@ -36,6 +36,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.Color;
 import net.miginfocom.swing.MigLayout;
+import java.awt.GridLayout;
 
 public class ViewUserProfile extends JPanel {
 	
@@ -56,7 +57,7 @@ public class ViewUserProfile extends JPanel {
 		
 		JScrollPane userScroll = new JScrollPane();
 		userScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		userScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		userScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		userScroll.setViewportBorder(null);
 		userScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		userScroll.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
@@ -753,10 +754,20 @@ public class ViewUserProfile extends JPanel {
 		gbc_panel.weightx = 1;
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		panelParent.add(panel, gbc_panel);
+		panel.setLayout(new GridLayout(1, 2, 0, 0));
 		
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWeights = new double[] {0.5, 0.5};
-		panel.setLayout(gbl_panel);
+		JPanel sysPanel = new JPanel();
+		sysPanel.setName(title + " sysPanel");
+		panel.add(sysPanel);
+		
+		sysPanel.setLayout(new GridLayout(6, 1, 0, 0));
+		
+		JPanel userPanel = new JPanel();
+		userPanel.setName(title + " userPanel");
+
+		panel.add(userPanel);
+		
+		userPanel.setLayout(new GridLayout(6, 1, 0, 0));
 		
 		JLabel lblSysGenPanel = new JLabel("System-Generated");
 		lblSysGenPanel.setName(title + " lblSysGenPanel");
@@ -766,9 +777,10 @@ public class ViewUserProfile extends JPanel {
 		gbc_lblSysGenPanel.insets = new Insets(5, 5, 5, 5);
 		gbc_lblSysGenPanel.gridx = 0;
 		gbc_lblSysGenPanel.gridy = 0;
-		gbc_lblSysGenPanel.weightx = .5;
+		gbc_lblSysGenPanel.weightx = 1;
+		gbc_lblSysGenPanel.anchor = GridBagConstraints.CENTER;
 		gbc_lblSysGenPanel.fill = GridBagConstraints.BOTH;
-		panel.add(lblSysGenPanel, gbc_lblSysGenPanel);
+		sysPanel.add(lblSysGenPanel, gbc_lblSysGenPanel);
 		
 		JLabel lblUserGenPanel = new JLabel("User-Generated");
 		lblUserGenPanel.setName(title + " lblUserGenPanel");
@@ -776,13 +788,15 @@ public class ViewUserProfile extends JPanel {
 		lblUserGenPanel.setFont(WineHunterApplication.format.getSubheadingFont2());
 		GridBagConstraints gbc_lblUserGenPanel = new GridBagConstraints();
 		gbc_lblUserGenPanel.insets = new Insets(5, 5, 5, 5);
-		gbc_lblUserGenPanel.gridx = 1;
+		gbc_lblUserGenPanel.gridx = 0;
 		gbc_lblUserGenPanel.gridy = 0;
-		gbc_lblUserGenPanel.weightx = .5;
+		gbc_lblUserGenPanel.weightx = 1;
+		gbc_lblUserGenPanel.anchor = GridBagConstraints.CENTER;
 		gbc_lblUserGenPanel.fill = GridBagConstraints.BOTH;
-		panel.add(lblUserGenPanel, gbc_lblUserGenPanel);
+		userPanel.add(lblUserGenPanel, gbc_lblUserGenPanel);
 		
-		buildList(panel, sysLabels, userLabels);
+		buildList(sysPanel, sysLabels, userLabels);
+		buildList(userPanel, userLabels, sysLabels);
 
 	}
 
@@ -790,18 +804,16 @@ public class ViewUserProfile extends JPanel {
 	 * builds a list of up to 5 varieties or keywords depending on the context
 	 * @param panel panel this is being added to
 	 * @param labels array of labels to be added
-	 * @param userLabels column where we should add the list (0 for user, 1 for system)
 	 */
-	public static void buildList(JPanel panel, String[] sysLabels, String[] userLabels) {
+	public static void buildList(JPanel panel, String[] labels, String[] otherLabels) {
 	
 	for (int i = 0; i < 5; ++i) {
-		String sysText = sysLabels[i];
-		String userText = userLabels[i];
-		if (sysText.equals("") && userText.equals("")) {
+		String text = labels[i];
+		String otherText = otherLabels[i];
+		if (text.equals("") && otherText.equals("")) {
 			return;
 		}
-		buildListMemberPanel(panel, sysLabels[i], i + 1, 0);
-		buildListMemberPanel(panel, userLabels[i], i + 1, 1);
+		buildListMemberPanel(panel, text, i + 1);
 	}
 		
 	}
@@ -811,20 +823,21 @@ public class ViewUserProfile extends JPanel {
 	 * @param row where the value will be added
 	 * @param panel panel this is being added to
 	 * @param text label to be added
-	 * @param column column where we should add the list (1 for user, 2 for system)
 	 * 
 	 */
-	public static void buildListMemberPanel(JPanel panel, String text, int row, int column) {
+	public static void buildListMemberPanel(JPanel panel, String text, int row) {
 		JLabel rowLabel = new JLabel(text);
-		rowLabel.setName("rowLabel r: " + row + " c: " + column + " text: " + text);
+		rowLabel.setName("rowLabel r: " + row + " text: " + text);
 		rowLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		rowLabel.setFont(WineHunterApplication.format.getSubheadingFont3Base());
+		rowLabel.setMinimumSize(new Dimension(panel.getWidth(), 15));
 		GridBagConstraints gbc_rowLabel = new GridBagConstraints();
 		gbc_rowLabel.insets = new Insets(1, 5, 1, 5);
-		gbc_rowLabel.gridx = column;
+		gbc_rowLabel.gridx = 0;
 		gbc_rowLabel.gridy = row;
-		gbc_rowLabel.weightx = .5;
+		gbc_rowLabel.weightx = 1;
 		gbc_rowLabel.fill = GridBagConstraints.BOTH;
+		gbc_rowLabel.anchor = GridBagConstraints.CENTER;
 		panel.add(rowLabel, gbc_rowLabel);
 	}
 
@@ -860,7 +873,7 @@ public class ViewUserProfile extends JPanel {
 				returnArray[i] = string;
 			}
 			else {
-				returnArray[i] = "";
+				returnArray[i] = " ";
 			}
 		}
 		

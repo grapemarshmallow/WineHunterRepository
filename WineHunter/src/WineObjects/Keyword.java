@@ -42,7 +42,7 @@ public class Keyword {
 	
     @Override
 	public String toString() {
-		return this.word;
+		return this.word.toUpperCase();
 	}
     
     /**

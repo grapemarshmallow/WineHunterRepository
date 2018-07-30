@@ -3,9 +3,7 @@ package Search.Logic;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
-
-import javax.swing.DefaultComboBoxModel;
+import java.util.Vector;
 
 import Core.WineHunterApplication;
 import WineObjects.*;
@@ -14,10 +12,10 @@ public class LoadVariousLists {
 	
 	/**
 	 * Loads all keywords and returns them in a DefaultComboBoxModel
-	 * @param keywords DefaultComboBoxModel of Keyword objects
+	 * @param keywords Vector of Keyword objects
 	 * @throws SQLException 
 	 */
-	public static void loadAllKeywords(DefaultComboBoxModel<Keyword> keywords) throws SQLException  {
+	public static void loadAllKeywords(Vector<Keyword> keywords) throws SQLException  {
 	
 
 		
@@ -31,7 +29,10 @@ public class LoadVariousLists {
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while (rs.next()) {
-			keywords.addElement(new Keyword(rs.getInt("KeywordID"), rs.getString("Word")));
+			Keyword keywordToAdd = new Keyword(rs.getInt("KeywordID"), rs.getString("Word"));
+			
+			keywords.addElement(keywordToAdd);
+			
 		}
 		
 		rs.close();
@@ -42,10 +43,10 @@ public class LoadVariousLists {
 	
 	/**
 	 * Loads all varieties and returns to a combo box model for the UI
-	 * @param varieties DefaultComboBoxModel of Variety objects
+	 * @param varieties Vector of Variety objects
 	 * @throws SQLException 
 	 */
-	public static void loadAllVarieties(DefaultComboBoxModel<Variety> varieties) throws SQLException  {
+	public static void loadAllVarieties(Vector<Variety> varieties) throws SQLException  {
 
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
@@ -58,7 +59,9 @@ public class LoadVariousLists {
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while (rs.next()) {
-			varieties.addElement(new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName")));
+			Variety varietyToAdd = new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName"));
+			
+			varieties.addElement(varietyToAdd);
 		}
 		
 		rs.close();
@@ -70,10 +73,10 @@ public class LoadVariousLists {
 	
 	/**
 	 * Loads all countries and returns them in an ArrayList
-	 * @param countries ArrayList of Country objects
+	 * @param countries Vector of Country objects
 	 * @throws SQLException
 	 */
-	public static void loadAllCountries(LinkedList<Country> countries) throws SQLException  {
+	public static void loadAllCountries(Vector<Country> countries) throws SQLException  {
 	
 
 		
@@ -87,7 +90,7 @@ public class LoadVariousLists {
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while (rs.next()) {
-			countries.add(new Country(rs.getInt("CountryID"), rs.getString("CountryName")));
+			countries.addElement(new Country(rs.getInt("CountryID"), rs.getString("CountryName")));
 		}
 		
 		rs.close();
