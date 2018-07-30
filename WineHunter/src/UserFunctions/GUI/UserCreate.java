@@ -29,61 +29,67 @@ public class UserCreate extends JPanel {
 	
 	/**
 	 * Create the frame.
-	 * @param set to 0 if first attempt, 1 for a duplicate, 2 for error
+	 * @param set to 0 if first attempt, 1 for a duplicate, 2 for error, 3 for null input
 	 */
 	public UserCreate(int attemptFlag) {
-		setBounds(100, 100, WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_HEIGHT);
+		
 
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		this.setLayout(gridBagLayout);
 		
-		JLabel lblNewLabel = new JLabel("Fill out desired user credentials.");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
-		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 1;
+		JLabel lblInstructions = new JLabel("Fill out desired user credentials.");
+		lblInstructions.setFont(WineHunterApplication.format.getHeadingFont());
+		lblInstructions.setName("lblInstructions");
+		lblInstructions.setHorizontalAlignment(SwingConstants.CENTER);
+
+		GridBagConstraints gbc_lblInstructions = new GridBagConstraints();
+		gbc_lblInstructions.insets = new Insets(30, 30, 30, 30);
+		gbc_lblInstructions.anchor = GridBagConstraints.NORTH;
+		gbc_lblInstructions.fill = GridBagConstraints.BOTH;
+		gbc_lblInstructions.gridx = 0;
+		gbc_lblInstructions.gridy = 1;
+		gbc_lblInstructions.weightx = 1;
 		
 		JLabel reprompt = new JLabel();
+		reprompt.setFont(WineHunterApplication.format.getSubheadingFont2Base());
+		reprompt.setName("reprompt");
 		reprompt.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		if (attemptFlag == 1) {
 			reprompt.setText("Duplicate user detected. Verify that username and email are correct.");
-			this.add(reprompt, gbc_lblNewLabel);
-			gbc_lblNewLabel.gridy = 0;
+			this.add(reprompt, gbc_lblInstructions);
+			gbc_lblInstructions.gridy = 0;
 		}
 		else if (attemptFlag == 2) {
 			reprompt.setText("Error in user creation. Try again.");
-			this.add(reprompt, gbc_lblNewLabel);
-			gbc_lblNewLabel.gridy = 0;
+			this.add(reprompt, gbc_lblInstructions);
+			gbc_lblInstructions.gridy = 0;
+		}
+		else if (attemptFlag == 3) {
+			reprompt.setText("Empty field detected. Verify that all information is populated.");
+			this.add(reprompt, gbc_lblInstructions);
+			gbc_lblInstructions.gridy = 0;
 		}
 		
 		
-		this.add(lblNewLabel, gbc_lblNewLabel);
-		gridBagLayout.columnWidths = new int[] {450};
-		gridBagLayout.rowHeights = new int[]{16, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{1.0};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		this.add(lblInstructions, gbc_lblInstructions);
 		
 		
 		JPanel panel = new JPanel();
+		panel.setName("User Create Panel");
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.insets = new Insets(0, 0, 5, 0);
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 2;
+		gbc_panel.weightx = 1;
 		this.add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] {0, 30, 0, 100, 30};
-		gbl_panel.rowHeights = new int[] {20, 20, 20, 20, 20};
-		gbl_panel.columnWeights = new double[]{1.0, 0.0, 1.0};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0};
 		panel.setLayout(gbl_panel);
 		
 		JLabel lblFullName = new JLabel("Full Name: ");
+		lblFullName.setName("lblFullName");
 		lblFullName.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblFullName = new GridBagConstraints();
 		gbc_lblFullName.anchor = GridBagConstraints.EAST;
@@ -93,6 +99,7 @@ public class UserCreate extends JPanel {
 		panel.add(lblFullName, gbc_lblFullName);
 		
 		name = new JTextField();
+		name.setName("name");
 		GridBagConstraints gbc_name = new GridBagConstraints();
 		gbc_name.insets = new Insets(0, 0, 5, 5);
 		gbc_name.fill = GridBagConstraints.HORIZONTAL;
@@ -102,6 +109,7 @@ public class UserCreate extends JPanel {
 		name.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Username: ");
+		lblUsername.setName("lblUsername");
 		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblUsername = new GridBagConstraints();
 		gbc_lblUsername.anchor = GridBagConstraints.EAST;
@@ -111,12 +119,10 @@ public class UserCreate extends JPanel {
 		panel.add(lblUsername, gbc_lblUsername);
 		
 		passwordField = new JPasswordField();
-		passwordField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		passwordField.setName("passwordField");
 		
 		username = new JTextField();
+		username.setName("username");
 		GridBagConstraints gbc_username = new GridBagConstraints();
 		gbc_username.insets = new Insets(0, 0, 5, 5);
 		gbc_username.fill = GridBagConstraints.HORIZONTAL;
@@ -126,6 +132,7 @@ public class UserCreate extends JPanel {
 		username.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password: ");
+		lblPassword.setName("lblPassword");
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.anchor = GridBagConstraints.EAST;
 		gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
@@ -142,6 +149,7 @@ public class UserCreate extends JPanel {
 		panel.add(passwordField, gbc_passwordField);
 		
 		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setName("lblEmail");
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
 		gbc_lblEmail.anchor = GridBagConstraints.EAST;
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
@@ -150,6 +158,7 @@ public class UserCreate extends JPanel {
 		panel.add(lblEmail, gbc_lblEmail);
 		
 		email = new JTextField();
+		email.setName("email");
 		GridBagConstraints gbc_email = new GridBagConstraints();
 		gbc_email.insets = new Insets(0, 0, 5, 5);
 		gbc_email.fill = GridBagConstraints.HORIZONTAL;
@@ -159,19 +168,21 @@ public class UserCreate extends JPanel {
 		email.setColumns(10);
 		
 		JPanel createPanel = new JPanel();
+		createPanel.setName("createPanel");
 		GridBagConstraints gbc_createPanel = new GridBagConstraints();
 		gbc_createPanel.fill = GridBagConstraints.BOTH;
 		gbc_createPanel.gridx = 0;
 		gbc_createPanel.gridy = 3;
+		gbc_createPanel.weightx = 1;
+
 		this.add(createPanel, gbc_createPanel);
+		
 		GridBagLayout gbl_createPanel = new GridBagLayout();
-		gbl_createPanel.columnWidths = new int[] {75, 75, 75, 75, 75, 75};
-		gbl_createPanel.rowHeights = new int[] {0, 30};
-		gbl_createPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-		gbl_createPanel.rowWeights = new double[]{0.0, 0.0};
+		gbl_createPanel.columnWeights = new double[]{0.2, 0.2, 0.2, 0.2, 0.2};
 		createPanel.setLayout(gbl_createPanel);
 		
 		JButton Accept = new JButton("Accept");
+		Accept.setName("Accept");
 		Accept.setMnemonic(KeyEvent.VK_D);
 		Accept.setActionCommand("accept");
 		Accept.addActionListener(new ActionListener() {
@@ -181,31 +192,36 @@ public class UserCreate extends JPanel {
 				String emailIn = email.getText();
 				String nameIn = name.getText();
 				
-				int result = 0;
-
-				try {
-					result = WineHunterApplication.userSession.createUser(nameIn, emailIn, usernameIn, passwordIn, 0, 0);
-	
-				} catch (Exception e2) {
-					// do nothing, we catch this with the result catchall
+				if ((usernameIn.isEmpty()) || (passwordIn.isEmpty()) || (emailIn.isEmpty()) || (nameIn.isEmpty())) {
+					WineHunterApplication.userCreation(3);
 				}
-				
-				if (result == 1) {
-					WineHunterApplication.userLogin(2);
-				} 
-				else if (result == 0) {
-					WineHunterApplication.userCreation(2);
-				} 
 				else {
-					WineHunterApplication.userCreation(1);
-				} 
+					int result = 0;
+	
+					try {
+						result = WineHunterApplication.userSession.createUser(nameIn, emailIn, usernameIn, passwordIn, 0, 0);
+		
+					} catch (Exception e2) {
+						// do nothing, we catch this with the result catchall
+					}
+					
+					if (result == 1) {
+						WineHunterApplication.userLogin(2);
+					} 
+					else if (result == 0) {
+						WineHunterApplication.userCreation(2);
+					} 
+					else {
+						WineHunterApplication.userCreation(1);
+					} 
+				}
 			}
 		});
 		Accept.setToolTipText("Click to accept the provided credentials.\n");
 		GridBagConstraints gbc_Accept = new GridBagConstraints();
 		gbc_Accept.insets = new Insets(0, 0, 5, 5);
 		gbc_Accept.anchor = GridBagConstraints.CENTER;
-		gbc_Accept.gridx = 4;
+		gbc_Accept.gridx = 3;
 		gbc_Accept.gridy = 0;
 		createPanel.add(Accept, gbc_Accept);
 		

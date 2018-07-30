@@ -132,8 +132,6 @@ public class UserSession {
 		
 		statement.close();
 		
-		System.out.println(sql + ": " + result);
-		
 		return result;
 		
 	}

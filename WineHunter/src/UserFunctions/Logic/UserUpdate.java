@@ -63,7 +63,6 @@ public class UserUpdate {
 			}
 			result = 1;
 		}
-
 		
 		stmt.close();
 		

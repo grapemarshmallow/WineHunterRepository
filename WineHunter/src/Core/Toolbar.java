@@ -50,7 +50,7 @@ public class Toolbar extends JPanel {
 		JLabel lblLoggedInAs = new JLabel();
 		lblLoggedInAs.setName("Logged in as");
 		if (WineHunterApplication.userSession.isLoggedIn()) {
-			lblLoggedInAs.setText("Logged in as ");
+			lblLoggedInAs.setText("Logged in as");
 		}
 		lblLoggedInAs.setHorizontalAlignment(SwingConstants.LEFT);
 		lblLoggedInAs.setFont(WineHunterApplication.format.getSubheadingFont2Base());
@@ -60,7 +60,6 @@ public class Toolbar extends JPanel {
 		gbc_lblLoginText.anchor = GridBagConstraints.WEST;
 		gbc_lblLoginText.gridx = 0;
 		gbc_lblLoginText.gridy = 0;
-		gbc_lblLoginText.weightx = 1;
 		
 		JLabel lblLoginName = new JLabel();
 		lblLoginName.setName("lblLoginName");
@@ -70,11 +69,11 @@ public class Toolbar extends JPanel {
 			lblLoginName.setText(WineHunterApplication.userSession.getUser().getUsername());
 			if (WineHunterApplication.userSession.getUser().getSuperAdmin() == 1) {
 				lblLoginName.setForeground(Color.RED);
-				lblLoginName.setFont(WineHunterApplication.format.getBoldFont());
+				lblLoginName.setFont(WineHunterApplication.format.getSubheadingFont2());
 			}
 			else if (WineHunterApplication.userSession.getUser().getAdmin() == 1) {
 				lblLoginName.setForeground(Color.BLUE);
-				lblLoginName.setFont(WineHunterApplication.format.getBoldFont());
+				lblLoginName.setFont(WineHunterApplication.format.getSubheadingFont2());
 			}
 		}
 		
@@ -106,6 +105,7 @@ public class Toolbar extends JPanel {
 		
 		if (WineHunterApplication.userSession.isLoggedIn()) {
 			JButton btnWineSearch = new JButton("Wine Search");
+			btnWineSearch.setFont(WineHunterApplication.format.getSubheadingFont2Base());
 			btnWineSearch.setHorizontalAlignment(SwingConstants.TRAILING);
 			btnWineSearch.setName("btnWineSearch");
 			btnWineSearch.addActionListener(new ActionListener() {
@@ -118,6 +118,7 @@ public class Toolbar extends JPanel {
 		
 		if (WineHunterApplication.userSession.isLoggedIn()) {
 			JButton btnUser = new JButton("User Profile");
+			btnUser.setFont(WineHunterApplication.format.getSubheadingFont2Base());
 			btnUser.setHorizontalAlignment(SwingConstants.TRAILING);
 			btnUser.setName("btnUser");
 			btnUser.addActionListener(new ActionListener() {
@@ -131,6 +132,7 @@ public class Toolbar extends JPanel {
 		
 		if (WineHunterApplication.userSession.getUser().getAdmin() == 1) {
 			JButton btnAdminFunctions = new JButton("Admin");
+			btnAdminFunctions.setFont(WineHunterApplication.format.getSubheadingFont2Base());
 			btnAdminFunctions.setHorizontalAlignment(SwingConstants.TRAILING);
 			btnAdminFunctions.setName("btnAdminFunctions");
 			btnAdminFunctions.addActionListener(new ActionListener() {
@@ -143,6 +145,7 @@ public class Toolbar extends JPanel {
 		
 		if (WineHunterApplication.userSession.isLoggedIn()) {
 			JButton btnLogout = new JButton("Logout");
+			btnLogout.setFont(WineHunterApplication.format.getSubheadingFont2Base());
 			btnLogout.setHorizontalAlignment(SwingConstants.TRAILING);
 			btnLogout.setName("btnLogout");
 			btnLogout.addActionListener(new ActionListener() {
@@ -156,6 +159,7 @@ public class Toolbar extends JPanel {
 		
 		
 		JButton btnQuit = new JButton("Quit");
+		btnQuit.setFont(WineHunterApplication.format.getSubheadingFont2Base());
 		btnQuit.setHorizontalAlignment(SwingConstants.TRAILING);
 		btnQuit.setName("btnQuit");
 		btnQuit.addActionListener(new ActionListener() {
