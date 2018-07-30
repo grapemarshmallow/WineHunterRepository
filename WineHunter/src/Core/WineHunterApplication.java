@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import WineObjects.*;
 import UserFunctions.GUI.AdminUserSearch;
+import UserFunctions.GUI.EditTasterProfile;
 import UserFunctions.GUI.ViewUserProfile;
 
 import java.awt.GridLayout;
@@ -45,7 +46,8 @@ public class WineHunterApplication {
 
 	private static JPanel toolbarPanel;
 	private static JPanel mainPanel;
-	private static JSeparator sep; 
+	private static JSeparator sep;
+	public static EditTasterProfile editTasterProfile; 
 	
 	public final static int APPLICATION_WIDTH = 900;
 	public final static int APPLICATION_HEIGHT = 700;
@@ -270,7 +272,7 @@ public class WineHunterApplication {
 		
 		//testing
 		
-		writeLocations();
+		//writeLocations();
 		
 		
 		for (int i = 0; i < components.length; ++i) {
@@ -384,6 +386,20 @@ public class WineHunterApplication {
 		adminUserSearch.setMaximumSize(getMainPanelDimensions());
 		mainPanel.setVisible(true);
 		mainPanel.add(adminUserSearch);
+		
+		frmWinehunter.pack();
+
+	}
+	
+	public static void editTasterProfile(User user) {
+		WineHunterApplication.cleanPanel();
+
+		editTasterProfile = new EditTasterProfile(user);
+		editTasterProfile.setName("editTasterProfile");
+		editTasterProfile.setPreferredSize(mainDimension); 
+		editTasterProfile.setMaximumSize(getMainPanelDimensions());
+		mainPanel.setVisible(true);
+		mainPanel.add(editTasterProfile);
 		
 		frmWinehunter.pack();
 

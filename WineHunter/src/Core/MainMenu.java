@@ -30,6 +30,9 @@ public class MainMenu extends JPanel {
 		if (subsequent == 1) {
 			add(new JLabel("User successfully deleted."));
 		}
+		if (subsequent == 2) {
+			add(new JLabel("Error: Try again later."));
+		}
 	
 		
 		JLabel lblWelcome = new JLabel(labelText);

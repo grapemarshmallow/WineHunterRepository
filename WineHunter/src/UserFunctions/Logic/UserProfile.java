@@ -296,7 +296,7 @@ public class UserProfile {
 	/**
 	 * Sets a taster profile based on a user object
 	 * @param user object to get info for
-	 * @return -1 for insufficient security
+	 * @return -1 for insufficient security, 1 is we get to the end without issues
 	 * @throws SQLException
 	 */
 	public int setTasterProfile(User user) throws SQLException {
@@ -342,7 +342,8 @@ public class UserProfile {
 			
 			PreparedStatement stmt = WineHunterApplication.connection.getConnection().prepareStatement(sql);
 			stmt.executeUpdate();
-			stmt.executeUpdate();
+			
+			
 			stmt.close();
 		}
 		
@@ -408,7 +409,7 @@ public class UserProfile {
 			
 			PreparedStatement stmt = WineHunterApplication.connection.getConnection().prepareStatement(sql);
 			stmt.executeUpdate();
-			stmt.executeUpdate();
+			
 			stmt.close();
 		}
 		
@@ -441,11 +442,12 @@ public class UserProfile {
 			
 			PreparedStatement stmt = WineHunterApplication.connection.getConnection().prepareStatement(sql);
 			stmt.executeUpdate();
-			stmt.executeUpdate();
+			
 			stmt.close();
 		}
 		
 		
+		result = 1;
 		
 		return result;
 	}

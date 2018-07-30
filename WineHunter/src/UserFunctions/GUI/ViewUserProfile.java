@@ -588,6 +588,7 @@ public class ViewUserProfile extends JPanel {
 		btnEditTasterProfile.setFont(WineHunterApplication.format.getBaseFont());
 		btnEditTasterProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				WineHunterApplication.editTasterProfile(user);
 			}
 		});
 		GridBagConstraints gbc_btnEditTasterProfile = new GridBagConstraints();
