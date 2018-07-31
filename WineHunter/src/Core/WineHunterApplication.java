@@ -301,6 +301,8 @@ public class WineHunterApplication {
 			writeComponents((JComponent) components[i], 1);
 		}*/
 		
+=======
+		//writeLocations();
 >>>>>>> aa62519194508c5cc2f24df15404f331cbf5f937
 		
 		
