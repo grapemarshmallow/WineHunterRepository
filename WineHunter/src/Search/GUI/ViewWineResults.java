@@ -4,6 +4,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JLabel;
 
 import Core.WineHunterApplication;
@@ -31,7 +39,7 @@ public class ViewWineResults extends JPanel {
 	 * @param columnNames
 	 * @param empty
 	 */
-	public ViewWineResults(String[][] data, String[] columnNames) {
+	public ViewWineResults(String[][] data, String[] columnNames, int[] wineIDs) {
 		
 		this.setPreferredSize(WineHunterApplication.mainDimension);
 		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 50));
@@ -56,7 +64,7 @@ public class ViewWineResults extends JPanel {
 		scrollPort.setName("scrollPort");
 		scrollPort.setPreferredSize(new Dimension(wineScroll.getWidth(), wineScroll.getHeight()));
 		scrollPort.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 100));
-		
+
 		wineInfoScroll = new JTable(data,columnNames);
 		wineInfoScroll.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		wineInfoScroll.setAutoCreateRowSorter(true);
@@ -65,9 +73,16 @@ public class ViewWineResults extends JPanel {
 		
 		wineScroll.setViewport(scrollPort);
 		wineScroll.setViewportView(wineInfoScroll);
+		wineInfoScroll.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				int row = wineInfoScroll.getSelectedRow();
+				int wineID = wineIDs[row]; 
+				int userID = WineHunterApplication.userSession.getUser().getId();
+				WineHunterApplication.viewWine(wineID, userID); 
+			}
+		});
 		
 		this.add(wineScroll, "width 100%, height 90%");
-
 		
 		
 	}

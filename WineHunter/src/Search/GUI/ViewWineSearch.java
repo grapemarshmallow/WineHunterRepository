@@ -392,7 +392,8 @@ public class ViewWineSearch extends JPanel{
 				else {
 					String[][] data = WineHunterApplication.wineSearch.getResults();
 					String[] columnNames = WineHunterApplication.wineSearch.getColumns();
-					WineHunterApplication.showWines(data,columnNames); 
+					int[] wineIDs = WineHunterApplication.wineSearch.getWineIDs();
+					WineHunterApplication.showWines(data,columnNames, wineIDs); 
 				}
 			}
 		});

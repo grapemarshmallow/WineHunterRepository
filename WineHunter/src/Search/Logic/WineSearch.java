@@ -16,6 +16,7 @@ import WineObjects.*;
 public class WineSearch {
 	private String[][] data; 
 	private String[] columnNames= {"Wine", "Vintage", "Price ($)", "Winery", "Country", "Province"}; 
+	private int[] wineIDs; 
 	
 	/**
 	 * do nothing constructor
@@ -40,6 +41,15 @@ public class WineSearch {
 
 	public void setColumns(String[] columns) {
 		this.columnNames = columns;
+	}
+	
+	public int[] getWineIDs() {
+		return this.wineIDs;
+	}
+
+
+	public void setWineIDs(int[] wineIDs) {
+		this.wineIDs = wineIDs;
 	}
 	
 	/**
@@ -88,10 +98,10 @@ public class WineSearch {
 			}
 			wheresql = wheresql + "provinceName LIKE '" + province + "%'";
 		}
-		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
+		sql = "SELECT w.wineID, w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
 				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
 				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
-				" INNER JOIN country c ON c.CountryID = p.CountryID " + wheresql; 
+				" INNER JOIN country c ON c.CountryID = p.CountryID " + wheresql;
 
 		ResultSet rs = stmt.executeQuery(sql);
 		
@@ -110,11 +120,13 @@ public class WineSearch {
 		}
 		
 		data = new String[size][6];
+		wineIDs = new int[size]; 
 		int row = 0;
 		
 		while(rs.next()){
 			
 			
+			int wineID = rs.getInt("wineID");
 			String wineName = rs.getString("wineName");
 			int vintageval = rs.getInt("vintage");
 			double price = rs.getDouble("price");
@@ -122,6 +134,7 @@ public class WineSearch {
 			String countryName = rs.getString("countryName");
 			String provinceName = rs.getString("provinceName");
 			
+			wineIDs[row] = wineID; 
 			data[row][0] = wineName;
 			if(vintageval == 0) {
 				data[row][1] = "UNKNOWN";
@@ -146,7 +159,6 @@ public class WineSearch {
 		rs.close();
 
 		stmt.close();
-		
 		return 1;
 	}
 	
