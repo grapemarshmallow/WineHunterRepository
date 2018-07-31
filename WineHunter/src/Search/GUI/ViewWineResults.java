@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 
-<<<<<<< HEAD
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -13,8 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-=======
->>>>>>> aa62519194508c5cc2f24df15404f331cbf5f937
 import javax.swing.JLabel;
 
 import Core.WineHunterApplication;
@@ -67,25 +64,7 @@ public class ViewWineResults extends JPanel {
 		scrollPort.setName("scrollPort");
 		scrollPort.setPreferredSize(new Dimension(wineScroll.getWidth(), wineScroll.getHeight()));
 		scrollPort.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 100));
-		
-<<<<<<< HEAD
-		table = new JTable(data,columnNames);
-		table.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 300, WineHunterApplication.APPLICATION_HEIGHT - 300));
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		table.setAutoCreateRowSorter(true);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 200, WineHunterApplication.APPLICATION_HEIGHT - 200));
-		
-		table.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-				int row = table.getSelectedRow();
-				int wineID = wineIDs[row]; 
-				int userID = WineHunterApplication.userSession.getUser().getId();
-				WineHunterApplication.viewWine(wineID, userID); 
-			}
-		});
-		this.add(scrollPane);
-=======
+
 		wineInfoScroll = new JTable(data,columnNames);
 		wineInfoScroll.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		wineInfoScroll.setAutoCreateRowSorter(true);
@@ -94,10 +73,16 @@ public class ViewWineResults extends JPanel {
 		
 		wineScroll.setViewport(scrollPort);
 		wineScroll.setViewportView(wineInfoScroll);
+		wineInfoScroll.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				int row = wineInfoScroll.getSelectedRow();
+				int wineID = wineIDs[row]; 
+				int userID = WineHunterApplication.userSession.getUser().getId();
+				WineHunterApplication.viewWine(wineID, userID); 
+			}
+		});
 		
 		this.add(wineScroll, "width 100%, height 90%");
-
->>>>>>> aa62519194508c5cc2f24df15404f331cbf5f937
 		
 		
 	}

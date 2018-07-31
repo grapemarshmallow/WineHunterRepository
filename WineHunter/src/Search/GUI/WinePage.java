@@ -112,7 +112,7 @@ public class WinePage extends JPanel {
 		//actually display everything
 		
 		//wine info
-		
+		/**
 		JLabel lblWineName = new JLabel("Wine Name: " + results[0]);
 		panel.add(lblWineName);
 		
@@ -152,6 +152,7 @@ public class WinePage extends JPanel {
 		
 		JLabel lblVarieties = new JLabel("Grape Varieties: " + varieties);
 		panel.add(lblVarieties);
+		*/
 		
 		//user info
 		JLabel lblLikeDislike = new JLabel("You " + userResults[0] + " this review.");
@@ -199,7 +200,10 @@ public class WinePage extends JPanel {
 		JButton btnWriteReview = new JButton("Write/Edit a review");
 		btnWriteReview.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int scoreInt = Integer.parseInt(userResults[2]);
+				int scoreInt = 0; 
+				if(userResults[2] != "N/A") {
+					scoreInt = Integer.parseInt(userResults[2]);
+				}
 				WineHunterApplication.writeReview(wineID, userID,scoreInt, results[0], userResults[3],0);
 			}
 		}); 
@@ -500,7 +504,6 @@ public class WinePage extends JPanel {
 			cStmt.setInt(3, newLikeDislike);
 			cStmt.execute(); 
 			cStmt.close();
-			if(!result) System.out.println("I'm done");
 		} catch (SQLException e) {
 			result = false; 
 			e.printStackTrace();
