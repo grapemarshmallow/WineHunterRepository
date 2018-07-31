@@ -410,11 +410,11 @@ public class WineSearch {
 		return 1;
 	}
 
-	public int wineSearch(int countryId, int provinceId, int regionId, int wineryId, int keywordId, int varietyId,
+	public int wineSearch(int countryId, int provinceId, String regionText, String wineryText, int keywordId, int varietyId,
 			int vintageMinimum, int vintageMaximum, int priceMinimum, int priceMaximum, int pointsMinimum,
 			int pointsMaximum, boolean noPriceToggle, boolean noPointsToggle, boolean noVintageToggle) throws SQLException {
 		
-		if((countryId == -10) && (provinceId == -10) && (regionId == -10) && (wineryId == -10) && (keywordId == -10) && (varietyId == -10) 
+		if((countryId == -10) && (provinceId == -10) && (regionText.isEmpty()) && (wineryText.isEmpty()) && (keywordId == -10) && (varietyId == -10) 
 				&& (vintageMinimum == ViewWineSearch.MIN_VINTAGE) && (vintageMaximum == ViewWineSearch.MAX_VINTAGE) 
 				&& (priceMinimum == ViewWineSearch.MIN_PRICE) && (priceMaximum == ViewWineSearch.MAX_PRICE) && 
 				(pointsMinimum == ViewWineSearch.MIN_POINTS) && (pointsMaximum == ViewWineSearch.MAX_POINTS)) {
@@ -433,25 +433,25 @@ public class WineSearch {
 		
 		String vintageString = "";
 		if (vintageMinimum != ViewWineSearch.MIN_VINTAGE) {
-			vintageString = "wine.vintage > " + vintageMinimum;
+			vintageString = "w.vintage > " + vintageMinimum;
 			needAnd = 1;
 			needAndInner = 1;
 			needOr = 1;
 		}
-		if (vintageMaximum == ViewWineSearch.MAX_VINTAGE) {
+		if (vintageMaximum != ViewWineSearch.MAX_VINTAGE) {
 			if (needAndInner == 1) {
 				vintageString = vintageString + " AND ";
 			}
 			else {
 				needAnd = 1;
 			}
-			vintageString = vintageString + "wine.vintage < " + vintageMaximum;
+			vintageString = vintageString + "w.vintage < " + vintageMaximum;
 			needOr = 1;
 		}
 		
 		if (noVintageToggle) {
 			if (needOr == 1) {
-				vintageString = "((" + vintageString + ") OR (wine.vintage = 0))";
+				vintageString = "((" + vintageString + ") OR (w.vintage = 0))";
 			}
 
 		}
@@ -463,25 +463,25 @@ public class WineSearch {
 		
 		String priceString = "";
 		if (priceMinimum != ViewWineSearch.MIN_PRICE) {
-			priceString = "wine.price > " + priceMinimum;
+			priceString = "w.price > " + priceMinimum;
 			needAnd = 1;
 			needAndInner = 1;
 			needOr = 1;
 		}
-		if (priceMaximum == ViewWineSearch.MAX_PRICE) {
+		if (priceMaximum != ViewWineSearch.MAX_PRICE) {
 			if (needAndInner == 1) {
 				priceString = priceString + " AND ";
 			}
 			else {
 				needAnd = 1;
 			}
-			priceString = priceString + "wine.price < " + priceMaximum;
+			priceString = priceString + "w.price < " + priceMaximum;
 			needOr = 1;
 		}
 		
 		if (noPriceToggle) {
 			if (needOr == 1) {
-				priceString = "(" + priceString + ") OR (wine.price = 0)";
+				priceString = "(" + priceString + ") OR (w.price = 0)";
 			}
 
 		}
@@ -503,7 +503,7 @@ public class WineSearch {
 			needAndInner = 1;
 			needOr = 1;
 		}
-		if (pointsMaximum == ViewWineSearch.MAX_POINTS) {
+		if (pointsMaximum != ViewWineSearch.MAX_POINTS) {
 			if (needAndInner == 1) {
 				pointsString = pointsString + " AND ";
 			}
@@ -528,8 +528,8 @@ public class WineSearch {
 			wheresql = wheresql + pointsString;
 		}
 		
-		if (wineryId != -10) {
-			String wineryString = "wine.WineryID = " + wineryId;
+		if (!wineryText.isEmpty()) {
+			String wineryString = "wy.WineryName LIKE '" + wineryText + "%'";
 			if (needAnd == 1) {
 				wheresql = wheresql + " AND " + wineryString;
 			}
@@ -537,8 +537,8 @@ public class WineSearch {
 				wheresql = wheresql + wineryString;
 			}
 		}
-		else if (regionId != -10) {
-			String regionString = "winery.RegionID = " + regionId;
+		if (!regionText.isEmpty()) {
+			String regionString = "r.RegionName LIKE '" + regionText + "%'";
 			if (needAnd == 1) {
 				wheresql = wheresql + " AND " + regionString;
 			}
@@ -546,8 +546,8 @@ public class WineSearch {
 				wheresql = wheresql + regionString;
 			}
 		}
-		else if (provinceId != -10) {
-			String provinceString = "winery.ProvinceID = " + provinceId;
+		if (provinceId != -10) {
+			String provinceString = "wy.ProvinceID = " + provinceId;
 			if (needAnd == 1) {
 				wheresql = wheresql + " AND " + provinceString;
 			}
@@ -556,7 +556,7 @@ public class WineSearch {
 			}
 		}
 		else if (countryId != -10) {
-			String countryString = "region.CountryID = " + countryId;
+			String countryString = "c.CountryID = " + countryId;
 			if (needAnd == 1) {
 				wheresql = wheresql + " AND " + countryString;
 			}
@@ -568,11 +568,11 @@ public class WineSearch {
 		
 		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
 				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
-				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
+				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID"
+				+ " INNER JOIN region r ON wy.RegionID = r.RegionID" + 
 				" INNER JOIN country c ON c.CountryID = p.CountryID "
-				+ "INNER JOIN WineReview wr on w.WineID = wr.WineID " + wheresql; 
+				+ "INNER JOIN winereview wr on w.WineID = wr.WineID " + wheresql; 
 		
-		System.out.println(sql);
 
 		ResultSet rs = stmt.executeQuery(sql);
 		

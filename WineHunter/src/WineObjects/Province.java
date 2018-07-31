@@ -22,6 +22,7 @@ package WineObjects;
   */
 public class Province {
 	
+
 	// Data members
 	private int id; // the unique id for this province
 	private String name; // the name for this province
@@ -29,6 +30,11 @@ public class Province {
 	
 	public Country getCountry() {
 		return this.country;
+	}
+	
+	@Override
+	public String toString() {
+		return this.name;
 	}
 
 	public void setCountry(Country country) {

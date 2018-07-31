@@ -30,6 +30,7 @@ import javax.swing.SpinnerNumberModel;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.JToggleButton;
@@ -39,23 +40,26 @@ public class ViewWineSearch extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = -7966165569110154144L;
-	private JComboBox<Country> countryBox = new JComboBox<Country>();
-	private JComboBox<Variety> varietyBox = new JComboBox<Variety>();
-	private JComboBox<Keyword> keywordBox = new JComboBox<Keyword>();
-	private JComboBox<Region> regionBox = new JComboBox<Region>();
-	private JComboBox<Province> provinceBox = new JComboBox<Province>();
-	private JComboBox<Winery> wineryBox = new JComboBox<Winery>();
-	private JSpinner minVintageSpinner;
-	private JSpinner maxVintageSpinner;
 	private Vector<Country> countryList = new Vector<Country>();
 	private Vector<Variety> varietyList = new Vector<Variety>();
 	private Vector<Keyword> keywordList = new Vector<Keyword>();
-	private Vector<Region> regionList = new Vector<Region>();
+	//private Vector<Region> regionList = new Vector<Region>();
 	private Vector<Province> provinceList = new Vector<Province>();
-	private Vector<Winery> wineryList = new Vector<Winery>();
-	private Vector<Region> regionFilteredList = new Vector<Region>();
+	//private Vector<Winery> wineryList = new Vector<Winery>();
+	//private Vector<Region> regionFilteredList = new Vector<Region>();
 	private Vector<Province> provinceFilteredList = new Vector<Province>();
-	private Vector<Winery> wineryFilteredList = new Vector<Winery>();
+	//private Vector<Winery> wineryFilteredList = new Vector<Winery>();
+	private JComboBox<Country> countryBox = new JComboBox<Country>(countryList);
+	private JComboBox<Variety> varietyBox = new JComboBox<Variety>(varietyList);
+	private JComboBox<Keyword> keywordBox = new JComboBox<Keyword>(keywordList);
+//	private JComboBox<Region> regionBox = new JComboBox<Region>();
+	private JComboBox<Province> provinceBox = new JComboBox<Province>();
+//	private JComboBox<Winery> wineryBox = new JComboBox<Winery>();
+	private JTextField wineryText = new JTextField();
+	private JTextField regionText = new JTextField();
+	private JSpinner minVintageSpinner;
+	private JSpinner maxVintageSpinner;
+	
 	private int notEmpty;
 	private JSpinner minPointsSpinner;
 	private JSpinner maxPointsSpinner;
@@ -142,7 +146,7 @@ public class ViewWineSearch extends JPanel{
 		gbc_searchPanel.gridx = 0;
 		gbc_searchPanel.gridy = 3;
 		add(searchPanel, gbc_searchPanel);
-		searchPanel.setLayout(new GridLayout(5, 1, 0, 0));
+		searchPanel.setLayout(new GridLayout(10, 1, 0, 0));
 		
 		JPanel vintagePanel = new JPanel();
 		searchPanel.add(vintagePanel);
@@ -189,36 +193,46 @@ public class ViewWineSearch extends JPanel{
 		JToggleButton noVintageToggle = new JToggleButton("Include results with no vintage");
 		vintagePanel.add(noVintageToggle);
 		
-		JPanel locationPanel = new JPanel();
-		searchPanel.add(locationPanel);
 		
 		JLabel locationLabel = new JLabel("Location:");
 		locationLabel.setName("locationLabel");
-		locationPanel.add(locationLabel);
+		searchPanel.add(locationLabel);
+		
+		JPanel locationPanel = new JPanel();
+		searchPanel.add(locationPanel);
 		
 		JLabel countryBoxLabel = new JLabel("Country: ");
 		countryBoxLabel.setName("countryBoxLabel");
 		locationPanel.add(countryBoxLabel);
-		
 		locationPanel.add(countryBox);
+		
+		JPanel locationPanel2 = new JPanel();
+		searchPanel.add(locationPanel2);
 		
 		JLabel provinceBoxLabel = new JLabel("Province: ");
 		provinceBoxLabel.setName("provinceBoxLabel");
-		locationPanel.add(provinceBoxLabel);
+		locationPanel2.add(provinceBoxLabel);
+		locationPanel2.add(provinceBox);
 		
-		locationPanel.add(provinceBox);
+		JPanel locationPanel3 = new JPanel();
+		searchPanel.add(locationPanel3);
 		
 		JLabel regionBoxLabel = new JLabel("Region: ");
 		regionBoxLabel.setName("regionBoxLabel");
-		locationPanel.add(regionBoxLabel);
+		locationPanel3.add(regionBoxLabel);
 		
-		locationPanel.add(regionBox);
+		regionText.setColumns(10);
+		locationPanel3.add(regionText);
+		
+		JPanel locationPanel4 = new JPanel();
+		searchPanel.add(locationPanel4);
 		
 		JLabel wineryBoxLabel = new JLabel("Winery: ");
 		wineryBoxLabel.setName("wineryBoxLabel");
-		locationPanel.add(wineryBoxLabel);
+		locationPanel4.add(wineryBoxLabel);
 		
-		locationPanel.add(wineryBox);
+		wineryText.setColumns(10);
+		locationPanel4.add(wineryText);
 		
 		
 		JPanel pointsPanel = new JPanel();
@@ -311,6 +325,18 @@ public class ViewWineSearch extends JPanel{
 		JToggleButton noPriceToggle = new JToggleButton("Include results with no price");
 		pricePanel.add(noPriceToggle);
 		
+		JPanel lastPanel = new JPanel();
+		searchPanel.add(lastPanel);
+		
+		JLabel lblKeyword = new JLabel("Keyword: ");
+		lastPanel.add(lblKeyword);
+		
+		lastPanel.add(keywordBox);
+		
+		JLabel lblVariety = new JLabel("Variety: ");
+		lastPanel.add(lblVariety);
+		lastPanel.add(varietyBox);
+		
 		JPanel searchButtonPanel = new JPanel();
 		searchPanel.add(searchButtonPanel);
 		
@@ -326,33 +352,32 @@ public class ViewWineSearch extends JPanel{
 				int pointsMaximum = (int) maxPointsSpinner.getValue();
 				
 				int countryId = -10;
-				int regionId = -10;
+				//int regionId = -10;
 				int provinceId = -10;
-				int wineryId = -10;
+				//int wineryId = -10;
 				int varietyId = -10;
 				int keywordId = -10;
 				
+				String regionTextIn = regionText.getText().toUpperCase();
+				String wineryTextIn = wineryText.getText().toUpperCase();
+				
 				if (countryBox.getSelectedItem() != null) {
-					countryId = countryBox.getSelectedIndex();
+					countryId = ((Country) countryBox.getSelectedItem()).getId();
 				}
-				if (regionBox.getSelectedItem() != null) {
-					regionId = regionBox.getSelectedIndex();
-				}
+
 				if (provinceBox.getSelectedItem() != null) {
-					provinceId = provinceBox.getSelectedIndex();
+					provinceId = ((Province) provinceBox.getSelectedItem()).getId();
 				}
-				if (wineryBox.getSelectedItem() != null) {
-					wineryId = wineryBox.getSelectedIndex();
-				}
+
 				if (keywordBox.getSelectedItem() != null) {
-					keywordId = keywordBox.getSelectedIndex();
+					keywordId = ((Keyword) keywordBox.getSelectedItem()).getId();
 				}
-				if (keywordBox.getSelectedItem() != null) {
-					keywordId = keywordBox.getSelectedIndex();
+				if (varietyBox.getSelectedItem() != null) {
+					varietyId = ((Variety) varietyBox.getSelectedItem()).getId();
 				}
 				
 				try {
-					notEmpty = WineHunterApplication.wineSearch.wineSearch(countryId, provinceId, regionId, wineryId, keywordId, 
+					notEmpty = WineHunterApplication.wineSearch.wineSearch(countryId, provinceId, regionTextIn, wineryTextIn, keywordId, 
 							varietyId, vintageMinimum, vintageMaximum, priceMinimum, priceMaximum, pointsMinimum, pointsMaximum,
 							noPriceToggle.isSelected(), noPointsToggle.isSelected(), noVintageToggle.isSelected());
 				} catch (SQLException e) {
@@ -383,7 +408,7 @@ public class ViewWineSearch extends JPanel{
 		try {
 			LoadVariousLists.loadAllVarieties(varietyList);
 			LoadVariousLists.loadAllKeywords(keywordList);
-			LoadVariousLists.loadAllLocations(countryList, provinceList, regionList, wineryList);
+			LoadVariousLists.loadAllLocations(countryList, provinceList);
 		} catch (SQLException e) {
 			WineHunterApplication.splash(2);
 
@@ -393,7 +418,9 @@ public class ViewWineSearch extends JPanel{
 		
 		countryBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				refreshLocation();
+				if (!e.equals(null)) {
+					refreshLocation();
+				}
 			}
 		});
 		countryBox.setName("countryBox");
@@ -402,33 +429,9 @@ public class ViewWineSearch extends JPanel{
 		
 		keywordBox.setName("keywordBox");
 		
-		regionBox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				refreshLocation();
-			}
-		});
-		regionBox.setName("regionBox");
 		
-		provinceBox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				refreshLocation();
-			}
-		});
 		provinceBox.setName("provinceBox");
 		
-		wineryBox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				refreshLocation();
-			}
-		});
-		wineryBox.setName("wineryBox");
-		
-		
-		wineryBox.setSelectedItem(null);
-		wineryBox.setEnabled(false);
-		
-		regionBox.setSelectedItem(null);
-		regionBox.setEnabled(false);
 		
 		provinceBox.setSelectedItem(null);
 		provinceBox.setEnabled(false);
@@ -436,11 +439,15 @@ public class ViewWineSearch extends JPanel{
 		countryBox.setSelectedItem(null);
 		countryBox.setEnabled(true);
 		
+		varietyBox.setModel(new DefaultComboBoxModel<Variety>(varietyList));
 		varietyBox.setSelectedItem(null);
 		varietyBox.setEnabled(true);
 		
+		keywordBox.setModel(new DefaultComboBoxModel<Keyword>(keywordList));
+		
 		keywordBox.setSelectedItem(null);
 		keywordBox.setEnabled(true);
+		
 		
 	}
 	
@@ -451,117 +458,32 @@ public class ViewWineSearch extends JPanel{
 		
 		Province currentProvince = (Province) provinceBox.getSelectedItem();
 		Country currentCountry = (Country) countryBox.getSelectedItem();
-		Region currentRegion = (Region) regionBox.getSelectedItem();
 		
-		int wineryCount = 0;
-		int regionCount = 0;
-		int provinceCount = 0;
 		
-		if (currentRegion != null) {
-			wineryFilteredList = new Vector<Winery>();
-			wineryFilteredList.setSize(wineryList.size());
-			for (int i = 0; i < wineryList.size(); ++i) {
-				Winery currentWinery = wineryList.get(i);
-				if (currentWinery != null) {
-					if (currentWinery.getRegion().getId() == currentRegion.getId()) {
+		if (currentCountry != null) {
 
-						wineryFilteredList.add(currentWinery.getId(), currentWinery);
-						++wineryCount;
-					}
-				}
-			}
-			wineryFilteredList.setSize(wineryCount + 5);
-			wineryBox.setModel(new DefaultComboBoxModel<Winery>(wineryFilteredList));
-			wineryBox.setSelectedItem(null);
-			
-		}
-		
-		else if (currentProvince != null) {
-			wineryFilteredList = new Vector<Winery>();
-			regionFilteredList = new Vector<Region>();
-			wineryFilteredList.setSize(wineryList.size());
-			regionFilteredList.setSize(regionList.size());
-			for (int i = 0; i < wineryList.size(); ++i) {
-				Winery currentWinery = wineryList.get(i);
-				if (currentWinery != null) {
-					if (currentWinery.getProvince().getId() == currentProvince.getId()) {
-						Region regionToAdd = regionFilteredList.get(currentWinery.getRegion().getId());
-						if (regionToAdd == null) {
-							regionToAdd = regionList.get(currentWinery.getRegion().getId());
-							regionFilteredList.set(regionToAdd.getId(), regionToAdd);
-							++regionCount;
-						}
-						wineryFilteredList.set(currentWinery.getId(), currentWinery);
-						++wineryCount;
-					}
-				}
-			}
-			wineryFilteredList.setSize(wineryCount + 5);
-			regionFilteredList.setSize(regionCount + 5);
-			wineryBox.setModel(new DefaultComboBoxModel<Winery>(wineryFilteredList));
-			wineryBox.setSelectedItem(null);
-			wineryBox.setEnabled(true);
-			regionBox.setModel(new DefaultComboBoxModel<Region>(regionFilteredList));
-			regionBox.setSelectedItem(null);
-			regionBox.setEnabled(true);
-		
-		}
-		
-		else if (currentCountry != null) {
-			wineryFilteredList = new Vector<Winery>();
-			regionFilteredList = new Vector<Region>();
 			provinceFilteredList = new Vector<Province>();
-			wineryFilteredList.setSize(wineryList.size());
-			regionFilteredList.setSize(regionList.size());
-			provinceFilteredList.setSize(provinceList.size());
 			for (int j = 0; j < provinceList.size(); ++j) {
 				currentProvince = provinceList.get(j);
 				if (currentProvince != null) {
 					if (currentProvince.getCountry().getId() == currentCountry.getId()) {
-						provinceFilteredList.set(currentProvince.getId(), currentProvince);
-						++provinceCount;
-						for (int i = 0; i < wineryList.size(); ++i) {
-							Winery currentWinery = wineryList.get(i);
-							if (currentWinery != null) {
-								if (currentWinery.getProvince().getId() == currentProvince.getId()) {
-									Region regionToAdd = regionFilteredList.get(currentWinery.getRegion().getId());
-									if (regionToAdd == null) {
-										regionToAdd = regionList.get(currentWinery.getRegion().getId());
-										regionFilteredList.set(regionToAdd.getId(), regionToAdd);
-										++regionCount;
-									}
-									wineryFilteredList.set(currentWinery.getId(), currentWinery);
-									++wineryCount;
-								}
-							}
-						}
+						provinceFilteredList.addElement(currentProvince);
+
 					}
 				}
 			}
-			wineryFilteredList.setSize(wineryCount + 5);
-			regionFilteredList.setSize(regionCount + 5);
-			provinceFilteredList.setSize(provinceCount + 5);
-			wineryBox.setModel(new DefaultComboBoxModel<Winery>(wineryFilteredList));
-			wineryBox.setSelectedItem(null);
-			wineryBox.setEnabled(false);
-			regionBox.setModel(new DefaultComboBoxModel<Region>(regionFilteredList));
-			regionBox.setSelectedItem(null);
-			regionBox.setEnabled(false);
+			
+			
 			provinceBox.setModel(new DefaultComboBoxModel<Province>(provinceFilteredList));
 			provinceBox.setSelectedItem(null);
+			provinceBox.setEnabled(true);
 			
 			
 		
 		}
 		
 		else {
-			wineryBox.setModel(new DefaultComboBoxModel<Winery>(wineryList));
-			wineryBox.setSelectedItem(null);
-			wineryBox.setEnabled(false);
-			regionBox.setModel(new DefaultComboBoxModel<Region>(regionList));
-			regionBox.setSelectedItem(null);
-			regionBox.setEnabled(false);
-			provinceBox.setModel(new DefaultComboBoxModel<Province>(provinceList));
+			
 			provinceBox.setSelectedItem(null);
 			provinceBox.setEnabled(false);
 			countryBox.setModel(new DefaultComboBoxModel<Country>(countryList));
