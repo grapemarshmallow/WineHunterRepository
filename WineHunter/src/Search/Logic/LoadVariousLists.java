@@ -3,7 +3,7 @@ package Search.Logic;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
+import java.util.Vector;
 
 import Core.WineHunterApplication;
 import WineObjects.*;
@@ -11,14 +11,12 @@ import WineObjects.*;
 public class LoadVariousLists {
 	
 	/**
-	 * Loads all keywords and returns them in an ArrayList
-	 * @param keywords ArrayList of Keyword objects
-	 * @return false if an error occurred
+	 * Loads all keywords and returns them in a DefaultComboBoxModel
+	 * @param keywords Vector of Keyword objects
 	 * @throws SQLException 
 	 */
-	public boolean loadAllKeywords(LinkedList<Keyword> keywords) throws SQLException  {
-		
-		boolean result = false;
+	public static void loadAllKeywords(Vector<Keyword> keywords) throws SQLException  {
+	
 
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
@@ -31,25 +29,24 @@ public class LoadVariousLists {
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while (rs.next()) {
-			keywords.add(new Keyword(rs.getInt("KeywordID"), rs.getString("Word")));
+			Keyword keywordToAdd = new Keyword(rs.getInt("KeywordID"), rs.getString("Word"));
+			
+			keywords.addElement(keywordToAdd);
+			
 		}
 		
 		rs.close();
 		
 		stmt.close();
 		
-		return result;
 	}
 	
 	/**
-	 * Loads all varieties and returns them in an ArrayList
-	 * @param varieties ArrayList of Variety objects
-	 * @return false if an error occurred
+	 * Loads all varieties and returns to a combo box model for the UI
+	 * @param varieties Vector of Variety objects
 	 * @throws SQLException 
 	 */
-	public boolean loadAllVarieties(LinkedList<Variety> varieties) throws SQLException  {
-		
-		boolean result = false;
+	public static void loadAllVarieties(Vector<Variety> varieties) throws SQLException  {
 
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
@@ -57,30 +54,30 @@ public class LoadVariousLists {
 
 		String sql;
 		sql = "SELECT *"
-				+ " FROM Variety";
+				+ " FROM varieties";
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while (rs.next()) {
-			varieties.add(new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName")));
+			Variety varietyToAdd = new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName"));
+			
+			varieties.addElement(varietyToAdd);
 		}
 		
 		rs.close();
 		
 		stmt.close();
 		
-		return result;
+		
 	}
 	
 	/**
 	 * Loads all countries and returns them in an ArrayList
-	 * @param countries ArrayList of Country objects
-	 * @return false if an error occurred
+	 * @param countries Vector of Country objects
 	 * @throws SQLException
 	 */
-	public boolean loadAllCountries(LinkedList<Country> countries) throws SQLException  {
-		
-		boolean result = false;
+	public static void loadAllCountries(Vector<Country> countries) throws SQLException  {
+	
 
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
@@ -93,14 +90,13 @@ public class LoadVariousLists {
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while (rs.next()) {
-			countries.add(new Country(rs.getInt("CountryID"), rs.getString("CountryName")));
+			countries.addElement(new Country(rs.getInt("CountryID"), rs.getString("CountryName")));
 		}
 		
 		rs.close();
 		
 		stmt.close();
 		
-		return result;
 	}
 	
 	

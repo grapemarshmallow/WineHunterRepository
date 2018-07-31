@@ -27,6 +27,11 @@ public class Variety {
 	private int red; // 1 if the variety normally produces red wine
 	private int white; // 1 if the variety normally produces white wine
 	
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
 	/**
      * Constructs a variety with the given id and name.
      * @param id the unique ID for the variety

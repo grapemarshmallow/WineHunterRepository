@@ -38,7 +38,7 @@ public class UserLogin extends JPanel {
 	 */
 
 	public UserLogin(int attemptFlag) {
-		setBounds(100, 100, WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_HEIGHT);
+		
 
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -51,16 +51,20 @@ public class UserLogin extends JPanel {
 		
 		
 		JLabel lblNewLabel = new JLabel("Welcome to WineHunter!");
+		lblNewLabel.setFont(WineHunterApplication.format.getHeadingFont());
+		lblNewLabel.setName("lblNewLabel");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setVerticalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
+		gbc_lblNewLabel.insets = new Insets(15, 15, 15, 15);
+		gbc_lblNewLabel.anchor = GridBagConstraints.CENTER;
 		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
 		
 		if (attemptFlag != 0) {
 			JPanel subsPanel = new JPanel();
+			subsPanel.setName("subsPanel");
 			GridBagConstraints gbc_subsPanel = new GridBagConstraints();
 			gbc_subsPanel.insets = new Insets(0, 0, 5, 0);
 			gbc_subsPanel.fill = GridBagConstraints.BOTH;
@@ -68,10 +72,12 @@ public class UserLogin extends JPanel {
 			gbc_subsPanel.gridy = 2;
 			this.add(subsPanel, gbc_subsPanel);
 			JLabel reprompt = new JLabel();
+			reprompt.setName("reprompt");
 			reprompt.setHorizontalAlignment(SwingConstants.CENTER);
+			reprompt.setFont(WineHunterApplication.format.getSubheadingFont2Base());
 			GridBagConstraints gbc_lblReprompt = new GridBagConstraints();
-			gbc_lblReprompt.insets = new Insets(0, 0, 5, 0);
-			gbc_lblReprompt.anchor = GridBagConstraints.NORTH;
+			gbc_lblReprompt.insets = new Insets(15, 15, 15, 15);
+			gbc_lblReprompt.anchor = GridBagConstraints.CENTER;
 			gbc_lblReprompt.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblReprompt.gridx = 0;
 			gbc_lblReprompt.gridy = 2;

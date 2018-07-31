@@ -148,6 +148,7 @@ public class WineHunterApplication {
 		gbc_toolbarPanel.fill = GridBagConstraints.BOTH;
 		toolbarPanel.setPreferredSize(new Dimension(APPLICATION_WIDTH, 42));
 		frmWinehunter.getContentPane().add(toolbarPanel, gbc_toolbarPanel);
+		
 
 		toolbarPanel.setLayout(new GridLayout(1, 1, 0, 0));
 		
@@ -290,6 +291,7 @@ public class WineHunterApplication {
 		
 		//testing
 		
+<<<<<<< HEAD
 		System.out.println("\nFrme size: " + frmWinehunter.getSize());
 		System.out.println("\nToolbar size: " + toolbar.getSize());
 		System.out.println("\nMain panel size: " + mainPanel.getSize());
@@ -299,6 +301,7 @@ public class WineHunterApplication {
 			writeComponents((JComponent) components[i], 1);
 		}*/
 		
+>>>>>>> aa62519194508c5cc2f24df15404f331cbf5f937
 		
 		
 		for (int i = 0; i < components.length; ++i) {

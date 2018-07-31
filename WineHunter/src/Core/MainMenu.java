@@ -1,6 +1,7 @@
 package Core;
 
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -29,21 +30,34 @@ public class MainMenu extends JPanel {
 		if (subsequent == 1) {
 			add(new JLabel("User successfully deleted."));
 		}
+		if (subsequent == 2) {
+			add(new JLabel("Error: Try again later."));
+		}
 	
 		
 		JLabel lblWelcome = new JLabel(labelText);
+		lblWelcome.setFont(WineHunterApplication.format.getHeadingFont());
+		lblWelcome.setName("lblWelcome");
+		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblWelcome = new GridBagConstraints();
-		gbc_lblWelcome.insets = new Insets(0, 0, 5, 0);
+		gbc_lblWelcome.insets = new Insets(15, 15, 15, 15);
 		gbc_lblWelcome.gridx = 0;
 		gbc_lblWelcome.gridy = 4;
+		gbc_lblWelcome.weightx = 1;
+		gbc_lblWelcome.fill = GridBagConstraints.BOTH;
 		add(lblWelcome, gbc_lblWelcome);
 		
-		JLabel lblNewLabel = new JLabel("Use the toolbar buttons to access the listed functionality.");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 6;
-		add(lblNewLabel, gbc_lblNewLabel);
+		JLabel lblHelp = new JLabel("Use the toolbar buttons to access the listed functionality.");
+		lblHelp.setFont(WineHunterApplication.format.getSubheadingFont2Base());
+		lblHelp.setName("lblHelp");
+		lblHelp.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_lblHelp = new GridBagConstraints();
+		gbc_lblHelp.insets = new Insets(15, 15, 15, 15);
+		gbc_lblHelp.gridx = 0;
+		gbc_lblHelp.gridy = 6;
+		gbc_lblHelp.weightx = 1;
+		gbc_lblHelp.fill = GridBagConstraints.BOTH;
+		add(lblHelp, gbc_lblHelp);
 		
 		
 		

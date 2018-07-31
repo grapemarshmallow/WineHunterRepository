@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 import javax.swing.JTextField;
 
-import java.awt.Dimension;
+
 import java.awt.FlowLayout;
 
 public class ViewWineSearch extends JPanel{
@@ -39,8 +39,7 @@ public class ViewWineSearch extends JPanel{
 	 */
 	
 	public ViewWineSearch(int empty) {
-		
-		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 100, WineHunterApplication.APPLICATION_HEIGHT - 100));
+
 		
 		notEmpty = 0; 
 
@@ -52,31 +51,40 @@ public class ViewWineSearch extends JPanel{
 		gridBagLayout.rowHeights = new int[]{0};
 		
 		
-		JLabel lblNewLabel = new JLabel("Search for wines!");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
-		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 1;
+		JLabel lblSearchPrompt = new JLabel("Search for wines!");
+		lblSearchPrompt.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSearchPrompt.setFont(WineHunterApplication.format.getHeadingFont());
+		GridBagConstraints gbc_lblSearchPrompt = new GridBagConstraints();
+		gbc_lblSearchPrompt.insets = new Insets(15, 15, 15, 15);
+		gbc_lblSearchPrompt.anchor = GridBagConstraints.NORTH;
+		gbc_lblSearchPrompt.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblSearchPrompt.gridx = 0;
+		gbc_lblSearchPrompt.gridy = 0;
 		
-		this.add(lblNewLabel, gbc_lblNewLabel);
+		this.add(lblSearchPrompt, gbc_lblSearchPrompt);
 		
-		JLabel lblempty = new JLabel("Please enter valid search criteria before searching.");
+		JLabel lblempty = new JLabel("Enter valid search criteria before searching.");
+		lblempty.setHorizontalAlignment(SwingConstants.CENTER);
+		lblempty.setFont(WineHunterApplication.format.getSubheadingFont2Base());
 		GridBagConstraints gbc_lblempty = new GridBagConstraints();
-		gbc_lblempty.insets = new Insets(0, 0, 5, 0);
+		gbc_lblempty.insets = new Insets(15, 15, 15, 15);
+		gbc_lblempty.anchor = GridBagConstraints.NORTH;
+		gbc_lblempty.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblempty.gridx = 0;
-		gbc_lblempty.gridy = 2;
+		gbc_lblempty.gridy = 1;
 		if(empty == 2) {
 			add(lblempty, gbc_lblempty);
 		}
 		
 		JLabel lblnoresults = new JLabel("No results found. You may search again.");
 		GridBagConstraints gbc_lblnoresults = new GridBagConstraints();
-		gbc_lblnoresults.insets = new Insets(0, 0, 5, 0);
+		lblnoresults.setHorizontalAlignment(SwingConstants.CENTER);
+		lblnoresults.setFont(WineHunterApplication.format.getSubheadingFont2Base());
+		gbc_lblnoresults.insets = new Insets(15, 15, 15, 15);
+		gbc_lblnoresults.anchor = GridBagConstraints.NORTH;
+		gbc_lblnoresults.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblnoresults.gridx = 0;
-		gbc_lblnoresults.gridy = 2;
+		gbc_lblnoresults.gridy = 1;
 		if(empty == 0) {
 			add(lblnoresults, gbc_lblnoresults);
 		}

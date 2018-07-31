@@ -1,6 +1,6 @@
 package UserFunctions.GUI;
 
-import java.awt.Dimension;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -36,8 +36,6 @@ public class AdminUserSearch extends JPanel {
 	 * @param subsequent 1 if this is for an initial failed search, 2 to select a search type, 3 for non-numeric ID detected
 	 */
 	public AdminUserSearch(int subsequent) {
-		
-		setBounds(100, 100, WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_HEIGHT);
 
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -60,32 +58,23 @@ public class AdminUserSearch extends JPanel {
 			
 		}
 		
-		JLabel lblNewLabel = new JLabel("Search for a user!");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(WineHunterApplication.format.getHeadingFont());
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
-		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
+		JLabel lblSearchPrompt = new JLabel("Search for a user!");
+		lblSearchPrompt.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSearchPrompt.setFont(WineHunterApplication.format.getHeadingFont());
+		GridBagConstraints gbc_lblSearchPrompt = new GridBagConstraints();
+		gbc_lblSearchPrompt.insets = new Insets(15, 15, 15, 15);
+		gbc_lblSearchPrompt.anchor = GridBagConstraints.NORTH;
+		gbc_lblSearchPrompt.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblSearchPrompt.gridx = 0;
+		gbc_lblSearchPrompt.gridy = 0;
 		
-		JLabel lblGap = new JLabel("");
-		lblGap.setMinimumSize(new Dimension(5,5));
-		lblGap.setHorizontalAlignment(SwingConstants.CENTER);
-		lblGap.setFont(WineHunterApplication.format.getHeadingFont());
-		GridBagConstraints gbc_lblGap = new GridBagConstraints();
-		gbc_lblGap.insets = new Insets(0, 0, 5, 0);
-		gbc_lblGap.anchor = GridBagConstraints.NORTH;
-		gbc_lblGap.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblGap.gridx = 0;
-		gbc_lblGap.gridy = 1;
 		
 		if (subsequent != 0) {
 			JLabel reprompt = new JLabel();
+			reprompt.setFont(WineHunterApplication.format.getSubheadingFont2Base());
 			reprompt.setHorizontalAlignment(SwingConstants.CENTER);
 			GridBagConstraints gbc_lblReprompt = new GridBagConstraints();
-			gbc_lblReprompt.insets = new Insets(0, 0, 5, 0);
+			gbc_lblReprompt.insets = new Insets(15, 15, 15, 15);
 			gbc_lblReprompt.anchor = GridBagConstraints.NORTH;
 			gbc_lblReprompt.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblReprompt.gridx = 0;
@@ -106,23 +95,36 @@ public class AdminUserSearch extends JPanel {
 		}
 		
 		
-		this.add(lblNewLabel, gbc_lblNewLabel);
+		this.add(lblSearchPrompt, gbc_lblSearchPrompt);
 		
 		JPanel buttonPanel = new JPanel();
 		GridBagConstraints gbc_buttonPanel = new GridBagConstraints();
-		gbc_buttonPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_buttonPanel.insets = new Insets(15, 15, 15, 15);
 		gbc_buttonPanel.fill = GridBagConstraints.BOTH;
 		gbc_buttonPanel.gridx = 0;
 		gbc_buttonPanel.gridy = 4;
 		gbc_buttonPanel.weightx = 1;
 		this.add(buttonPanel, gbc_buttonPanel);
 		GridBagLayout gbl_buttonPanel = new GridBagLayout();
-		gbl_buttonPanel.columnWidths = new int[] {0, 50, 50, 50, 0};
+		gbl_buttonPanel.columnWeights = new double[] {0.35, 0.1, 0.1, 0.1, 0.35};
 		gbl_buttonPanel.rowHeights = new int[] {0};
 		buttonPanel.setLayout(gbl_buttonPanel);
 		
+		JLabel blankLabel = new JLabel("");
+		blankLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		blankLabel.setFont(WineHunterApplication.format.getHeadingFont());
+		GridBagConstraints gbc_lblblankLabel = new GridBagConstraints();
+		gbc_lblblankLabel.insets = new Insets(15, 15, 15, 15);
+		gbc_lblblankLabel.anchor = GridBagConstraints.NORTH;
+		gbc_lblblankLabel.fill = GridBagConstraints.BOTH;
+		gbc_lblblankLabel.gridx = 0;
+		gbc_lblblankLabel.gridy = 0;
+		gbc_lblblankLabel.weightx = 1;
+		buttonPanel.add(blankLabel, gbc_lblblankLabel);
+		
 		JRadioButton ID = new JRadioButton("User ID");
         ID.setVerticalTextPosition(AbstractButton.CENTER);
+        ID.setHorizontalAlignment(SwingConstants.TRAILING);
 		ID.setHorizontalTextPosition(AbstractButton.LEADING);
 		ID.setMnemonic(KeyEvent.VK_I);
 		ID.setActionCommand("ID");
@@ -131,6 +133,7 @@ public class AdminUserSearch extends JPanel {
 		
 		JRadioButton username = new JRadioButton("Username");
 		username.setVerticalTextPosition(AbstractButton.CENTER);
+		username.setHorizontalAlignment(SwingConstants.CENTER);
 		username.setHorizontalTextPosition(AbstractButton.LEADING);
 		username.setMnemonic(KeyEvent.VK_U);
 		username.setActionCommand("username");
@@ -138,6 +141,7 @@ public class AdminUserSearch extends JPanel {
 		
 		JRadioButton email = new JRadioButton("Email Address");
 		email.setVerticalTextPosition(AbstractButton.CENTER);
+		email.setHorizontalAlignment(SwingConstants.LEADING);
 		email.setHorizontalTextPosition(AbstractButton.LEADING);
 		email.setMnemonic(KeyEvent.VK_E);
 		email.setActionCommand("email");
@@ -187,40 +191,54 @@ public class AdminUserSearch extends JPanel {
 		gbc_Email.weightx = 1;
 		buttonPanel.add(email, gbc_Email);
 		
-		JPanel panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.insets = new Insets(0, 0, 5, 0);
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 6;
-		this.add(panel, gbc_panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] {0};
-		gbl_panel.rowHeights = new int[] {0};
-		gbl_panel.columnWeights = new double[]{1.0};
-		gbl_panel.rowWeights = new double[]{0.0};
-		panel.setLayout(gbl_panel);
+		gbc_lblblankLabel.gridx = 4;
+		gbc_lblblankLabel.gridy = 0;
+		buttonPanel.add(blankLabel, gbc_lblblankLabel);
 		
-		JLabel lblSearch = new JLabel("Search text: ");
+		JPanel searchPanel = new JPanel();
+		GridBagConstraints gbc_SearchPanel = new GridBagConstraints();
+		gbc_SearchPanel.insets = new Insets(5, 5, 5, 5);
+		gbc_SearchPanel.weightx = 1;
+		gbc_SearchPanel.fill = GridBagConstraints.BOTH;
+		gbc_SearchPanel.gridx = 0;
+		gbc_SearchPanel.gridy = 6;
+		this.add(searchPanel, gbc_SearchPanel);
+		GridBagLayout gbl_SearchPanel = new GridBagLayout();
+		gbl_SearchPanel.columnWidths = new int[] {0};
+		gbl_SearchPanel.rowHeights = new int[] {0};
+		gbl_SearchPanel.columnWeights = new double[]{0.35, 0.1, 0.1, 0.1, 0.35};
+		gbl_SearchPanel.rowWeights = new double[]{0.0};
+		searchPanel.setLayout(gbl_SearchPanel);
+		
+		gbc_lblblankLabel.gridx = 0;
+		gbc_lblblankLabel.gridy = 0;
+		searchPanel.add(blankLabel, gbc_lblblankLabel);
+		
+		JLabel lblSearch = new JLabel("Search text:");
+		lblSearch.setHorizontalAlignment(SwingConstants.TRAILING);
 		GridBagConstraints gbc_lblSearch = new GridBagConstraints();
 		gbc_lblSearch.anchor = GridBagConstraints.EAST;
-		gbc_lblSearch.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSearch.gridx = 0;
+		gbc_lblSearch.insets = new Insets(5, 5, 5, 5);
+		gbc_lblSearch.gridx = 1;
 		gbc_lblSearch.gridy = 0;
-		panel.add(lblSearch, gbc_lblSearch);
+		gbc_lblSearch.weightx = 1;
+		searchPanel.add(lblSearch, gbc_lblSearch);
 		
 		JTextField searchText = new JTextField();
 		searchText.setToolTipText("Enter your search text.");
 		GridBagConstraints gbc_txtSearchText = new GridBagConstraints();
 		gbc_txtSearchText.anchor = GridBagConstraints.WEST;
-		gbc_txtSearchText.insets = new Insets(0, 0, 5, 0);
-		gbc_txtSearchText.gridx = 1;
+		gbc_txtSearchText.insets = new Insets(5, 5, 5, 5);
+		gbc_txtSearchText.gridx = 2;
 		gbc_txtSearchText.gridy = 0;
-		panel.add(searchText, gbc_txtSearchText);
+		gbc_txtSearchText.weightx = 1;
+		gbc_txtSearchText.fill = GridBagConstraints.HORIZONTAL;
+		searchPanel.add(searchText, gbc_txtSearchText);
 		searchText.setColumns(10);
 		
 		
 		JButton search = new JButton("Search");
+		search.setHorizontalAlignment(SwingConstants.LEADING);
 		search.setMnemonic(KeyEvent.VK_D);
 		search.setActionCommand("search");
 		search.addActionListener(new ActionListener() {
@@ -281,11 +299,14 @@ public class AdminUserSearch extends JPanel {
 		});
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
 		gbc_btnSearch.anchor = GridBagConstraints.WEST;
-		gbc_btnSearch.insets = new Insets(0, 0, 5, 0);
-		gbc_btnSearch.gridx = 2;
+		gbc_btnSearch.insets = new Insets(5, 5, 5, 5);
+		gbc_btnSearch.gridx = 3;
 		gbc_btnSearch.gridy = 0;
-		panel.add(search, gbc_btnSearch);
+		searchPanel.add(search, gbc_btnSearch);
 		
+		gbc_lblblankLabel.gridx = 4;
+		gbc_lblblankLabel.gridy = 0;
+		searchPanel.add(blankLabel, gbc_lblblankLabel);
 		
 		
 	}

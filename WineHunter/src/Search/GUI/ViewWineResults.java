@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 
+<<<<<<< HEAD
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -12,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+=======
+>>>>>>> aa62519194508c5cc2f24df15404f331cbf5f937
 import javax.swing.JLabel;
 
 import Core.WineHunterApplication;
@@ -61,6 +64,7 @@ public class ViewWineResults extends JPanel {
 		
 		this.add(lblNewLabel, gbc_lblNewLabel);
 		
+<<<<<<< HEAD
 		table = new JTable(data,columnNames);
 		table.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 300, WineHunterApplication.APPLICATION_HEIGHT - 300));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -77,6 +81,8 @@ public class ViewWineResults extends JPanel {
 			}
 		});
 		this.add(scrollPane);
+=======
+>>>>>>> aa62519194508c5cc2f24df15404f331cbf5f937
 		
 		
 	}

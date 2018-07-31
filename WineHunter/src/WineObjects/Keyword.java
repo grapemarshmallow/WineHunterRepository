@@ -24,6 +24,8 @@ package WineObjects;
   */
 public class Keyword {
 	
+	
+
 	// Data members
 	private int id; // the unique id for this keyword
 	private String word; // the word for this keyword
@@ -38,6 +40,11 @@ public class Keyword {
         this.word = word;
     }
 	
+    @Override
+	public String toString() {
+		return this.word.toUpperCase();
+	}
+    
     /**
      * Returns the id for this Keyword.
      * @return the id

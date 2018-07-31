@@ -1,11 +1,16 @@
 package Search.Logic;
 
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
 import Core.*;
+
+import WineObjects.*;
+
 
 
 public class WineSearch {
@@ -154,6 +159,266 @@ public class WineSearch {
 		rs.close();
 
 		stmt.close();
+		return 1;
+	}
+	
+	/**
+	 * API for wine searching based on taster profile
+	 * @throws SQLException 
+	 * @return 1 if successful, 0 error, 1 for no taster profile
+	 * 
+	 */
+	
+	
+	public int wineSearchTasterProfile(User user) throws SQLException {
+		
+		int userId = user.getId();
+		
+		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+		
+		String sql; 
+		String wheresql = "WHERE wk.KeywordID IN "
+				+ "(SELECT LikeKeywordID "
+				+ "FROM KeywordLike WHERE "
+				+ "KeywordLikeUserID = " + userId + " ) "
+				+ "AND wk.KeywordID NOT IN "
+				+ "(SELECT DislikeKeywordID "
+				+ "FROM KeywordDislike WHERE "
+				+ "DislikeKeywordUserID = " + userId + " ) "
+				+ "AND wv.VarietyID IN "
+				+ "(SELECT LikeVariety "
+				+ "FROM VarietyLike WHERE "
+				+ "LikeUserID = " + userId + " ) "
+				+ "AND wv.VarietyID NOT IN "
+				+ "(SELECT DislikeVarietyID FROM "
+				+ "VarietyDislike WHERE "
+				+ "DislikeUserID = " + userId + " )";
+						
+		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
+				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
+				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
+				" INNER JOIN country c ON c.CountryID = p.CountryID "
+				+ "INNER JOIN WineKeyword wk ON wk.WineID = w.WineID "
+				+ "INNER JOIN WineVariety wv ON wv.WineID = w.WineID " + wheresql; 
+
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		rs.last(); 
+		
+		int size = rs.getRow();
+		
+		rs.beforeFirst();
+		
+		
+		if (size <= 0) {
+			rs.close();
+			
+			stmt.close();
+			return 0;
+		}
+		
+		data = new String[size][6];
+		int row = 0;
+		
+		while(rs.next()){
+			
+			
+			String wineName = rs.getString("wineName");
+			int vintageval = rs.getInt("vintage");
+			double price = rs.getDouble("price");
+			String wineryName = rs.getString("wineryName");
+			String countryName = rs.getString("countryName");
+			String provinceName = rs.getString("provinceName");
+			
+			data[row][0] = wineName;
+			if(vintageval == 0) {
+				data[row][1] = "UNKNOWN";
+			}
+			else {
+				data[row][1] = Integer.toString(vintageval);
+			}
+			if(price == -1) {
+				data[row][2] = "UNKNOWN";
+			}
+			else {
+				data[row][2] = Double.toString(price);
+			}
+			data[row][3] = wineryName;
+			data[row][4] = countryName;
+			data[row][5] = provinceName;
+			
+			++row;
+
+		}
+		
+		rs.close();
+
+		stmt.close();
+		
+		return 1;
+	}
+	
+	/**
+	 * API for wine searching based on user favorite
+	 * @throws SQLException 
+	 * @param user we are getting favorites for
+	 * @return 1 if successful, 0 error
+	 * 
+	 */
+	
+	public int wineSearchUserFavorites(User user) throws SQLException {
+
+		int userId = user.getId();
+		
+		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+		
+		String sql; 
+		
+		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
+				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
+				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
+				" INNER JOIN country c ON c.CountryID = p.CountryID INNER JOIN UserWine wr" + 
+				" ON wr.WineID = w.wineID" + 
+				" WHERE" + 
+				" wr.UserID = " + userId + 
+				" AND" + 
+				" wr.Favorite = 1";
+
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		rs.last(); 
+		
+		int size = rs.getRow();
+		
+		rs.beforeFirst();
+		
+		
+		if (size <= 0) {
+			rs.close();
+			
+			stmt.close();
+			return 0;
+		}
+		
+		data = new String[size][6];
+		int row = 0;
+		
+		while(rs.next()){
+			
+			
+			String wineName = rs.getString("wineName");
+			int vintageval = rs.getInt("vintage");
+			double price = rs.getDouble("price");
+			String wineryName = rs.getString("wineryName");
+			String countryName = rs.getString("countryName");
+			String provinceName = rs.getString("provinceName");
+			
+			data[row][0] = wineName;
+			if(vintageval == 0) {
+				data[row][1] = "UNKNOWN";
+			}
+			else {
+				data[row][1] = Integer.toString(vintageval);
+			}
+			if(price == -1) {
+				data[row][2] = "UNKNOWN";
+			}
+			else {
+				data[row][2] = Double.toString(price);
+			}
+			data[row][3] = wineryName;
+			data[row][4] = countryName;
+			data[row][5] = provinceName;
+			
+			++row;
+
+		}
+		
+		rs.close();
+
+		stmt.close();
+		
+		return 1;
+	}
+	
+	/**
+	 * API for wine searching based on user-reviewed Wines
+	 * @throws SQLException 
+	 * @param user we are getting favorites for
+	 * @return 1 if successful, 0 error
+	 * 
+	 */
+	
+	public int wineSearchUserReviewed(User user) throws SQLException {
+
+		int userId = user.getId();
+		
+		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+		
+		String sql; 
+		
+		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
+				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
+				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
+				" INNER JOIN country c ON c.CountryID = p.CountryID INNER JOIN UserWine wr" + 
+				" ON wr.WineID = w.wineID" + 
+				" WHERE" + 
+				" wr.UserID = " + userId;
+
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		rs.last(); 
+		
+		int size = rs.getRow();
+		
+		rs.beforeFirst();
+		
+		
+		if (size <= 0) {
+			rs.close();
+			
+			stmt.close();
+			return 0;
+		}
+		
+		data = new String[size][6];
+		int row = 0;
+		
+		while(rs.next()){
+			
+			
+			String wineName = rs.getString("wineName");
+			int vintageval = rs.getInt("vintage");
+			double price = rs.getDouble("price");
+			String wineryName = rs.getString("wineryName");
+			String countryName = rs.getString("countryName");
+			String provinceName = rs.getString("provinceName");
+			
+			data[row][0] = wineName;
+			if(vintageval == 0) {
+				data[row][1] = "UNKNOWN";
+			}
+			else {
+				data[row][1] = Integer.toString(vintageval);
+			}
+			if(price == -1) {
+				data[row][2] = "UNKNOWN";
+			}
+			else {
+				data[row][2] = Double.toString(price);
+			}
+			data[row][3] = wineryName;
+			data[row][4] = countryName;
+			data[row][5] = provinceName;
+			
+			++row;
+
+		}
+		
+		rs.close();
+
+		stmt.close();
+		
 		return 1;
 	}
 
