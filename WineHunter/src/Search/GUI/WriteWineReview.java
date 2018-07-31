@@ -142,7 +142,6 @@ public class WriteWineReview extends JPanel {
 						updateUserWineScore(userID,wineID, updateScore);
 						WineHunterApplication.writeReview(wineID, userID,updateScore, wineName, notes,2);
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} 
 					
@@ -163,7 +162,6 @@ public class WriteWineReview extends JPanel {
 					updateUserWineNotes(userID,wineID, updateNote);
 					WineHunterApplication.writeReview(wineID, userID,score, wineName, updateNote,2);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
 				

@@ -184,7 +184,6 @@ public class WinePage extends JPanel {
 				try {
 					updateFavorite(userID,wineID,userResults[1]);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -224,7 +223,6 @@ public class WinePage extends JPanel {
 				try {
 					updateUserReview(userID,reviewID,userResults[0]);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -469,7 +467,6 @@ public class WinePage extends JPanel {
 			cStmt.execute(); 
 			cStmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = false; 
 		}
