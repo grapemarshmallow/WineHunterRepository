@@ -112,7 +112,7 @@ public class WinePage extends JPanel {
 		//actually display everything
 		
 		//wine info
-		/**
+
 		JLabel lblWineName = new JLabel("Wine Name: " + results[0]);
 		panel.add(lblWineName);
 		
@@ -152,7 +152,7 @@ public class WinePage extends JPanel {
 		
 		JLabel lblVarieties = new JLabel("Grape Varieties: " + varieties);
 		panel.add(lblVarieties);
-		*/
+
 		
 		//user info
 		JLabel lblLikeDislike = new JLabel("You " + userResults[0] + " this review.");
