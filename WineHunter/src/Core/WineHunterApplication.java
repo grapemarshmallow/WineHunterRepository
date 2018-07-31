@@ -39,6 +39,8 @@ public class WineHunterApplication {
 	public static Search.Logic.WineSearch wineSearch; 
 	public static Search.GUI.ViewWineResults viewWineResults; 
 	public static Search.GUI.ViewWineSearch viewWineSearch; 
+	public static Search.GUI.WinePage winePage; 
+	public static Search.GUI.WriteWineReview wineReview; 
 	public static AdminUserSearch adminUserSearch;
 
 	private static JPanel toolbarPanel;
@@ -187,7 +189,7 @@ public class WineHunterApplication {
 	}
 	
 	/**
-	 * Search for wines and draw wine results page
+	 * Draw wine search page
 	 */
 	public static void searchWines(int empty) {
 		//draw wine search page
@@ -209,11 +211,11 @@ public class WineHunterApplication {
 	/**
 	 * Draw wine results page
 	 */
-	public static void showWines(String[][] data, String[] columnNames) {
+	public static void showWines(String[][] data, String[] columnNames, int[] wineIDs) {
 		
 		WineHunterApplication.cleanPanel();
 
-		viewWineResults = new Search.GUI.ViewWineResults(data, columnNames); 
+		viewWineResults = new Search.GUI.ViewWineResults(data, columnNames, wineIDs); 
 		viewWineResults.setName("viewWineResults");
 		mainPanel.setVisible(true);
 		mainPanel.add(viewWineResults);
@@ -224,6 +226,47 @@ public class WineHunterApplication {
 		
 	}
 	
+	/**
+	 * Draw specific wine page
+	 */
+	public static void viewWine(int wineID, int userID) {
+		
+		WineHunterApplication.cleanPanel();
+
+		winePage = new Search.GUI.WinePage(wineID, userID); 
+		winePage.setName("winePage");
+		mainPanel.setVisible(true);
+		mainPanel.add(winePage);
+		
+		
+		frmWinehunter.pack();
+		
+		
+	}
+	
+	/**
+	 * Draw page to write/edit a wine review
+	 * @param wineID
+	 * @param userID
+	 * @param score - current score for this user/wine
+	 * @param wineName
+	 * @param notes
+	 * @param invalid
+	 */
+	public static void writeReview(int wineID, int userID, int score, String wineName, String notes, int invalid) {
+		
+		WineHunterApplication.cleanPanel();
+
+		wineReview = new Search.GUI.WriteWineReview(wineID, userID, score, wineName, notes, invalid); 
+		wineReview.setName("wineReview");
+		mainPanel.setVisible(true);
+		mainPanel.add(wineReview);
+		
+		
+		frmWinehunter.pack();
+		
+		
+	}
 	/**
 	 * quit safely
 	 */
@@ -250,10 +293,12 @@ public class WineHunterApplication {
 		System.out.println("\nFrme size: " + frmWinehunter.getSize());
 		System.out.println("\nToolbar size: " + toolbar.getSize());
 		System.out.println("\nMain panel size: " + mainPanel.getSize());
+/**
 		for (int i = 0; i < components.length; ++i) {
 			System.out.print("\n\t" + components[i].getName() + " size: " + components[i].getSize());
 			writeComponents((JComponent) components[i], 1);
-		}
+		}*/
+		
 		
 		
 		for (int i = 0; i < components.length; ++i) {
@@ -266,7 +311,6 @@ public class WineHunterApplication {
 	
 	public static void writeComponents(JComponent component, int depth) {
 		Component[] components = component.getComponents();
-		
 		for (int i = 0; i < components.length; ++i) {
 			System.out.print("\n");
 			for (int j = 0; j <= depth; ++j) {

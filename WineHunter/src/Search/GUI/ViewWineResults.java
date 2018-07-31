@@ -7,7 +7,10 @@ import javax.swing.JScrollPane;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
@@ -34,7 +37,7 @@ public class ViewWineResults extends JPanel {
 	 * @param columnNames
 	 * @param empty
 	 */
-	public ViewWineResults(String[][] data, String[] columnNames) {
+	public ViewWineResults(String[][] data, String[] columnNames, int[] wineIDs) {
 		
 		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 150, WineHunterApplication.APPLICATION_HEIGHT - 150));
 
@@ -64,6 +67,15 @@ public class ViewWineResults extends JPanel {
 		table.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 200, WineHunterApplication.APPLICATION_HEIGHT - 200));
+		
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				int row = table.getSelectedRow();
+				int wineID = wineIDs[row]; 
+				int userID = WineHunterApplication.userSession.getUser().getId();
+				WineHunterApplication.viewWine(wineID, userID); 
+			}
+		});
 		this.add(scrollPane);
 		
 		
