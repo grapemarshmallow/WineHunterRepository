@@ -28,16 +28,24 @@ public class LoadVariousLists {
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		
+		rs.last(); 
+		
+		int size = rs.getRow();
+		
+		rs.beforeFirst();
+		
+		keywords.setSize(size + 5);
+		
 		while (rs.next()) {
-			Keyword keywordToAdd = new Keyword(rs.getInt("KeywordID"), rs.getString("Word"));
+			int id = rs.getInt("KeywordID");
+			Keyword keywordToAdd = new Keyword(id, rs.getString("Word"));
 			
-			keywords.addElement(keywordToAdd);
+			keywords.set(id, keywordToAdd);
 			
 		}
 		
-		rs.close();
 		
-		stmt.close();
+		
 		
 	}
 	
@@ -58,25 +66,36 @@ public class LoadVariousLists {
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		
+		rs.last(); 
+		
+		int size = rs.getRow();
+		
+		rs.beforeFirst();
+		
+		varieties.setSize(size + 5);
+		
 		while (rs.next()) {
-			Variety varietyToAdd = new Variety(rs.getInt("VarietyID"), rs.getString("VarietyName"));
+			int id = rs.getInt("VarietyID");
+			Variety varietyToAdd = new Variety(id, rs.getString("VarietyName"));
 			
-			varieties.addElement(varietyToAdd);
+			varieties.set(id, varietyToAdd);
 		}
 		
-		rs.close();
 		
-		stmt.close();
+		
 		
 		
 	}
 	
 	/**
-	 * Loads all countries and returns them in an ArrayList
+	 * Loads all location info and returns it in vectors
 	 * @param countries Vector of Country objects
+	 * @param provinces Vector of province objects
+	 * @param regions Vector of Region objects
+	 * @param wineries Vector of Winery objects
 	 * @throws SQLException
 	 */
-	public static void loadAllCountries(Vector<Country> countries) throws SQLException  {
+	public static void loadAllLocations(Vector<Country> countries, Vector<Province> provinces, Vector<Region> regions, Vector<Winery> wineries) throws SQLException  {
 	
 
 		
@@ -85,19 +104,71 @@ public class LoadVariousLists {
 
 		String sql;
 		sql = "SELECT *"
-				+ " FROM Country";
+				+ " FROM country"
+				+ " ORDER BY CountryID";
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		
+		
+		countries.setSize(100);
+		
 		while (rs.next()) {
-			countries.addElement(new Country(rs.getInt("CountryID"), rs.getString("CountryName")));
+			Country countryToAdd = new Country(rs.getInt("CountryID"), rs.getString("CountryName"));
+			countries.set(countryToAdd.getId(), countryToAdd);
+			String provinceSql = "SELECT *"
+					+ " FROM province"
+					+ " WHERE CountryID = " + countryToAdd.getId()
+					+ " ORDER BY ProvinceID";
+			
+			Statement provinceStmt = WineHunterApplication.connection.getConnection().createStatement();
+			
+			ResultSet province = provinceStmt.executeQuery(provinceSql);
+			
+			provinces.setSize(400);
+			
+			while (province.next()) {
+				Province provinceToAdd = new Province(province.getInt("ProvinceID"), province.getString("ProvinceName"), countryToAdd);
+				provinces.addElement(provinceToAdd);
+				String winerySql = "SELECT *"
+						+ " FROM wineries"
+						+ " LEFT OUTER JOIN region ON"
+						+ " wineries.RegionID = region.RegionID"
+						+ " WHERE wineries.ProvinceID = " + provinceToAdd.getId()
+						+ " ORDER BY wineries.RegionID";
+				
+				Statement wineryStmt = WineHunterApplication.connection.getConnection().createStatement();
+				
+				ResultSet winery = wineryStmt.executeQuery(winerySql);
+				
+				wineries.setSize(17000);
+				regions.setSize(1000);
+				
+				while (winery.next()) {
+					int regionId = winery.getInt("RegionID");
+					int wineryId = winery.getInt("WineryID");
+					String regionName = winery.getString("RegionName");
+					String wineryName = winery.getString("WineryName");
+					Region regionToAdd = regions.get(regionId);
+					if (regionToAdd == null) {
+						regionToAdd = new Region(regionId, regionName);
+						regions.set(regionId, regionToAdd);
+
+					}
+					
+					Winery wineryToAdd = new Winery(wineryId, wineryName, regionToAdd, provinceToAdd);
+					
+					wineries.set(wineryId, wineryToAdd);
+				}
+			}
 		}
 		
-		rs.close();
 		
-		stmt.close();
+		
+		
 		
 	}
+	
+	
 	
 	
 }
