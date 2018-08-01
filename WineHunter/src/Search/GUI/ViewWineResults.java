@@ -76,6 +76,7 @@ public class ViewWineResults extends JPanel {
 		wineInfoScroll.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
 				int row = wineInfoScroll.getSelectedRow();
+				
 				int wineID = wineIDs[row]; 
 				int userID = WineHunterApplication.userSession.getUser().getId();
 				WineHunterApplication.viewWine(wineID, userID); 

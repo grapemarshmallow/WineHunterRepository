@@ -17,7 +17,6 @@ public class LoadVariousLists {
 	 */
 	public static void loadAllKeywords(Vector<Keyword> keywords) throws SQLException  {
 	
-
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
 		
@@ -33,12 +32,9 @@ public class LoadVariousLists {
 			int id = rs.getInt("KeywordID");
 			Keyword keywordToAdd = new Keyword(id, rs.getString("Word"));
 			
-			keywords.add(keywordToAdd);
+			keywords.addElement(keywordToAdd);
 			
 		}
-		
-		
-		
 		
 	}
 	
@@ -48,7 +44,7 @@ public class LoadVariousLists {
 	 * @throws SQLException 
 	 */
 	public static void loadAllVarieties(Vector<Variety> varieties) throws SQLException  {
-
+		
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
 		
@@ -64,23 +60,19 @@ public class LoadVariousLists {
 			int id = rs.getInt("VarietyID");
 			Variety varietyToAdd = new Variety(id, rs.getString("VarietyName"));
 			
-			varieties.add(varietyToAdd);
+			varieties.addElement(varietyToAdd);
+			
 		}
-		
-		
-		
 		
 		
 	}
 	
 	/**
-	 * Loads all location info and returns it in vectors
+	 * Loads all countries into a vector for use with JComboBox
 	 * @param countries Vector of Country objects
-	 * @param provinces Vector of province objects
 	 * @throws SQLException
 	 */
-	public static void loadAllLocations(Vector<Country> countries, Vector<Province> provinces) throws SQLException  {
-	
+	public static void loadAllCountries(Vector<Country> countries) throws SQLException {
 
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
@@ -93,61 +85,130 @@ public class LoadVariousLists {
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		
-		
-		
 		while (rs.next()) {
 			Country countryToAdd = new Country(rs.getInt("CountryID"), rs.getString("CountryName"));
 			countries.addElement(countryToAdd);
-			String provinceSql = "SELECT *"
-					+ " FROM province"
-					+ " WHERE CountryID = " + countryToAdd.getId()
-					+ " ORDER BY ProvinceID";
-			
-			Statement provinceStmt = WineHunterApplication.connection.getConnection().createStatement();
-			
-			ResultSet province = provinceStmt.executeQuery(provinceSql);
-			
-			while (province.next()) {
-				Province provinceToAdd = new Province(province.getInt("ProvinceID"), province.getString("ProvinceName"), countryToAdd);
-				provinces.addElement(provinceToAdd);
-//				String winerySql = "SELECT *"
-//						+ " FROM wineries"
-//						+ " LEFT OUTER JOIN region ON"
-//						+ " wineries.RegionID = region.RegionID"
-//						+ " WHERE wineries.ProvinceID = " + provinceToAdd.getId()
-//						+ " ORDER BY wineries.RegionID";
-//				
-//				Statement wineryStmt = WineHunterApplication.connection.getConnection().createStatement();
-//				
-//				ResultSet winery = wineryStmt.executeQuery(winerySql);
-//				
-//				wineries.setSize(17000);
-//				regions.setSize(1000);
-//				
-//				while (winery.next()) {
-//					int regionId = winery.getInt("RegionID");
-//					int wineryId = winery.getInt("WineryID");
-//					String regionName = winery.getString("RegionName");
-//					String wineryName = winery.getString("WineryName");
-//					Region regionToAdd = regions.get(regionId);
-//					if (regionToAdd == null) {
-//						regionToAdd = new Region(regionId, regionName);
-//						regions.set(regionId, regionToAdd);
-//
-//					}
-//					
-//					Winery wineryToAdd = new Winery(wineryId, wineryName, regionToAdd, provinceToAdd);
-//					
-//					wineries.set(wineryId, wineryToAdd);
-//				}
-			}
 		}
 		
-		
-		
-		
-		
+		rs.close();
+		stmt.close();
 	}
+	
+	/**
+	 * Loads all provinces into a vector for use with JComboBox based on a selected country
+	 * @param provinces Vector of Province objects
+	 * @param Country object that provinces will be filtered on
+	 * @throws SQLException
+	 */
+	public static void loadProvinceOptions(Vector<Province> provinces, Country country) throws SQLException {
+		
+		provinces.removeAllElements();
+
+		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+		
+		int countryId = country.getId();
+		
+		String sql;
+		sql = "SELECT *"
+				+ " FROM province"
+				+ " WHERE CountryID = " + countryId
+				+ " ORDER BY ProvinceID";
+		
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		while (rs.next()) {
+			Province provinceToAdd = new Province(rs.getInt("ProvinceID"), rs.getString("ProvinceName"), country);
+			provinces.addElement(provinceToAdd);
+		}
+		
+		rs.close();
+		stmt.close();
+	}
+	
+	/**
+	 * Loads all provinces into a vector for use with JComboBox based on a selected province
+	 * @param provinces Vector of Region objects
+	 * @param Province object that regions will be filtered on
+	 * @throws SQLException
+	 */
+	public static void loadRegionOptions(Vector<Region> regions, Province province) throws SQLException {
+		
+		regions.removeAllElements(); // clean
+
+		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+		
+		int provinceId = province.getId();
+		
+		String sql;
+		sql = "SELECT DISTINCT r.RegionID, r.RegionName"
+				+ " FROM region r"
+				+ " INNER JOIN wineries wy"
+				+ " ON r.RegionID = wy.RegionID"
+				+ " WHERE wy.ProvinceID = " + provinceId
+				+ " ORDER BY r.RegionID";
+		
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		while (rs.next()) {
+			Region regionToAdd = new Region(rs.getInt("RegionID"), rs.getString("RegionName"));
+			regions.addElement(regionToAdd);
+		}
+		
+		rs.close();
+		stmt.close();
+	}
+	
+	/**
+	 * Loads all wineries into a vector for use with JComboBox based on a selected province/region
+	 * @param wineries Vector of Winery objects
+	 * @param Province object that wineries will be filtered on
+	 * @param Region object that wineries will be filtered on
+	 * @throws SQLException
+	 */
+	public static void loadWineryOptions(Vector<Winery> wineries, Province province, Region region) throws SQLException {
+		
+		wineries.removeAllElements();
+		
+		int provinceId = province.getId();
+		int regionId = -10;
+		
+		if (region != null) {
+			regionId = region.getId();
+		}
+
+		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+		
+		String sql;
+		sql = "SELECT *"
+				+ " FROM wineries wy"
+				+ " INNER JOIN region r"
+				+ " ON wy.RegionID = r.RegionID"
+				+ " WHERE wy.ProvinceID = " + provinceId;
+		
+		if (regionId != -10) {
+			sql = sql + " AND wy.RegionID = " + regionId;
+		}
+		
+		sql = sql + " ORDER BY wy.WineryID";
+		
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		while (rs.next()) {
+			Winery wineryToAdd;
+			if (regionId != -10) {
+				wineryToAdd = new Winery(rs.getInt("WineryID"), rs.getString("WineryName"), region, province);
+			}
+			else {
+				wineryToAdd = new Winery(rs.getInt("WineryID"), rs.getString("WineryName"), new Region(rs.getInt("RegionID"), rs.getString("RegionName")), province);
+			}
+			wineries.addElement(wineryToAdd);
+		}
+		
+		rs.close();
+		stmt.close();
+	}
+	
+
 	
 	
 	

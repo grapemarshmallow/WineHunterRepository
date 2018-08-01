@@ -22,6 +22,7 @@ package WineObjects;
   */
 public class Region {
 	
+
 	// Data members
 	private int id; // the unique id for this region
 	private String name; // the name for this region
@@ -37,6 +38,12 @@ public class Region {
         this.name = name;
     }
 	
+    @Override
+	public String toString() {
+		
+		return this.name;
+	}
+    
     /**
      * Returns the id for this region.
      * @return the id

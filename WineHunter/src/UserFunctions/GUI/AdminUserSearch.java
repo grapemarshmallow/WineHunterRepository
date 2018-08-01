@@ -257,10 +257,12 @@ public class AdminUserSearch extends JPanel {
 							WineHunterApplication.adminUserSearch(1);
 						} 
 					} catch (NumberFormatException e2) {
+						e2.printStackTrace();
 						WineHunterApplication.adminUserSearch(3);
 				    } catch (SQLException e1) {
+				    	e1.printStackTrace();
 				    	WineHunterApplication.adminUserSearch(1);
-						e1.printStackTrace();
+						
 					}
 					
 				}
@@ -273,8 +275,9 @@ public class AdminUserSearch extends JPanel {
 							WineHunterApplication.adminUserSearch(1);
 						} 
 				    } catch (SQLException e1) {
+				    	e1.printStackTrace();
 				    	WineHunterApplication.adminUserSearch(1);
-						e1.printStackTrace();
+						
 					}
 				}
 				else if (email.isSelected() == true) {
@@ -286,8 +289,9 @@ public class AdminUserSearch extends JPanel {
 							WineHunterApplication.adminUserSearch(1);
 						} 
 				    } catch (SQLException e1) {
+				    	e1.printStackTrace();
 				    	WineHunterApplication.adminUserSearch(1);
-						e1.printStackTrace();
+						
 					}
 				}
 				else {

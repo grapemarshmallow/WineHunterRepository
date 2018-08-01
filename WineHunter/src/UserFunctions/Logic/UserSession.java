@@ -56,6 +56,8 @@ public class UserSession {
 				+ "WHERE User.Username = '" + username
 				+ "' AND User.Password = '" + password + "'";
 		ResultSet rs = stmt.executeQuery(sql);
+		
+		
 		if (!rs.next()) {
 			//
 		}
@@ -117,12 +119,17 @@ public class UserSession {
 		statement.setString(4, password);
 
 		
+		
 		// execute insert SQL statement
 		try{
+			
 			result = statement.executeUpdate();
+			
+			
 		}
 		catch(SQLIntegrityConstraintViolationException e){
 			result = -1;
+			e.printStackTrace();
 		}
 
 		if (result > 0) {
