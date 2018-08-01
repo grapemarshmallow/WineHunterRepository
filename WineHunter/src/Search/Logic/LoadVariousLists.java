@@ -27,7 +27,7 @@ public class LoadVariousLists {
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		
-		
+
 		while (rs.next()) {
 			int id = rs.getInt("KeywordID");
 			Keyword keywordToAdd = new Keyword(id, rs.getString("Word"));
