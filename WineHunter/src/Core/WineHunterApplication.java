@@ -314,7 +314,7 @@ public class WineHunterApplication {
 		Component[] components = mainPanel.getComponents();
 		
 		//testing
-<<<<<<< HEAD
+
 		/**
 		System.out.println("\nFrme size: " + frmWinehunter.getSize());
 		System.out.println("\nToolbar size: " + toolbar.getSize());
@@ -324,6 +324,7 @@ public class WineHunterApplication {
 			System.out.print("\n\t" + components[i].getName() + " size: " + components[i].getSize());
 			writeComponents((JComponent) components[i], 1);
 		}*/
+
 		
 		//writeLocations();
 		
