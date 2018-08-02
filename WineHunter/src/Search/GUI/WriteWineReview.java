@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.EmptyBorder;
 
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 
 import java.awt.Dimension;
@@ -51,74 +52,139 @@ public class WriteWineReview extends JPanel {
 	private int updateScore;
 
 	public WriteWineReview(int wineID, int userID, int score, String wineName, String notes, int invalid) {
-		
-		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH - 100, WineHunterApplication.APPLICATION_HEIGHT - 100));
-
+		//new
+		this.setPreferredSize(WineHunterApplication.mainDimension);
+		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 50));
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		this.setLayout(gridBagLayout);
+		setLayout(new MigLayout("fill", "100%" , "100%"));
 		
-		gridBagLayout.columnWidths = new int[] {0};
-		gridBagLayout.rowHeights = new int[]{0};
+		JLabel lblWineSearch = new JLabel("Currently reviewing " + wineName);
+		lblWineSearch.setFont(WineHunterApplication.format.getHeadingFont());
+		lblWineSearch.setVerticalAlignment(SwingConstants.TOP);
+		lblWineSearch.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		this.add(lblWineSearch, "width 100%, dock north");
 		
-		JLabel lblNewLabel = new JLabel("Write/Edit Wine Review");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
-		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 1;
+		JScrollPane userScroll = new JScrollPane();
+		userScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		userScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		userScroll.setViewportBorder(null);
+		userScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
+		userScroll.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
+		userScroll.setName("userScroll");
 		
-		this.add(lblNewLabel, gbc_lblNewLabel);
+		JViewport scrollPort = new JViewport();
+		scrollPort.setName("scrollPort");
 		
-		JPanel panel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-		flowLayout.setHgap(20);
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.anchor = GridBagConstraints.NORTH;
-		gbc_panel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 3;
-		add(panel, gbc_panel);
+		scrollPort.setPreferredSize(new Dimension(userScroll.getWidth(), userScroll.getHeight()));
+		scrollPort.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 100));
 		
-		JLabel lblInvalid = new JLabel("Please put valid input before updating");
-		if(invalid == 1) {
-			panel.add(lblInvalid);
+		JPanel userInfoScroll = new JPanel();
+		userInfoScroll.setName("userInfoScroll");
+		
+		GridBagLayout gbl_userInfoScroll = new GridBagLayout();
+		gbl_userInfoScroll.columnWidths = new int[]{0};
+		gbl_userInfoScroll.rowHeights = new int[]{0};
+		userInfoScroll.setLayout(gbl_userInfoScroll);
+		
+		userScroll.setViewport(scrollPort);
+		userScroll.setViewportView(userInfoScroll);
+		
+		this.add(userScroll, "width 100%, height 90%");
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setName("buttonPanel");
+		GridBagConstraints gbc_buttonPanel = new GridBagConstraints();
+		gbc_buttonPanel.fill = GridBagConstraints.BOTH;
+		gbc_buttonPanel.gridx = 0;
+		gbc_buttonPanel.gridy = 0;
+		gbc_buttonPanel.weightx = 1;
+		userInfoScroll.add(buttonPanel, gbc_buttonPanel);
+		GridBagLayout gbl_buttonPanel = new GridBagLayout();
+		gbl_buttonPanel.columnWidths = new int[]{0};
+		gbl_buttonPanel.rowHeights = new int[]{0};
+
+		buttonPanel.setLayout(gbl_buttonPanel);
+		//end
+		
+		if(invalid ==1) {
+			JLabel lblInvalid = new JLabel("Please put valid input before updating");
+			lblInvalid.setName("lblInvalid");
+			lblInvalid.setHorizontalAlignment(SwingConstants.TRAILING);
+			lblInvalid.setFont(WineHunterApplication.format.getSubheadingFont());
+			GridBagConstraints gbc_lblInvalid = new GridBagConstraints();
+			gbc_lblInvalid.anchor = GridBagConstraints.EAST;
+			gbc_lblInvalid.insets = new Insets(5, 5, 5, 5);
+			gbc_lblInvalid.gridx = 0;
+			gbc_lblInvalid.gridy = 0;
+			buttonPanel.add(lblInvalid, gbc_lblInvalid);
 		}
-		
-		JLabel lblSuccess = new JLabel("Update successful!");
 		if(invalid == 2) {
-			panel.add(lblSuccess);
+			JLabel lblSuccess = new JLabel("Update successful!");
+			lblSuccess.setName("gbc_lblSuccess");
+			lblSuccess.setHorizontalAlignment(SwingConstants.TRAILING);
+			lblSuccess.setFont(WineHunterApplication.format.getSubheadingFont());
+			GridBagConstraints gbc_lblSuccess = new GridBagConstraints();
+			gbc_lblSuccess.anchor = GridBagConstraints.EAST;
+			gbc_lblSuccess.insets = new Insets(5, 5, 5, 5);
+			gbc_lblSuccess.gridx = 0;
+			gbc_lblSuccess.gridy = 0;
+			buttonPanel.add(lblSuccess, gbc_lblSuccess);
 		}
 		
-		JLabel lblWineName = new JLabel("Currently reviewing " + wineName);
-		panel.add(lblWineName);
+		JLabel lblScore = new JLabel("Current score: ");
+		lblScore.setName("lblScore");
+		lblScore.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblScore.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblScore = new GridBagConstraints();
+		gbc_lblScore.anchor = GridBagConstraints.EAST;
+		gbc_lblScore.insets = new Insets(5, 5, 5, 5);
+		gbc_lblScore.gridx = 0;
+		gbc_lblScore.gridy = 2;
+		buttonPanel.add(lblScore, gbc_lblScore);
 		
-		JLabel lblScore = new JLabel("Current score is " + score);
-		panel.add(lblScore);
+		String userScore = "(not yet rated)";
+		if(score != 0) {
+			userScore = Integer.toString(score);
+		}
+		JLabel lblScoreVal = new JLabel(userScore);
+		lblScoreVal.setName("lblScoreVal");
+		lblScoreVal.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblScoreVal.setFont(WineHunterApplication.format.getSubheadingFontBase());
+		GridBagConstraints gbc_lblScoreVal = new GridBagConstraints();
+		gbc_lblScoreVal.anchor = GridBagConstraints.EAST;
+		gbc_lblScoreVal.insets = new Insets(5, 5, 5, 5);
+		gbc_lblScoreVal.gridx = 1;
+		gbc_lblScoreVal.gridy = 2;
+		buttonPanel.add(lblScoreVal, gbc_lblScoreVal);
 		
 		JLabel lblNewScore = new JLabel("New Score: ");
-		panel.add(lblNewScore);
+		lblNewScore.setName("lblNewScore");
+		lblNewScore.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewScore.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblNewScore = new GridBagConstraints();
+		gbc_lblNewScore.anchor = GridBagConstraints.EAST;
+		gbc_lblNewScore.insets = new Insets(5, 5, 5, 5);
+		gbc_lblNewScore.gridx = 0;
+		gbc_lblNewScore.gridy = 3;
+		buttonPanel.add(lblNewScore, gbc_lblNewScore);
 		
 		newScore = new JTextField();
 		lblNewScore.setLabelFor(newScore);
-		panel.add(newScore);
 		newScore.setColumns(10);
+		newScore.setName("newScore");
+		newScore.setHorizontalAlignment(SwingConstants.TRAILING);
+		newScore.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblNewScoreTxt = new GridBagConstraints();
+		gbc_lblNewScoreTxt.anchor = GridBagConstraints.EAST;
+		gbc_lblNewScoreTxt.insets = new Insets(5, 5, 5, 5);
+		gbc_lblNewScoreTxt.gridx = 1;
+		gbc_lblNewScoreTxt.gridy = 3;
+		buttonPanel.add(newScore, gbc_lblNewScoreTxt);
 		
-		JLabel lblNotes = new JLabel("Current notes: " + notes);
-		panel.add(lblNotes);
-		
-		JLabel lblNewNotes = new JLabel("New Notes: ");
-		panel.add(lblNewNotes);
-		
-		newNotes = new JTextField();
-		lblNewNotes.setLabelFor(newNotes);
-		panel.add(newNotes);
-		newNotes.setColumns(10);
-
 		JButton btnScore = new JButton("Update Score!");
+		btnScore.setName("btnScore");
+		btnScore.setFont(WineHunterApplication.format.getBaseFont());
 		btnScore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int validScore = 1; //0 if invalid, 1 if valid
@@ -149,9 +215,63 @@ public class WriteWineReview extends JPanel {
 				
 			}
 		}); 
-		panel.add(btnScore);
+		GridBagConstraints gbc_btnScore = new GridBagConstraints();
+		gbc_btnScore.insets = new Insets(5, 5, 5, 0);
+		gbc_btnScore.anchor = GridBagConstraints.WEST;
+		gbc_btnScore.gridx = 2;
+		gbc_btnScore.gridy = 3;
+		buttonPanel.add(btnScore, gbc_btnScore);
+		
+		JLabel lblNotes = new JLabel("Current notes: ");
+		lblNotes.setName("lblNotes");
+		lblNotes.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNotes.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblNotes = new GridBagConstraints();
+		gbc_lblNotes.anchor = GridBagConstraints.EAST;
+		gbc_lblNotes.insets = new Insets(5, 5, 5, 5);
+		gbc_lblNotes.gridx = 0;
+		gbc_lblNotes.gridy = 4;
+		buttonPanel.add(lblNotes, gbc_lblNotes);
+		//panel.add(lblScore);
+		
+		JLabel lblNotesVal = new JLabel(notes);
+		lblNotesVal.setName("lblNotesVal");
+		lblNotesVal.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNotesVal.setFont(WineHunterApplication.format.getSubheadingFontBase());
+		GridBagConstraints gbc_lblNotesVal = new GridBagConstraints();
+		gbc_lblNotesVal.anchor = GridBagConstraints.EAST;
+		gbc_lblNotesVal.insets = new Insets(5, 5, 5, 5);
+		gbc_lblNotesVal.gridx = 1;
+		gbc_lblNotesVal.gridy = 4;
+		buttonPanel.add(lblNotesVal, gbc_lblNotesVal);
+		
+		JLabel lblNewNotes = new JLabel("New Notes: ");
+		lblNewNotes.setName("lblNewNotes");
+		lblNewNotes.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewNotes.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblNewNotes = new GridBagConstraints();
+		gbc_lblNewNotes.anchor = GridBagConstraints.EAST;
+		gbc_lblNewNotes.insets = new Insets(5, 5, 5, 5);
+		gbc_lblNewNotes.gridx = 0;
+		gbc_lblNewNotes.gridy = 5;
+		buttonPanel.add(lblNewNotes, gbc_lblNewNotes);
+		
+		newNotes = new JTextField();
+		lblNewScore.setLabelFor(newNotes);
+		newNotes.setColumns(10);
+		newNotes.setName("newNotes");
+		newNotes.setHorizontalAlignment(SwingConstants.TRAILING);
+		newNotes.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblNewNoteTxt = new GridBagConstraints();
+		gbc_lblNewNoteTxt.anchor = GridBagConstraints.EAST;
+		gbc_lblNewNoteTxt.insets = new Insets(5, 5, 5, 5);
+		gbc_lblNewNoteTxt.gridx = 1;
+		gbc_lblNewNoteTxt.gridy = 5;
+		buttonPanel.add(newNotes, gbc_lblNewNoteTxt);
 		
 		JButton btnNotes = new JButton("Update Notes!");
+		btnNotes.setName("btnNotes");
+		btnNotes.setFont(WineHunterApplication.format.getBaseFont());
 		btnNotes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String updateNote = ""; 
@@ -167,7 +287,27 @@ public class WriteWineReview extends JPanel {
 				
 			}
 		}); 
-		panel.add(btnNotes);
+		GridBagConstraints gbc_btnNotes = new GridBagConstraints();
+		gbc_btnNotes.insets = new Insets(5, 5, 5, 0);
+		gbc_btnNotes.anchor = GridBagConstraints.WEST;
+		gbc_btnNotes.gridx = 2;
+		gbc_btnNotes.gridy = 5;
+		buttonPanel.add(btnNotes, gbc_btnNotes);
+
+		JButton btnBack = new JButton("Go back to wine page");
+		btnBack.setName("btnBack");
+		btnBack.setFont(WineHunterApplication.format.getBaseFont());
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				WineHunterApplication.viewWine(wineID,userID); 
+			}
+		}); 
+		GridBagConstraints gbc_btnBack = new GridBagConstraints();
+		gbc_btnBack.insets = new Insets(5, 5, 5, 0);
+		gbc_btnBack.anchor = GridBagConstraints.WEST;
+		gbc_btnBack.gridx = 1;
+		gbc_btnBack.gridy = 6;
+		buttonPanel.add(btnBack, gbc_btnBack);
 	}
 	/**
 	 * Update userwine with the new score
