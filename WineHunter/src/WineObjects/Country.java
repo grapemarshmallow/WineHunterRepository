@@ -36,6 +36,11 @@ public class Country {
         this.name = name;
     }
 	
+    @Override
+	public String toString() {
+		return this.name;
+	}
+    
     /**
      * Returns the id for this country.
      * @return the id

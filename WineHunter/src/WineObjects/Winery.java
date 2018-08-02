@@ -40,6 +40,12 @@ public class Winery {
 
     }
     
+    @Override
+   	public String toString() {
+   		
+   		return this.name;
+   	}
+    
     /**
 	 * @param id
 	 * @param name

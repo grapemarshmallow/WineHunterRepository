@@ -582,8 +582,9 @@ public class ViewUserProfile extends JPanel {
 				try {
 					result = WineHunterApplication.wineSearch.wineSearchUserReviewed(user);
 				} catch (SQLException e2) {
-					WineHunterApplication.viewUserProfile(user, 5, 0);
 					e2.printStackTrace();
+					WineHunterApplication.viewUserProfile(user, 5, 0);
+					
 				}
 				
 				if(result == 0) {
@@ -613,8 +614,9 @@ public class ViewUserProfile extends JPanel {
 				try {
 					result = WineHunterApplication.wineSearch.wineSearchUserFavorites(user);
 				} catch (SQLException e2) {
-					WineHunterApplication.viewUserProfile(user, 6, 0);
 					e2.printStackTrace();
+					WineHunterApplication.viewUserProfile(user, 6, 0);
+					
 				}
 				
 				if(result == 0) {
@@ -659,8 +661,9 @@ public class ViewUserProfile extends JPanel {
 					result = WineHunterApplication.wineSearch.wineSearchTasterProfile(user);
 					
 				} catch (SQLException e2) {
-					WineHunterApplication.viewUserProfile(user, 7, 0);
 					e2.printStackTrace();
+					WineHunterApplication.viewUserProfile(user, 7, 0);
+					
 				}
 				
 				if (result == 0) {
@@ -702,8 +705,9 @@ public class ViewUserProfile extends JPanel {
 							WineHunterApplication.viewUserProfile(user, 2, 0);
 						}
 					} catch (SQLException e1) {
-						WineHunterApplication.viewUserProfile(user, 2, 0);
 						e1.printStackTrace();
+						WineHunterApplication.viewUserProfile(user, 2, 0);
+						
 					}
 				}
 			});
@@ -731,8 +735,9 @@ public class ViewUserProfile extends JPanel {
 								WineHunterApplication.splash(1);
 							}
 						} catch (SQLException e1) {
-							WineHunterApplication.viewUserProfile(user, 2, 0);
 							e1.printStackTrace();
+							WineHunterApplication.viewUserProfile(user, 2, 0);
+							
 						}
 					}
 					else {

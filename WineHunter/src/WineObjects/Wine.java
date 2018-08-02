@@ -35,6 +35,12 @@ public class Wine {
 	public int getWineId() {
 		return wineId;
 	}
+	
+	@Override
+	public String toString() {
+			
+			return this.name;
+	}
 
 	/**
 	 * @param wineId the wineId to set

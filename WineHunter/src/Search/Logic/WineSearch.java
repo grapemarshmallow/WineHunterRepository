@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 
 import Core.*;
-
+import Search.GUI.ViewWineSearch;
 import WineObjects.*;
 
 
@@ -28,8 +28,8 @@ public class WineSearch {
 	public String[][] getResults() {
 		return this.data;
 	}
-
-
+	
+	
 	public void setResults(String[][] data) {
 		this.data = data;
 	}
@@ -37,8 +37,8 @@ public class WineSearch {
 	public String[] getColumns() {
 		return this.columnNames;
 	}
-
-
+	
+	
 	public void setColumns(String[] columns) {
 		this.columnNames = columns;
 	}
@@ -46,8 +46,8 @@ public class WineSearch {
 	public int[] getWineIDs() {
 		return this.wineIDs;
 	}
-
-
+	
+	
 	public void setWineIDs(int[] wineIDs) {
 		this.wineIDs = wineIDs;
 	}
@@ -69,7 +69,7 @@ public class WineSearch {
 		if((vintage == "") && (country == "") && (province == "")) {
 			return 2; //no user input for criteria, so don't search
 		}
-
+		
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
 		
@@ -102,7 +102,7 @@ public class WineSearch {
 				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
 				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
 				" INNER JOIN country c ON c.CountryID = p.CountryID " + wheresql;
-
+		
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		rs.last(); 
@@ -153,11 +153,11 @@ public class WineSearch {
 			data[row][5] = provinceName;
 			
 			++row;
-
+			
 		}
 		
 		rs.close();
-
+		
 		stmt.close();
 		return 1;
 	}
@@ -175,32 +175,69 @@ public class WineSearch {
 		int userId = user.getId();
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+
+		Statement stmtKeyLike = WineHunterApplication.connection.getConnection().createStatement(); // checks if we have keywords to like
 		
-		String sql; 
-		String wheresql = "WHERE wk.KeywordID IN "
-				+ "(SELECT LikeKeywordID "
+		Statement stmtVarLike = WineHunterApplication.connection.getConnection().createStatement(); // checks if we have varieties to like
+		
+		String sql;
+		
+		sql = "SELECT LikeKeywordID "
 				+ "FROM KeywordLike WHERE "
-				+ "KeywordLikeUserID = " + userId + " ) "
-				+ "AND wk.KeywordID NOT IN "
+				+ "KeywordLikeUserID = " + userId;
+		
+		ResultSet rsKeyLike = stmtKeyLike.executeQuery(sql);
+		
+		
+		rsKeyLike.last(); 
+		
+		int sizeKeyLike = rsKeyLike.getRow();
+		
+		sql = "SELECT LikeVariety "
+				+ "FROM VarietyLike WHERE "
+				+ "LikeUserID = " + userId;
+		
+		ResultSet rsVarLike = stmtVarLike.executeQuery(sql);
+	
+		
+		rsVarLike.last(); 
+		
+		int sizeVarLike = rsVarLike.getRow();
+		
+		
+		String wheresql = "WHERE wk.KeywordID NOT IN "
 				+ "(SELECT DislikeKeywordID "
 				+ "FROM KeywordDislike WHERE "
 				+ "DislikeKeywordUserID = " + userId + " ) "
-				+ "AND wv.VarietyID IN "
-				+ "(SELECT LikeVariety "
-				+ "FROM VarietyLike WHERE "
-				+ "LikeUserID = " + userId + " ) "
 				+ "AND wv.VarietyID NOT IN "
 				+ "(SELECT DislikeVarietyID FROM "
 				+ "VarietyDislike WHERE "
 				+ "DislikeUserID = " + userId + " )";
-						
-		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
+		
+		if (sizeKeyLike > 0) {
+			wheresql = wheresql + " AND wk.KeywordID IN "
+					+ "(SELECT LikeKeywordID "
+					+ "FROM KeywordLike WHERE "
+					+ "KeywordLikeUserID = " + userId + " ) ";
+					
+		}
+		
+		if (sizeVarLike > 0) {
+			wheresql = wheresql + "AND wv.VarietyID IN "
+					+ "(SELECT LikeVariety "
+					+ "FROM VarietyLike WHERE "
+					+ "LikeUserID = " + userId + " ) ";
+					
+		}
+		
+		sql = "SELECT *" + 
 				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
 				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
 				" INNER JOIN country c ON c.CountryID = p.CountryID "
 				+ "INNER JOIN WineKeyword wk ON wk.WineID = w.WineID "
 				+ "INNER JOIN WineVariety wv ON wv.WineID = w.WineID " + wheresql; 
-
+		
+		
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		rs.last(); 
@@ -208,7 +245,6 @@ public class WineSearch {
 		int size = rs.getRow();
 		
 		rs.beforeFirst();
-		
 		
 		if (size <= 0) {
 			rs.close();
@@ -218,11 +254,13 @@ public class WineSearch {
 		}
 		
 		data = new String[size][6];
+		wineIDs = new int[size]; 
 		int row = 0;
 		
 		while(rs.next()){
 			
 			
+			int wineID = rs.getInt("wineID");
 			String wineName = rs.getString("wineName");
 			int vintageval = rs.getInt("vintage");
 			double price = rs.getDouble("price");
@@ -230,6 +268,7 @@ public class WineSearch {
 			String countryName = rs.getString("countryName");
 			String provinceName = rs.getString("provinceName");
 			
+			wineIDs[row] = wineID; 
 			data[row][0] = wineName;
 			if(vintageval == 0) {
 				data[row][1] = "UNKNOWN";
@@ -248,11 +287,10 @@ public class WineSearch {
 			data[row][5] = provinceName;
 			
 			++row;
-
+			
 		}
-		
 		rs.close();
-
+		
 		stmt.close();
 		
 		return 1;
@@ -267,14 +305,14 @@ public class WineSearch {
 	 */
 	
 	public int wineSearchUserFavorites(User user) throws SQLException {
-
+		
 		int userId = user.getId();
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
 		
 		String sql; 
 		
-		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
+		sql = "SELECT w.wineID, w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
 				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
 				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
 				" INNER JOIN country c ON c.CountryID = p.CountryID INNER JOIN UserWine wr" + 
@@ -283,7 +321,7 @@ public class WineSearch {
 				" wr.UserID = " + userId + 
 				" AND" + 
 				" wr.Favorite = 1";
-
+		
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		rs.last(); 
@@ -301,11 +339,13 @@ public class WineSearch {
 		}
 		
 		data = new String[size][6];
+		wineIDs = new int[size]; 
 		int row = 0;
 		
 		while(rs.next()){
 			
 			
+			int wineID = rs.getInt("wineID");
 			String wineName = rs.getString("wineName");
 			int vintageval = rs.getInt("vintage");
 			double price = rs.getDouble("price");
@@ -313,6 +353,7 @@ public class WineSearch {
 			String countryName = rs.getString("countryName");
 			String provinceName = rs.getString("provinceName");
 			
+			wineIDs[row] = wineID; 
 			data[row][0] = wineName;
 			if(vintageval == 0) {
 				data[row][1] = "UNKNOWN";
@@ -331,11 +372,11 @@ public class WineSearch {
 			data[row][5] = provinceName;
 			
 			++row;
-
+			
 		}
 		
 		rs.close();
-
+		
 		stmt.close();
 		
 		return 1;
@@ -350,21 +391,21 @@ public class WineSearch {
 	 */
 	
 	public int wineSearchUserReviewed(User user) throws SQLException {
-
+		
 		int userId = user.getId();
 		
 		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
 		
 		String sql; 
 		
-		sql = "SELECT w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
+		sql = "SELECT w.wineID, w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
 				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
 				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
 				" INNER JOIN country c ON c.CountryID = p.CountryID INNER JOIN UserWine wr" + 
 				" ON wr.WineID = w.wineID" + 
 				" WHERE" + 
 				" wr.UserID = " + userId;
-
+		
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		rs.last(); 
@@ -382,11 +423,13 @@ public class WineSearch {
 		}
 		
 		data = new String[size][6];
+		wineIDs = new int[size]; 
 		int row = 0;
 		
 		while(rs.next()){
 			
 			
+			int wineID = rs.getInt("wineID");
 			String wineName = rs.getString("wineName");
 			int vintageval = rs.getInt("vintage");
 			double price = rs.getDouble("price");
@@ -394,6 +437,7 @@ public class WineSearch {
 			String countryName = rs.getString("countryName");
 			String provinceName = rs.getString("provinceName");
 			
+			wineIDs[row] = wineID; 
 			data[row][0] = wineName;
 			if(vintageval == 0) {
 				data[row][1] = "UNKNOWN";
@@ -412,14 +456,240 @@ public class WineSearch {
 			data[row][5] = provinceName;
 			
 			++row;
-
+			
 		}
 		
 		rs.close();
-
+		
 		stmt.close();
 		
 		return 1;
 	}
-
+	
+	public int wineSearch(int countryId, int provinceId, int regionId, int wineryId, int keywordId, int varietyId,
+			int vintageMinimum, int vintageMaximum, int priceMinimum, int priceMaximum, int pointsMinimum,
+			int pointsMaximum, boolean noPriceToggle, boolean noPointsToggle, boolean noVintageToggle) throws SQLException {
+		
+		if((countryId == -10) && (provinceId == -10) && (regionId == -10) && (wineryId == -10) && (keywordId == -10) && (varietyId == -10) 
+				&& (vintageMinimum == ViewWineSearch.MIN_VINTAGE) && (vintageMaximum == ViewWineSearch.MAX_VINTAGE) 
+				&& (priceMinimum == ViewWineSearch.MIN_PRICE) && (priceMaximum == ViewWineSearch.MAX_PRICE) && 
+				(pointsMinimum == ViewWineSearch.MIN_POINTS) && (pointsMaximum == ViewWineSearch.MAX_POINTS)) {
+			return 2; //no user input for criteria, so don't search
+		}
+		
+		
+		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
+		
+		String sql; 
+		String wheresql = "WHERE"; 
+		int needAnd = 0; //set to 1 when need an and
+		int needAndAfter = 0;
+		int needAndAfter2 = 0;
+	
+		int needAndInner = 0;
+		int needOr = 0;
+		
+		String vintageString = "";
+		if (vintageMinimum != ViewWineSearch.MIN_VINTAGE) {
+			vintageString = "w.vintage > " + vintageMinimum;
+			needAnd = 1;
+			needAndInner = 1;
+			needOr = 1;
+		}
+		if (vintageMaximum != ViewWineSearch.MAX_VINTAGE) {
+			if (needAndInner == 1) {
+				vintageString = vintageString + " AND ";
+			}
+			else {
+				needAnd = 1;
+			}
+			vintageString = vintageString + "w.vintage < " + vintageMaximum;
+			needOr = 1;
+		}
+		
+		if (noVintageToggle) {
+			if (needOr == 1) {
+				vintageString = "((" + vintageString + ") OR (w.vintage = 0))";
+			}
+			
+		}
+		
+		wheresql = wheresql + " " + vintageString;
+		
+		
+		needAndInner = 0;
+		needOr = 0;
+		
+		String priceString = "";
+		if (priceMinimum != ViewWineSearch.MIN_PRICE) {
+			priceString = "w.price > " + priceMinimum;
+			needAndAfter = 1;
+			needAndInner = 1;
+			needOr = 1;
+		}
+		if (priceMaximum != ViewWineSearch.MAX_PRICE) {
+			if (needAndInner == 1) {
+				priceString = priceString + " AND ";
+			}
+			else {
+				needAndAfter = 1;
+			}
+			priceString = priceString + "w.price < " + priceMaximum;
+			needOr = 1;
+		}
+		
+		if (noPriceToggle) {
+			if (needOr == 1) {
+				priceString = "((" + priceString + ") OR (w.price = 0))";
+			}
+			
+		}
+		
+		if ((needAnd == 1) && (needAndAfter == 1)) {
+			wheresql = wheresql + " AND " + priceString;
+		}
+		else {
+			wheresql = wheresql + priceString;
+		}
+		
+		needAndInner = 0;
+		needOr = 0;
+		
+		String pointsString = "";
+		if (pointsMinimum != ViewWineSearch.MIN_POINTS) {
+			pointsString = "wr.Points > " + pointsMinimum;
+			needAndAfter2 = 1;
+			needAndInner = 1;
+			needOr = 1;
+		}
+		if (pointsMaximum != ViewWineSearch.MAX_POINTS) {
+			if (needAndInner == 1) {
+				pointsString = pointsString + " AND ";
+			}
+			else {
+				needAndAfter2 = 1;
+			}
+			pointsString = pointsString + "wr.Points < " + pointsMaximum;
+			needOr = 1;
+		}
+		
+		if (noPointsToggle) {
+			if (needOr == 1) {
+				pointsString = "((" + pointsString + ") OR (wr.Points = 0))";
+			}
+			
+		}
+		
+		if (((needAnd == 1) || (needAndAfter == 1)) && (needAndAfter2 == 1)) {
+			wheresql = wheresql + " AND " + pointsString;
+		}
+		else {
+			wheresql = wheresql + pointsString;
+		}
+		
+		if (wineryId != -10) {
+			String wineryString = "wy.WineryID = " + wineryId;
+			if ((needAnd == 1) || (needAndAfter == 1) || (needAndAfter2 == 1)) {
+				wheresql = wheresql + " AND " + wineryString;
+			}
+			else {
+				wheresql = wheresql + wineryString;
+			}
+		}
+		else if (regionId != -10) {
+			String regionString = "wy.RegionID = " + regionId;
+			if ((needAnd == 1) || (needAndAfter == 1) || (needAndAfter2 == 1)) {
+				wheresql = wheresql + " AND " + regionString;
+			}
+			else {
+				wheresql = wheresql + regionString;
+			}
+		}
+		else if (provinceId != -10) {
+			String provinceString = "wy.ProvinceID = " + provinceId;
+			if ((needAnd == 1) || (needAndAfter == 1) || (needAndAfter2 == 1)) {
+				wheresql = wheresql + " AND " + provinceString;
+			}
+			else {
+				wheresql = wheresql + provinceString;
+			}
+		}
+		else if (countryId != -10) {
+			String countryString = "c.CountryID = " + countryId;
+			if ((needAnd == 1) || (needAndAfter == 1) || (needAndAfter2 == 1)) {
+				wheresql = wheresql + " AND " + countryString;
+			}
+			else {
+				wheresql = wheresql + countryString;
+			}
+		}
+		
+		
+		sql = "SELECT w.wineID, w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
+				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
+				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID"
+				+ " INNER JOIN region r ON wy.RegionID = r.RegionID" + 
+				" INNER JOIN country c ON c.CountryID = p.CountryID "
+				+ "INNER JOIN winereview wr on w.WineID = wr.WineID " + wheresql; 
+		
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		rs.last(); 
+		
+		int size = rs.getRow();
+		
+		rs.beforeFirst();
+		
+		
+		if (size <= 0) {
+			rs.close();
+			
+			stmt.close();
+			return 0;
+		}
+		
+		data = new String[size][6];
+		wineIDs = new int[size]; 
+		int row = 0;
+		
+		while(rs.next()){
+			
+			
+			int wineID = rs.getInt("wineID");
+			String wineName = rs.getString("wineName");
+			int vintageval = rs.getInt("vintage");
+			double price = rs.getDouble("price");
+			String wineryName = rs.getString("wineryName");
+			String countryName = rs.getString("countryName");
+			String provinceName = rs.getString("provinceName");
+			
+			wineIDs[row] = wineID; 
+			data[row][0] = wineName;
+			if(vintageval == 0) {
+				data[row][1] = "UNKNOWN";
+			}
+			else {
+				data[row][1] = Integer.toString(vintageval);
+			}
+			if(price == -1) {
+				data[row][2] = "UNKNOWN";
+			}
+			else {
+				data[row][2] = Double.toString(price);
+			}
+			data[row][3] = wineryName;
+			data[row][4] = countryName;
+			data[row][5] = provinceName;
+			
+			++row;
+			
+		}
+		rs.close();
+		
+		stmt.close();
+		
+		return 1;
+		
+	}
+	
 }

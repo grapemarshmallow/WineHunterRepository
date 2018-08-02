@@ -69,16 +69,25 @@ public class EditTasterProfile extends JPanel {
 		
 		UserProfile userProfile = new UserProfile();
 		
+		keywordList = new Vector<Keyword>();
+		varietyList = new Vector<Variety>();
+		
+		
 		try {
 			userProfile.getTasterProfile(user);
+			
 			LoadVariousLists.loadAllVarieties(varietyList);
+			
 			LoadVariousLists.loadAllKeywords(keywordList);
+			
 		} catch (SQLException e) {
+			e.printStackTrace();
 			WineHunterApplication.splash(2);
 
-			e.printStackTrace();
+			
 			return;
 		}
+
 		
 		this.setUser(user);
 		
