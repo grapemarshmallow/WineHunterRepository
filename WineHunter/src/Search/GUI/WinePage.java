@@ -810,7 +810,6 @@ public class WinePage extends JPanel {
 		int likeDislike = rs.getInt("LikeDislikeWineReview");
 		int favorite = rs.getInt("Favorite");
 		int score = rs.getInt("UserScore");
-		System.out.println("int score is " + score);
 		String notes = rs.getString("Notes"); 
 		
 		if (likeDislike == 1) {
