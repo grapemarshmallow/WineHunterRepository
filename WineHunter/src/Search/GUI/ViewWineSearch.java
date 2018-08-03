@@ -185,13 +185,17 @@ public class ViewWineSearch extends JPanel{
 		vintageSpinnerPanel.setLayout(new GridLayout(0, 3, 0, 0));
 		
 		Calendar calendar = Calendar.getInstance();
-	    calendar.set(MIN_VINTAGE, 1, 1);
+	    calendar.set(MIN_VINTAGE, 0, 1);
 	    Date earliestDate = calendar.getTime();
-	    calendar.set(MAX_VINTAGE, 1, 1);
+	    calendar.add(Calendar.YEAR, 1);
+	    Date initialMinDate = calendar.getTime();
+	    calendar.set(MAX_VINTAGE, 0, 1);
 	    Date latestDate = calendar.getTime();
 		
 		minVintageSpinner = new JSpinner();
-		vintageSpinnerPanel.add(minVintageSpinner);
+		minVintageSpinner.setToolTipText("Select the minimum vintage year.");
+		minVintageSpinner.setModel(new SpinnerDateModel(initialMinDate, earliestDate, latestDate, Calendar.YEAR));
+		minVintageSpinner.setEditor(new JSpinner.DateEditor(minVintageSpinner, "yyyy"));
 		minVintageSpinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				Date currentMinValue = (Date) minVintageSpinner.getValue();
@@ -200,21 +204,22 @@ public class ViewWineSearch extends JPanel{
 					calendar.setTime(currentMinValue);
 					calendar.add(Calendar.YEAR, 1);
 					Date newMax = calendar.getTime();
-					maxVintageSpinner.setModel(new SpinnerDateModel(newMax, earliestDate, latestDate, Calendar.YEAR));
+					//maxVintageSpinner.setModel(new SpinnerDateModel(newMax, earliestDate, latestDate, Calendar.YEAR));
+					maxVintageSpinner.setValue(newMax);
 				}
 				
 			}
 		});
-		minVintageSpinner.setToolTipText("Select the minimum vintage year.");
-		minVintageSpinner.setModel(new SpinnerDateModel(earliestDate, earliestDate, latestDate, Calendar.YEAR));
-		minVintageSpinner.setEditor(new JSpinner.DateEditor(minVintageSpinner, "yyyy"));
+		vintageSpinnerPanel.add(minVintageSpinner);
 		
 		JLabel lblVintageInstrTo = new JLabel("to");
 		lblVintageInstrTo.setHorizontalAlignment(SwingConstants.CENTER);
 		vintageSpinnerPanel.add(lblVintageInstrTo);
 		
 		maxVintageSpinner = new JSpinner();
-		vintageSpinnerPanel.add(maxVintageSpinner);
+		maxVintageSpinner.setToolTipText("Select the maximum vintage year.");
+		maxVintageSpinner.setModel(new SpinnerDateModel(latestDate, earliestDate, latestDate, Calendar.YEAR));
+		maxVintageSpinner.setEditor(new JSpinner.DateEditor(maxVintageSpinner, "yyyy"));
 		maxVintageSpinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				Date currentMinValue = (Date) minVintageSpinner.getValue();
@@ -223,14 +228,13 @@ public class ViewWineSearch extends JPanel{
 					calendar.setTime(currentMaxValue);
 					calendar.add(Calendar.YEAR, -1);
 					Date newMin = calendar.getTime();
-					minVintageSpinner.setModel(new SpinnerDateModel(newMin, earliestDate, latestDate, Calendar.YEAR));
+					//minVintageSpinner.setModel(new SpinnerDateModel(newMin, earliestDate, latestDate, Calendar.YEAR));
+					minVintageSpinner.setValue(newMin);
 				}
 				
 			}
 		});
-		maxVintageSpinner.setToolTipText("Select the maximum vintage year.");
-		maxVintageSpinner.setModel(new SpinnerDateModel(latestDate, earliestDate, latestDate, Calendar.YEAR));
-		maxVintageSpinner.setEditor(new JSpinner.DateEditor(maxVintageSpinner, "yyyy"));
+		vintageSpinnerPanel.add(maxVintageSpinner);
 		
 		JLabel lblVintageInstr = new JLabel("Choose the desired vintage range in years.");
 		lblVintageInstr.setHorizontalAlignment(SwingConstants.CENTER);
