@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             MainMenu.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package Core;
 
 import javax.swing.JPanel;
@@ -7,12 +24,13 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-
+/**
+ * This class creates the main menu for the application.
+ *
+ */
 public class MainMenu extends JPanel {
 	
-	/**
-	 * 
-	 */
+	//fields
 	private static final long serialVersionUID = 8666789356489661025L;
 
 	/**

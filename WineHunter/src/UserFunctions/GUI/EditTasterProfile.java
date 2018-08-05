@@ -1,3 +1,20 @@
+
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ * //                   
+ * // Main Class File:  WineHunterApplication.java
+ * // File:             EditTasterProfile.java
+ * // Semester:         Summer 2018
+ * //
+ * //
+ * // Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * // CS Login:         orbi
+ * // Lecturer's Name:  Hien Hguyen
+ * //
+ * //                   PAIR PROGRAMMERS COMPLETE THIS SECTION
+ * // Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
 package UserFunctions.GUI;
 
 import javax.swing.JPanel;
@@ -25,7 +42,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
 
-
 import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
@@ -33,9 +49,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Class to edit the taster profile
+ *
+ */
 public class EditTasterProfile extends JPanel {
 	
-	//fields
+	// fields
 	private static final long serialVersionUID = -7938844906983194519L;
 	private Vector<Keyword> keywordList = new Vector<Keyword>();
 	private Vector<Variety> varietyList = new Vector<Variety>();
@@ -60,9 +80,10 @@ public class EditTasterProfile extends JPanel {
 	private JComboBox<Keyword> keywordDislikeFour;
 	private JComboBox<Keyword> keywordDislikeFive;
 	private User user;
-
+	
 	/**
 	 * Create the panel for editing the taster profile
+	 * 
 	 * @param the taster profile user
 	 */
 	public EditTasterProfile(User user) {
@@ -71,7 +92,6 @@ public class EditTasterProfile extends JPanel {
 		
 		keywordList = new Vector<Keyword>();
 		varietyList = new Vector<Variety>();
-		
 		
 		try {
 			userProfile.getTasterProfile(user);
@@ -83,18 +103,17 @@ public class EditTasterProfile extends JPanel {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			WineHunterApplication.splash(2);
-
 			
 			return;
 		}
-
 		
 		this.setUser(user);
 		
 		this.setPreferredSize(WineHunterApplication.mainDimension);
-		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 50));
+		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH,
+				WineHunterApplication.APPLICATION_MAIN_HEIGHT - 50));
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setLayout(new MigLayout("fill", "100%" , "100%"));
+		setLayout(new MigLayout("fill", "100%", "100%"));
 		
 		JScrollPane userScroll = new JScrollPane();
 		userScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -108,14 +127,15 @@ public class EditTasterProfile extends JPanel {
 		scrollPort.setName("scrollPort");
 		
 		scrollPort.setPreferredSize(new Dimension(userScroll.getWidth(), userScroll.getHeight()));
-		scrollPort.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 100));
+		scrollPort.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH,
+				WineHunterApplication.APPLICATION_MAIN_HEIGHT - 100));
 		
 		JPanel userInfoScroll = new JPanel();
 		userInfoScroll.setName("userInfoScroll");
 		
 		GridBagLayout gbl_userInfoScroll = new GridBagLayout();
-		gbl_userInfoScroll.columnWidths = new int[]{0};
-		gbl_userInfoScroll.rowHeights = new int[]{0};
+		gbl_userInfoScroll.columnWidths = new int[] { 0 };
+		gbl_userInfoScroll.rowHeights = new int[] { 0 };
 		userInfoScroll.setLayout(gbl_userInfoScroll);
 		
 		userScroll.setViewport(scrollPort);
@@ -237,7 +257,6 @@ public class EditTasterProfile extends JPanel {
 				try {
 					result = userProfile.setTasterProfile(user);
 					
-					
 				} catch (SQLException e1) {
 					
 					e1.printStackTrace();
@@ -245,11 +264,9 @@ public class EditTasterProfile extends JPanel {
 				
 				if (result == 1) {
 					WineHunterApplication.viewUserProfile(user, 3, 0);
-				}
-				else if (result == -1) {
+				} else if (result == -1) {
 					WineHunterApplication.viewUserProfile(user, 4, 0);
-				}
-				else {
+				} else {
 					WineHunterApplication.viewUserProfile(user, 2, 0);
 				}
 				
@@ -257,10 +274,11 @@ public class EditTasterProfile extends JPanel {
 		});
 		acceptPanel.add(accept);
 	}
-
+	
 	/**
 	 * sets up grape variety panel
-	 * @param userInfoScroll 
+	 * 
+	 * @param userInfoScroll the scroll panel to add the grape variety panel to
 	 */
 	public void grapeVarietyPanel(JPanel userInfoScroll) {
 		JPanel GrapeVariety = new JPanel();
@@ -298,9 +316,9 @@ public class EditTasterProfile extends JPanel {
 		gbc_grapeSplit.gridy = 1;
 		GrapeVariety.add(grapeSplit, gbc_grapeSplit);
 		GridBagLayout gbl_grapeSplit = new GridBagLayout();
-		gbl_grapeSplit.columnWidths = new int[]{0};
-		gbl_grapeSplit.rowHeights = new int[]{0};
-		gbl_grapeSplit.columnWeights = new double[]{0.5, 0.5};
+		gbl_grapeSplit.columnWidths = new int[] { 0 };
+		gbl_grapeSplit.rowHeights = new int[] { 0 };
+		gbl_grapeSplit.columnWeights = new double[] { 0.5, 0.5 };
 		grapeSplit.setLayout(gbl_grapeSplit);
 		
 		// set up our panel for liking grape varieties
@@ -309,9 +327,10 @@ public class EditTasterProfile extends JPanel {
 		// set up our panel for disliking grape varieties
 		grapeDislikePanelSet(grapeSplit);
 	}
-
+	
 	/**
 	 * set up panel for editing liked grape varieties
+	 * 
 	 * @param grapeSplit parent panel for grape stuff
 	 */
 	public void grapeLikePanelSet(JPanel grapeSplit) {
@@ -325,7 +344,7 @@ public class EditTasterProfile extends JPanel {
 		gbc_grapeLikePanel.weightx = 0.5;
 		grapeSplit.add(grapeLikePanel, gbc_grapeLikePanel);
 		GridBagLayout gbl_grapeLikePanel = new GridBagLayout();
-		gbl_grapeLikePanel.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_grapeLikePanel.columnWeights = new double[] { Double.MIN_VALUE };
 		grapeLikePanel.setLayout(gbl_grapeLikePanel);
 		
 		JLabel grapeLike = new JLabel("Likes");
@@ -351,10 +370,10 @@ public class EditTasterProfile extends JPanel {
 		gbc_setGrapeLikePanel.gridy = 1;
 		grapeLikePanel.add(setGrapeLikePanel, gbc_setGrapeLikePanel);
 		GridBagLayout gbl_setGrapeLikePanel = new GridBagLayout();
-		gbl_setGrapeLikePanel.columnWidths = new int[]{0};
-		gbl_setGrapeLikePanel.rowHeights = new int[]{0};
-		gbl_setGrapeLikePanel.columnWeights = new double[]{Double.MIN_VALUE, 1.0};
-		gbl_setGrapeLikePanel.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_setGrapeLikePanel.columnWidths = new int[] { 0 };
+		gbl_setGrapeLikePanel.rowHeights = new int[] { 0 };
+		gbl_setGrapeLikePanel.columnWeights = new double[] { Double.MIN_VALUE, 1.0, Double.MIN_VALUE };
+		gbl_setGrapeLikePanel.rowWeights = new double[] { Double.MIN_VALUE };
 		setGrapeLikePanel.setLayout(gbl_setGrapeLikePanel);
 		
 		JLabel grapeLikeOneLabel = new JLabel("1.");
@@ -382,7 +401,6 @@ public class EditTasterProfile extends JPanel {
 		gbc_grapeLikeOne.weightx = 1;
 		setGrapeLikePanel.add(grapeLikeOne, gbc_grapeLikeOne);
 		
-		
 		JLabel grapeLikeTwoLabel = new JLabel("2.");
 		grapeLikeTwoLabel.setName("grapeLikeTwoLabel");
 		GridBagConstraints gbc_grapeLikeTwoLabel = new GridBagConstraints();
@@ -404,7 +422,7 @@ public class EditTasterProfile extends JPanel {
 		gbc_grapeLikeTwo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_grapeLikeTwo.gridx = 1;
 		gbc_grapeLikeTwo.gridy = 1;
-		gbc_grapeLikeTwo.weightx =1;
+		gbc_grapeLikeTwo.weightx = 1;
 		setGrapeLikePanel.add(grapeLikeTwo, gbc_grapeLikeTwo);
 		
 		JLabel grapeLikeThreeLabel = new JLabel("3.");
@@ -482,6 +500,7 @@ public class EditTasterProfile extends JPanel {
 	
 	/**
 	 * set up panel for editing disliked grape varieties
+	 * 
 	 * @param grapeSplit parent panel for grape stuff
 	 */
 	public void grapeDislikePanelSet(JPanel grapeSplit) {
@@ -496,7 +515,7 @@ public class EditTasterProfile extends JPanel {
 		gbc_grapeDislikePanel.weightx = 0.5;
 		grapeSplit.add(grapeDislikePanel, gbc_grapeDislikePanel);
 		GridBagLayout gbl_grapeDislikePanel = new GridBagLayout();
-		gbl_grapeDislikePanel.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_grapeDislikePanel.columnWeights = new double[] { Double.MIN_VALUE };
 		grapeDislikePanel.setLayout(gbl_grapeDislikePanel);
 		
 		JLabel grapeDislike = new JLabel("Dislikes");
@@ -522,10 +541,10 @@ public class EditTasterProfile extends JPanel {
 		gbc_setGrapeDislikePanel.gridy = 1;
 		grapeDislikePanel.add(setGrapeDislikePanel, gbc_setGrapeDislikePanel);
 		GridBagLayout gbl_setGrapeLikePanel = new GridBagLayout();
-		gbl_setGrapeLikePanel.columnWidths = new int[]{0};
-		gbl_setGrapeLikePanel.rowHeights = new int[]{0};
-		gbl_setGrapeLikePanel.columnWeights = new double[]{Double.MIN_VALUE, 1.0};
-		gbl_setGrapeLikePanel.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_setGrapeLikePanel.columnWidths = new int[] { 0 };
+		gbl_setGrapeLikePanel.rowHeights = new int[] { 0 };
+		gbl_setGrapeLikePanel.columnWeights = new double[] { Double.MIN_VALUE, 1.0 };
+		gbl_setGrapeLikePanel.rowWeights = new double[] { Double.MIN_VALUE };
 		setGrapeDislikePanel.setLayout(gbl_setGrapeLikePanel);
 		
 		JLabel grapeDislikeOneLabel = new JLabel("1.");
@@ -656,7 +675,8 @@ public class EditTasterProfile extends JPanel {
 	
 	/**
 	 * sets up keyword keyword panel
-	 * @param userInfoScroll 
+	 * 
+	 * @param userInfoScroll the base scrolling panel
 	 */
 	public void keywordPanel(JPanel userInfoScroll) {
 		JPanel keyword = new JPanel();
@@ -694,9 +714,9 @@ public class EditTasterProfile extends JPanel {
 		gbc_keywordSplit.gridy = 1;
 		keyword.add(keywordSplit, gbc_keywordSplit);
 		GridBagLayout gbl_keywordSplit = new GridBagLayout();
-		gbl_keywordSplit.columnWidths = new int[]{0};
-		gbl_keywordSplit.rowHeights = new int[]{0};
-		gbl_keywordSplit.columnWeights = new double[]{0.5, 0.5};
+		gbl_keywordSplit.columnWidths = new int[] { 0 };
+		gbl_keywordSplit.rowHeights = new int[] { 0 };
+		gbl_keywordSplit.columnWeights = new double[] { 0.5, 0.5 };
 		keywordSplit.setLayout(gbl_keywordSplit);
 		
 		// set up our panel for liking keyword keywords
@@ -705,11 +725,11 @@ public class EditTasterProfile extends JPanel {
 		// set up our panel for disliking keyword keywords
 		keywordDislikePanelSet(keywordSplit);
 		
-		
 	}
-
+	
 	/**
 	 * set up panel for editing liked keyword keywords
+	 * 
 	 * @param keywordSplit parent panel for keyword stuff
 	 */
 	public void keywordLikePanelSet(JPanel keywordSplit) {
@@ -748,10 +768,10 @@ public class EditTasterProfile extends JPanel {
 		gbc_setKeywordLikePanel.gridy = 1;
 		keywordLikePanel.add(setKeywordLikePanel, gbc_setKeywordLikePanel);
 		GridBagLayout gbl_setKeywordLikePanel = new GridBagLayout();
-		gbl_setKeywordLikePanel.columnWidths = new int[]{0};
-		gbl_setKeywordLikePanel.rowHeights = new int[]{0};
-		gbl_setKeywordLikePanel.columnWeights = new double[]{Double.MIN_VALUE, 1.0};
-		gbl_setKeywordLikePanel.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_setKeywordLikePanel.columnWidths = new int[] { 0 };
+		gbl_setKeywordLikePanel.rowHeights = new int[] { 0 };
+		gbl_setKeywordLikePanel.columnWeights = new double[] { Double.MIN_VALUE, 1.0 };
+		gbl_setKeywordLikePanel.rowWeights = new double[] { Double.MIN_VALUE };
 		setKeywordLikePanel.setLayout(gbl_setKeywordLikePanel);
 		
 		JLabel keywordLikeOneLabel = new JLabel("1.");
@@ -882,6 +902,7 @@ public class EditTasterProfile extends JPanel {
 	
 	/**
 	 * set up panel for editing disliked keyword keywords
+	 * 
 	 * @param keywordSplit parent panel for keyword stuff
 	 */
 	public void keywordDislikePanelSet(JPanel keywordSplit) {
@@ -896,7 +917,7 @@ public class EditTasterProfile extends JPanel {
 		gbc_keywordDislikePanel.weightx = 1;
 		keywordSplit.add(keywordDislikePanel, gbc_keywordDislikePanel);
 		GridBagLayout gbl_keywordDislikePanel = new GridBagLayout();
-		gbl_keywordDislikePanel.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_keywordDislikePanel.columnWeights = new double[] { Double.MIN_VALUE };
 		keywordDislikePanel.setLayout(gbl_keywordDislikePanel);
 		
 		JLabel keywordDislike = new JLabel("Dislikes");
@@ -904,7 +925,7 @@ public class EditTasterProfile extends JPanel {
 		keywordDislike.setHorizontalAlignment(SwingConstants.CENTER);
 		keywordDislike.setHorizontalTextPosition(SwingConstants.CENTER);
 		keywordDislike.setName("keywordDislikeLabel");
-	
+		
 		GridBagConstraints gbc_keywordDislike = new GridBagConstraints();
 		gbc_keywordDislike.insets = new Insets(0, 0, 5, 0);
 		gbc_keywordDislike.fill = GridBagConstraints.HORIZONTAL;
@@ -922,10 +943,10 @@ public class EditTasterProfile extends JPanel {
 		gbc_setKeywordDislikePanel.gridy = 1;
 		keywordDislikePanel.add(setKeywordDislikePanel, gbc_setKeywordDislikePanel);
 		GridBagLayout gbl_setKeywordLikePanel = new GridBagLayout();
-		gbl_setKeywordLikePanel.columnWidths = new int[]{0};
-		gbl_setKeywordLikePanel.rowHeights = new int[]{0};
-		gbl_setKeywordLikePanel.columnWeights = new double[]{Double.MIN_VALUE, 1.0};
-		gbl_setKeywordLikePanel.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_setKeywordLikePanel.columnWidths = new int[] { 0 };
+		gbl_setKeywordLikePanel.rowHeights = new int[] { 0 };
+		gbl_setKeywordLikePanel.columnWeights = new double[] { Double.MIN_VALUE, 1.0 };
+		gbl_setKeywordLikePanel.rowWeights = new double[] { Double.MIN_VALUE };
 		setKeywordDislikePanel.setLayout(gbl_setKeywordLikePanel);
 		
 		JLabel keywordDislikeOneLabel = new JLabel("1.");
@@ -1050,22 +1071,21 @@ public class EditTasterProfile extends JPanel {
 	
 	/**
 	 * helper to deal with multiple selections in combo boxes for grape varieties
-	 * @param e even handler
+	 * 
+	 * @param e event handler
 	 */
 	private void itemSelectedVariety(ItemEvent e) {
 		if (!e.getSource().equals(grapeLikeOne)) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				grapeLikeOne.removeItem(e.getItem());
-			} 
-			else {
+			} else {
 				grapeLikeOne.addItem((Variety) e.getItem());
 			}
 		}
 		if (!e.getSource().equals(grapeLikeTwo)) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				grapeLikeTwo.removeItem(e.getItem());
-			}
-			else {
+			} else {
 				grapeLikeTwo.addItem((Variety) e.getItem());
 			}
 		}
@@ -1126,12 +1146,12 @@ public class EditTasterProfile extends JPanel {
 			}
 		}
 		
-		
 	}
 	
 	/**
 	 * helper to deal with multiple selections in combo boxes for keywords
-	 * @param e even handler
+	 * 
+	 * @param e event handler
 	 */
 	private void itemSelectedKeyword(ItemEvent e) {
 		if (!e.getSource().equals(keywordLikeOne)) {
@@ -1205,13 +1225,20 @@ public class EditTasterProfile extends JPanel {
 			}
 		}
 		
-		
 	}
-
+	
+	/**
+	 * gets the user this taster profile is for
+	 * @return the user
+	 */
 	public User getUser() {
 		return user;
 	}
-
+	
+	/**
+	 * sets the user this taster profile is for
+	 * @param user
+	 */
 	public void setUser(User user) {
 		this.user = user;
 	}

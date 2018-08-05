@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             Toolbar.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package Core;
 
 import javax.swing.JPanel;
@@ -14,7 +31,10 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.Insets;
 
-
+/**
+ * This class creates the toolbar that is resent on every application screen.
+ *
+ */
 public class Toolbar extends JPanel {
 	
 	//fields
@@ -110,7 +130,7 @@ public class Toolbar extends JPanel {
 			btnWineSearch.setName("btnWineSearch");
 			btnWineSearch.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					WineHunterApplication.searchWines(1); 
+					WineHunterApplication.searchWines(1, WineHunterApplication.userSession.getUser()); 
 				}
 			});
 			toolBar.add(btnWineSearch);

@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ * //                   
+ * // Main Class File:  WineHunterApplication.java
+ * // File:             ViewWineSearch.java
+ * // Semester:         Summer 2018
+ * //
+ * //
+ * // Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * // CS Login:         orbi
+ * // Lecturer's Name:  Hien Hguyen
+ * //
+ * //                   PAIR PROGRAMMERS COMPLETE THIS SECTION
+ * // Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
 package Search.GUI;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -40,10 +56,13 @@ import javax.swing.SpinnerDateModel;
 
 import java.awt.GridLayout;
 
+/**
+ * The class generates a panel to view a wine search
+ *
+ */
 public class ViewWineSearch extends JPanel{
-	/**
-	 * 
-	 */
+	
+	// fields
 	private static final long serialVersionUID = -7966165569110154144L;
 	private ItemListener countryRefresh;
 	private ItemListener provinceRefresh;
@@ -67,21 +86,23 @@ public class ViewWineSearch extends JPanel{
 	private JSpinner minPointsSpinner;
 	private JSpinner maxPointsSpinner;
 	private JSpinner minPriceSpinner;
-	private JSpinner maxPriceSpinner; 
+	private JSpinner maxPriceSpinner;
+	protected WineSearch wineSearch; 
 	
-	public final static int MIN_VINTAGE = 1880;
-	public final static int MAX_VINTAGE = 2020;
-	public final static int MIN_PRICE = 0;
-	public final static int MAX_PRICE = 5000;
-	public final static int MIN_POINTS = 0;
-	public final static int MAX_POINTS = 100;
+	public static int MIN_VINTAGE;
+	public static int MAX_VINTAGE;
+	public static int MIN_PRICE;
+	public static int MAX_PRICE;
+	public static int MIN_POINTS;
+	public static int MAX_POINTS;
 	
 	
 	/**
 	 * Create the panel to search for wines
+	 * @param empty non-zero if no results
+	 * @param user the search is for
 	 */
-	
-	public ViewWineSearch(int empty) {
+	public ViewWineSearch(int empty, User user) {
 		
 		init();
 		
@@ -204,7 +225,6 @@ public class ViewWineSearch extends JPanel{
 					calendar.setTime(currentMinValue);
 					calendar.add(Calendar.YEAR, 1);
 					Date newMax = calendar.getTime();
-					//maxVintageSpinner.setModel(new SpinnerDateModel(newMax, earliestDate, latestDate, Calendar.YEAR));
 					maxVintageSpinner.setValue(newMax);
 				}
 				
@@ -228,7 +248,6 @@ public class ViewWineSearch extends JPanel{
 					calendar.setTime(currentMaxValue);
 					calendar.add(Calendar.YEAR, -1);
 					Date newMin = calendar.getTime();
-					//minVintageSpinner.setModel(new SpinnerDateModel(newMin, earliestDate, latestDate, Calendar.YEAR));
 					minVintageSpinner.setValue(newMin);
 				}
 				
@@ -412,7 +431,8 @@ public class ViewWineSearch extends JPanel{
 				int currentMinValue = (int) minPointsSpinner.getValue();
 				int currentMaxValue = (int) maxPointsSpinner.getValue();
 				if (currentMinValue > currentMaxValue) {
-					maxPointsSpinner.setModel(new SpinnerNumberModel(currentMinValue + 1, MIN_POINTS, MAX_POINTS, 1));
+					maxPointsSpinner.setValue(currentMinValue + 1);
+					
 				}
 				
 			}
@@ -432,7 +452,7 @@ public class ViewWineSearch extends JPanel{
 				int currentMinValue = (int) minPointsSpinner.getValue();
 				int currentMaxValue = (int) maxPointsSpinner.getValue();
 				if (currentMinValue > currentMaxValue) {
-					minPointsSpinner.setModel(new SpinnerNumberModel(currentMaxValue - 1, MIN_POINTS, MAX_POINTS, 1));
+					minPointsSpinner.setValue(currentMaxValue - 1);
 				}
 				
 			}
@@ -518,7 +538,7 @@ public class ViewWineSearch extends JPanel{
 				int currentMinValue = (int) minPriceSpinner.getValue();
 				int currentMaxValue = (int) maxPriceSpinner.getValue();
 				if (currentMinValue > currentMaxValue) {
-					maxPriceSpinner.setModel(new SpinnerNumberModel(currentMinValue + 1, MIN_PRICE, MAX_PRICE, 1));
+					maxPriceSpinner.setValue(currentMinValue + 1);
 				}
 				
 			}
@@ -556,7 +576,7 @@ public class ViewWineSearch extends JPanel{
 				int currentMinValue = (int) minPriceSpinner.getValue();
 				int currentMaxValue = (int) maxPriceSpinner.getValue();
 				if (currentMinValue > currentMaxValue) {
-					minPriceSpinner.setModel(new SpinnerNumberModel(currentMaxValue - 1, MIN_PRICE, MAX_PRICE, 1));
+					minPriceSpinner.setValue(currentMaxValue - 1);
 				}
 				
 			}
@@ -672,7 +692,7 @@ public class ViewWineSearch extends JPanel{
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				WineHunterApplication.wineSearch = new WineSearch();
+				wineSearch = new WineSearch();
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime((Date) minVintageSpinner.getValue());
 				int vintageMinimum = calendar.get(Calendar.YEAR);
@@ -715,25 +735,22 @@ public class ViewWineSearch extends JPanel{
 				}
 				
 				try {
-					notEmpty = WineHunterApplication.wineSearch.wineSearch(countryId, provinceId, regionId, wineryId, keywordId, 
+					notEmpty = wineSearch.wineSearch(countryId, provinceId, regionId, wineryId, keywordId, 
 							varietyId, vintageMinimum, vintageMaximum, priceMinimum, priceMaximum, pointsMinimum, pointsMaximum,
 							noPriceToggle.isSelected(), noPointsToggle.isSelected(), noVintageToggle.isSelected());
 				} catch (SQLException e) {
 					e.printStackTrace();
-					WineHunterApplication.searchWines(2); //go back to search screen
+					WineHunterApplication.searchWines(2, user); //go back to search screen
 				}
 				if(notEmpty == 2) {
-					WineHunterApplication.searchWines(2);
+					WineHunterApplication.searchWines(2, user);
 				}
 				else if(notEmpty == 0) {
-					WineHunterApplication.searchWines(0);
+					WineHunterApplication.searchWines(0, user);
 				}
 				else {
-					String[][] data = WineHunterApplication.wineSearch.getResults();
-					String[] columnNames = WineHunterApplication.wineSearch.getColumns();
-					int[] wineIDs = WineHunterApplication.wineSearch.getWineIDs();
 					
-					WineHunterApplication.showWines(data,columnNames, wineIDs); 
+					WineHunterApplication.showWines(wineSearch, user); 
 				}
 			}
 		});
@@ -755,6 +772,12 @@ public class ViewWineSearch extends JPanel{
 			LoadVariousLists.loadAllVarieties(varietyList);
 			LoadVariousLists.loadAllKeywords(keywordList);
 			LoadVariousLists.loadAllCountries(countryList);
+			MIN_VINTAGE = LoadVariousLists.getMaxOrMinValue(1, false);
+			MAX_VINTAGE = LoadVariousLists.getMaxOrMinValue(1, true);
+			MIN_PRICE = LoadVariousLists.getMaxOrMinValue(2, false);
+			MAX_PRICE = LoadVariousLists.getMaxOrMinValue(2, true);
+			MIN_POINTS = LoadVariousLists.getMaxOrMinValue(3, false);
+			MAX_POINTS = LoadVariousLists.getMaxOrMinValue(3, true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			WineHunterApplication.splash(2);

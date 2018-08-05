@@ -1,20 +1,34 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             ViewWineResults.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package Search.GUI;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
 import Core.WineHunterApplication;
+import Search.Logic.WineSearch;
+import WineObjects.User;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.SwingConstants;
@@ -27,20 +41,28 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 
-
+/**
+ * This class allows a panel to be created to show results for a wine search.
+ *
+ */
 public class ViewWineResults extends JPanel {
-
+	
+	// fields
 	private static final long serialVersionUID = 2747473463278030742L;
 	private JTable wineInfoScroll;
 	
 	/**
 	 * Create the panel to view results
-	 * @param data
-	 * @param columnNames
-	 * @param empty
+	 * @param data the wine data to be displayed
+	 * @param columnNames names of the table columns
+	 * @param empty set if there are no results, otherwise 0
+	 * @param user the results are for
 	 */
-	public ViewWineResults(String[][] data, String[] columnNames, int[] wineIDs) {
+	public ViewWineResults(WineSearch wineSearch, User user) {
 		
+		String[][] data = wineSearch.getResults();
+		String[] columnNames = wineSearch.getColumns();
+		int[] wineIDs = wineSearch.getWineIDs();
 		this.setPreferredSize(WineHunterApplication.mainDimension);
 		this.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 50));
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,8 +100,7 @@ public class ViewWineResults extends JPanel {
 				int row = wineInfoScroll.getSelectedRow();
 				
 				int wineID = wineIDs[row]; 
-				int userID = WineHunterApplication.userSession.getUser().getId();
-				WineHunterApplication.viewWine(wineID, userID); 
+				WineHunterApplication.viewWine(wineID, user); 
 			}
 		});
 		

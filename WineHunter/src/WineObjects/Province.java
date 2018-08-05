@@ -1,24 +1,26 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             Province.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package WineObjects;
-///////////////////////////////////////////////////////////////////////////////
-//                   ALL STUDENTS COMPLETE THESE SECTIONS
-// Main Class File:  (name of main application class)
-// File:             Province.java
-// Semester:         Summer 2018
-//
-//
-// Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
-// CS Login:         orbi
-// Lecturer's Name:  Hieng
-//
-//                   PAIR PROGRAMMERS COMPLETE THIS SECTION
-// Pair Partner:     Jennifer Shih
-// CS Login:         (partner's login name)
-//////////////////////////// 80 columns wide //////////////////////////////////
+
 
 /**
   * The Province class defines a province.
   *
-  * @author Orbi Ish-Shalom
   */
 public class Province {
 	

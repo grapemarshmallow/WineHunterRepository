@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             ViewUserProfile.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package UserFunctions.GUI;
 
 import javax.swing.JPanel;
@@ -39,10 +56,15 @@ import java.awt.Color;
 import net.miginfocom.swing.MigLayout;
 import java.awt.GridLayout;
 
+/**
+ * this class defines a panel to view a user profile
+ *
+ */
 public class ViewUserProfile extends JPanel {
 	
 	//fields
 	private static final long serialVersionUID = -4768934525868550643L;
+	protected static WineSearch wineSearch;
 	
 
 	/**
@@ -578,9 +600,9 @@ public class ViewUserProfile extends JPanel {
 		btnViewUserReviews.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
-				WineHunterApplication.wineSearch = new WineSearch();
+				wineSearch = new WineSearch();
 				try {
-					result = WineHunterApplication.wineSearch.wineSearchUserReviewed(user);
+					result = wineSearch.wineSearchUserReviewed(user);
 				} catch (SQLException e2) {
 					e2.printStackTrace();
 					WineHunterApplication.viewUserProfile(user, 5, 0);
@@ -591,10 +613,8 @@ public class ViewUserProfile extends JPanel {
 					WineHunterApplication.viewUserProfile(user, 8, 0);
 				}
 				else {
-					String[][] data = WineHunterApplication.wineSearch.getResults();
-					String[] columnNames = WineHunterApplication.wineSearch.getColumns();
-					int [] wineIDs = WineHunterApplication.wineSearch.getWineIDs();
-					WineHunterApplication.showWines(data,columnNames,wineIDs); 
+					
+					WineHunterApplication.showWines(wineSearch, user); 
 				}
 			}
 		});
@@ -610,9 +630,9 @@ public class ViewUserProfile extends JPanel {
 		btnViewUserFavorites.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
-				WineHunterApplication.wineSearch = new WineSearch();
+				wineSearch = new WineSearch();
 				try {
-					result = WineHunterApplication.wineSearch.wineSearchUserFavorites(user);
+					result = wineSearch.wineSearchUserFavorites(user);
 				} catch (SQLException e2) {
 					e2.printStackTrace();
 					WineHunterApplication.viewUserProfile(user, 6, 0);
@@ -623,10 +643,8 @@ public class ViewUserProfile extends JPanel {
 					WineHunterApplication.viewUserProfile(user, 8, 0);
 				}
 				else {
-					String[][] data = WineHunterApplication.wineSearch.getResults();
-					String[] columnNames = WineHunterApplication.wineSearch.getColumns();
-					int [] wineIDs = WineHunterApplication.wineSearch.getWineIDs();
-					WineHunterApplication.showWines(data,columnNames, wineIDs); 
+					
+					WineHunterApplication.showWines(wineSearch, user); 
 				}
 			}
 		});
@@ -656,9 +674,9 @@ public class ViewUserProfile extends JPanel {
 		btnSearchTasterProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
-				WineHunterApplication.wineSearch = new WineSearch();
+				wineSearch = new WineSearch();
 				try {
-					result = WineHunterApplication.wineSearch.wineSearchTasterProfile(user);
+					result = wineSearch.wineSearchTasterProfile(user);
 					
 				} catch (SQLException e2) {
 					e2.printStackTrace();
@@ -670,10 +688,8 @@ public class ViewUserProfile extends JPanel {
 					WineHunterApplication.viewUserProfile(user, 8, 0);
 				}
 				else {
-					String[][] data = WineHunterApplication.wineSearch.getResults();
-					String[] columnNames = WineHunterApplication.wineSearch.getColumns();
-					int [] wineIDs = WineHunterApplication.wineSearch.getWineIDs();
-					WineHunterApplication.showWines(data,columnNames, wineIDs); 
+					
+					WineHunterApplication.showWines(wineSearch, user); 
 				}
 			}
 		});

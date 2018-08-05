@@ -1,25 +1,22 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             WineReview.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package WineObjects;
 
-///////////////////////////////////////////////////////////////////////////////
-//                   ALL STUDENTS COMPLETE THESE SECTIONS
-// Main Class File:  
-// File:             WineReview.java
-// Semester:         Summer 2018
-//
-// Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
-// CS Login:         orbi
-// Lecturer's Name:  (name of your lecturer)
-// Lab Section:      (your lab section number)
-//
-//                   PAIR PROGRAMMERS COMPLETE THIS SECTION
-// Pair Partner:     (name of your pair programming partner)
-// CS Login:         (partner's login name)
-// Lecturer's Name:  (name of your partner's lecturer)
-// Lab Section:      (your partner's lab section number)
-//
-//                   STUDENTS WHO GET HELP FROM ANYONE OTHER THAN THEIR PARTNER
-// Credits:          (list anyone who helped you write your program)
-//////////////////////////// 80 columns wide //////////////////////////////////
 
 /**
 =

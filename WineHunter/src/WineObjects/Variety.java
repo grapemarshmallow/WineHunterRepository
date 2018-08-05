@@ -1,23 +1,26 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             variety.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package WineObjects;
-///////////////////////////////////////////////////////////////////////////////
-//                   ALL STUDENTS COMPLETE THESE SECTIONS
-// Main Class File:  (name of main application class)
-// File:             Variety.java
-// Semester:         Summer 2018
-//
-// Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
-// CS Login:         orbi
-// Lecturer's Name:  Hieng
-//
-//                   PAIR PROGRAMMERS COMPLETE THIS SECTION
-// Pair Partner:     Jennifer Shih
-// CS Login:         (partner's login name)
-//////////////////////////// 80 columns wide //////////////////////////////////
+
 
 /**
   * Variety is a class for a grape variety.
   *
-  * @author Orbi Ish-Shalom
   */
 public class Variety {
 	

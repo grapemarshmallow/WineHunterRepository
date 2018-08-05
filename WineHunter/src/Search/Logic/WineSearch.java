@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             WineSearch.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
 package Search.Logic;
 
 
@@ -12,7 +28,10 @@ import Search.GUI.ViewWineSearch;
 import WineObjects.*;
 
 
-
+/**
+ * this class holds an instance of a wine search
+ *
+ */
 public class WineSearch {
 	private String[][] data; 
 	private String[] columnNames= {"Wine", "Vintage", "Price ($)", "Winery", "Country", "Province"}; 
@@ -53,122 +72,11 @@ public class WineSearch {
 	}
 	
 	/**
-	 * API for wine searching
-	 * @throws SQLException 
-	 * @param vintage
-	 * @param country
-	 * @param province
-	 * @return 1 if successful, 0 error, 2 no user input
-	 * 
-	 */
-	
-	//TODO: add keyword functionality
-	
-	public int wineSearch(String vintage, String country, String province) throws SQLException {
-		
-		if((vintage == "") && (country == "") && (province == "")) {
-			return 2; //no user input for criteria, so don't search
-		}
-		
-		
-		Statement stmt = WineHunterApplication.connection.getConnection().createStatement();
-		
-		String sql; 
-		String wheresql = "WHERE "; 
-		int needAnd = 0; //set to 1 when need an and
-		if(vintage != "") {
-			wheresql = wheresql + "vintage = " + vintage;
-			needAnd = 1; 
-		}
-		if(country != "") {
-			if (needAnd == 1) {
-				wheresql = wheresql + " AND ";
-			}
-			else {
-				needAnd = 1; 
-			}
-			wheresql = wheresql + "countryName LIKE '" + country + "%'";
-		}
-		if(province != "") {
-			if (needAnd == 1) {
-				wheresql = wheresql + " AND ";
-			}
-			else {
-				needAnd = 1; 
-			}
-			wheresql = wheresql + "provinceName LIKE '" + province + "%'";
-		}
-		sql = "SELECT w.wineID, w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
-				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
-				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID" + 
-				" INNER JOIN country c ON c.CountryID = p.CountryID " + wheresql;
-		
-		ResultSet rs = stmt.executeQuery(sql);
-		
-		rs.last(); 
-		
-		int size = rs.getRow();
-		
-		rs.beforeFirst();
-		
-		
-		if (size <= 0) {
-			rs.close();
-			
-			stmt.close();
-			return 0;
-		}
-		
-		data = new String[size][6];
-		wineIDs = new int[size]; 
-		int row = 0;
-		
-		while(rs.next()){
-			
-			
-			int wineID = rs.getInt("wineID");
-			String wineName = rs.getString("wineName");
-			int vintageval = rs.getInt("vintage");
-			double price = rs.getDouble("price");
-			String wineryName = rs.getString("wineryName");
-			String countryName = rs.getString("countryName");
-			String provinceName = rs.getString("provinceName");
-			
-			wineIDs[row] = wineID; 
-			data[row][0] = wineName;
-			if(vintageval == 0) {
-				data[row][1] = "UNKNOWN";
-			}
-			else {
-				data[row][1] = Integer.toString(vintageval);
-			}
-			if(price == -1) {
-				data[row][2] = "UNKNOWN";
-			}
-			else {
-				data[row][2] = Double.toString(price);
-			}
-			data[row][3] = wineryName;
-			data[row][4] = countryName;
-			data[row][5] = provinceName;
-			
-			++row;
-			
-		}
-		
-		rs.close();
-		
-		stmt.close();
-		return 1;
-	}
-	
-	/**
 	 * API for wine searching based on taster profile
 	 * @throws SQLException 
 	 * @return 1 if successful, 0 error, 1 for no taster profile
 	 * 
 	 */
-	
 	
 	public int wineSearchTasterProfile(User user) throws SQLException {
 		
@@ -466,6 +374,26 @@ public class WineSearch {
 		return 1;
 	}
 	
+	/**
+	 * API for wine searching
+	 * @param countryId country to search on, -10 if not specified
+	 * @param provinceId province to search on, -10 if not specified
+	 * @param regionId region to search on, -10 if not specified
+	 * @param wineryId winery to search on, -10 if not specified
+	 * @param keywordId keyword to search on, -10 if not specified
+	 * @param varietyId variety to search on, -10 if not specified
+	 * @param vintageMinimum minimum vintage to search for
+	 * @param vintageMaximum maximum vintage to search for
+	 * @param priceMinimum minimum price to search for
+	 * @param priceMaximum maximum price to search for
+	 * @param pointsMinimum minimum points to search for
+	 * @param pointsMaximum maximum points to search for
+	 * @param noPriceToggle true to search for wines without price
+	 * @param noPointsToggle true to search for wines without points
+	 * @param noVintageToggle true to search for wines without vintage
+	 * @return 1 for successful search, 2 if there were no user inputted criteria
+	 * @throws SQLException
+	 */
 	public int wineSearch(int countryId, int provinceId, int regionId, int wineryId, int keywordId, int varietyId,
 			int vintageMinimum, int vintageMaximum, int priceMinimum, int priceMaximum, int pointsMinimum,
 			int pointsMaximum, boolean noPriceToggle, boolean noPointsToggle, boolean noVintageToggle) throws SQLException {

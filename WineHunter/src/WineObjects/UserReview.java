@@ -1,5 +1,26 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             UserReview.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package WineObjects;
 
+/**
+ * class indicates if a user liked or disliked a particular review
+ *
+ */
 public class UserReview {
 	
 	//private fields
@@ -8,9 +29,10 @@ public class UserReview {
 	private int likeDislike;
 	
 	/**
-	 * @param user
-	 * @param wineReview
-	 * @param likeDislike
+	 * constructs a user review of a wine review
+	 * @param user the user
+	 * @param wineReview the review
+	 * @param likeDislike 1 for like, 0 for dislike
 	 */
 	public UserReview(User user, WineReview wineReview, int likeDislike) {
 		this.user = user;

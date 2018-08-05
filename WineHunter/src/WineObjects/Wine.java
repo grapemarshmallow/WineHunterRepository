@@ -1,8 +1,29 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             Wine.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package WineObjects;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * defines a wine object
+ *
+ */
 public class Wine {
 	
 	//Instance Variables
@@ -15,11 +36,12 @@ public class Wine {
 		List<Variety> varieties = new ArrayList<Variety>();
 	
 	/**
-	 * @param wineId
-	 * @param vintage
-	 * @param price
-	 * @param name
-	 * @param winery
+	 * Wine constructor
+	 * @param wineId ID for the wine
+	 * @param vintage vintage for the wine
+	 * @param price price for the wine
+	 * @param name name of the wine
+	 * @param winery where the wine was made
 	 */
 	public Wine(int wineId, int vintage, float price, String name, Winery winery) {
 		this.wineId = wineId;

@@ -1,8 +1,31 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             Formatting.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package Core;
 
 import java.awt.Font;
 
+/**
+ * This class holds all the formatting defaults for the application.
+ *
+ */
 public class Formatting {
+	
+	//fields, each type of format is a field
 	private Font boldFont;
 	private Font baseFont;
 	private Font headingFont;
@@ -14,7 +37,9 @@ public class Formatting {
 	private Font subheadingFont2Base;
 	private Font subheadingFont3Base;
 	
-
+	/**
+	 * constructor for the formatting for the application
+	 */
 	public Formatting() {
 		boldFont = new Font("Lucida Grande", Font.BOLD, 10);
 		baseFont = new Font("Lucida Grande", Font.PLAIN, 10);

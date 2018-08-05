@@ -1,5 +1,26 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             UserWine.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package WineObjects;
 
+/**
+ * User wine review object
+ *
+ */
 public class UserWine {
 	
 	//fields
@@ -11,11 +32,12 @@ public class UserWine {
 	
 	
 	/**
-	 * @param user
-	 * @param wine
-	 * @param score
-	 * @param favorite
-	 * @param notes
+	 * constructor
+	 * @param user who reviewed the wine
+	 * @param wine the wine reviewed
+	 * @param score the score for the wine
+	 * @param favorite if the wine is a favorite
+	 * @param notes the user-written notes
 	 */
 	public UserWine(User user, Wine wine, int score, int favorite, String notes) {
 		this.user = user;

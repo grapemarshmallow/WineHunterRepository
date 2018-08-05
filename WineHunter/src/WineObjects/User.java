@@ -1,8 +1,31 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             User.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package WineObjects;
 
 import java.util.ArrayList;
 
+/**
+ * holds all information about a user
+ *
+ */
 public class User {
+	
+	// fields
 	private String username;
 	private String fullName;
 	private int id;
@@ -19,11 +42,12 @@ public class User {
 	private ArrayList<Variety> sysDislikeVarietyList = new ArrayList<Variety>();
 	
 	/**
-	 * @param username
-	 * @param fullName
-	 * @param id
-	 * @param admin
-	 * @param superAdmin
+	 * constructs a user object
+	 * @param username for the user
+	 * @param fullName name of the user
+	 * @param id for the user
+	 * @param admin 1 for an admin user
+	 * @param superAdmin 1 for a super admin user
 	 */
 	public User(String username, String fullName, int id, int admin, int superAdmin, String email) {
 		this.username = username;
@@ -34,6 +58,9 @@ public class User {
 		this.setEmail(email);
 	}
 	
+	/**
+	 * constructs a not logged in user
+	 */
 	public User() {
 		this.username = null;
 		this.fullName = null;

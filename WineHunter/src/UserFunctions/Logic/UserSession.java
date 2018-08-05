@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             UserSession.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package UserFunctions.Logic;
 
 
@@ -6,8 +23,10 @@ import java.sql.*;
 import Core.WineHunterApplication;
 import WineObjects.User;
 
-
-
+/**
+ * This class defines a user session
+ *
+ */
 public class UserSession {
 
 
@@ -16,8 +35,8 @@ public class UserSession {
 	
 	
 	/**
-	 * @param loggedIn
-	 * @param credentials
+	 * creates a new user session where the user is not logged in
+	 * 
 	 */
 	public UserSession() {
 		loggedIn = false;
@@ -143,6 +162,9 @@ public class UserSession {
 		
 	}
 	
+	/**
+	 * logs a user out
+	 */
 	public void logOut() {
 		loggedIn = false;
 		user.setAdmin(0);

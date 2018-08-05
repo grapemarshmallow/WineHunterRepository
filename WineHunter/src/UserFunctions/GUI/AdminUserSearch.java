@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             AdminUserSearch.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package UserFunctions.GUI;
 
 
@@ -24,11 +41,13 @@ import Core.WineHunterApplication;
 import UserFunctions.Logic.UserProfile;
 import WineObjects.User;
 
+/**
+ * This class allows admins to search for users
+ *
+ */
 public class AdminUserSearch extends JPanel {
 	
-	/**
-	 * 
-	 */
+	//fields
 	private static final long serialVersionUID = 8981424315449345382L;
 
 	/**

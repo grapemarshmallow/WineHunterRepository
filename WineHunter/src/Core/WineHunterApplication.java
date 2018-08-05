@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * ///////////////////////////////////////////////////////////////////////////////
+ *                   
+ * Main Class File:  WineHunterApplication.java
+ * File:             WineHunterApplication.java
+ * Semester:         Summer 2018
+ *
+ *
+ * Author:           Orbi Ish-Shalom (oishshalom@wisc.edu)
+ * CS Login:         orbi
+ * Lecturer's Name:  Hien Hguyen
+ *
+ *                    PAIR PROGRAMMERS COMPLETE THIS SECTION
+ *  Pair Partner:     Jennifer Shih
+ * //////////////////////////// 80 columns wide //////////////////////////////////
+ *******************************************************************************/
+
 package Core;
 
 import java.awt.Component;
@@ -7,6 +24,7 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
+import Search.Logic.WineSearch;
 import WineObjects.*;
 import UserFunctions.GUI.AdminUserSearch;
 import UserFunctions.GUI.EditTasterProfile;
@@ -16,19 +34,14 @@ import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
+/**
+ * This is the main class file for the application.
+ *
+ */
 public class WineHunterApplication {
 	
+	// members
 	private static JFrame frmWinehunter;
-	
-	
-	public static JFrame getFrmWinehunter() {
-		return WineHunterApplication.frmWinehunter;
-	}
-	
-	public void setFrmWinehunter(JFrame frmWinehunter) {
-		WineHunterApplication.frmWinehunter = frmWinehunter;
-	}
-	
 	public static Formatting format;
 	public static Core.Connect connection;
 	public static UserFunctions.Logic.UserSession userSession;
@@ -55,7 +68,21 @@ public class WineHunterApplication {
 	public final static int APPLICATION_HEIGHT = 700;
 	public final static int APPLICATION_MAIN_HEIGHT = 650;
 	
+	/**
+	 * get the frame for the entire application
+	 * @return the application frame
+	 */
+	public static JFrame getFrmWinehunter() {
+		return WineHunterApplication.frmWinehunter;
+	}
 	
+	/**
+	 * set the frame for the entire application
+	 * @param frmWinehunter the application frame
+	 */
+	public void setFrmWinehunter(JFrame frmWinehunter) {
+		WineHunterApplication.frmWinehunter = frmWinehunter;
+	}
 	
 	public Core.Connect getConnection() {
 		return WineHunterApplication.connection;
@@ -212,11 +239,11 @@ public class WineHunterApplication {
 	/**
 	 * Draw wine search page
 	 */
-	public static void searchWines(int empty) {
+	public static void searchWines(int empty, User user) {
 		//draw wine search page
 		WineHunterApplication.cleanPanel();
 		
-		viewWineSearch = new Search.GUI.ViewWineSearch(empty);
+		viewWineSearch = new Search.GUI.ViewWineSearch(empty, user);
 		
 		wineSearch = new Search.Logic.WineSearch();
 		viewWineSearch.setName("wineSearch");
@@ -234,11 +261,11 @@ public class WineHunterApplication {
 	/**
 	 * Draw wine results page
 	 */
-	public static void showWines(String[][] data, String[] columnNames, int[] wineIDs) {
+	public static void showWines(WineSearch wineSearch, User user) {
 		
 		WineHunterApplication.cleanPanel();
 		
-		viewWineResults = new Search.GUI.ViewWineResults(data, columnNames, wineIDs); 
+		viewWineResults = new Search.GUI.ViewWineResults(wineSearch, user); 
 		viewWineResults.setName("viewWineResults");
 		viewWineResults.setPreferredSize(mainDimension); 
 		viewWineResults.setMaximumSize(getMainPanelDimensions());
@@ -254,11 +281,11 @@ public class WineHunterApplication {
 	/**
 	 * Draw specific wine page
 	 */
-	public static void viewWine(int wineID, int userID) {
+	public static void viewWine(int wineID, User user) {
 		
 		WineHunterApplication.cleanPanel();
 		
-		winePage = new Search.GUI.WinePage(wineID, userID); 
+		winePage = new Search.GUI.WinePage(wineID, user); 
 		winePage.setName("winePage");
 		mainPanel.setVisible(true);
 		mainPanel.add(winePage);
@@ -266,7 +293,7 @@ public class WineHunterApplication {
 		
 		frmWinehunter.pack();
 		
-		
+		//writeLocations();
 	}
 	
 	/**
@@ -278,11 +305,11 @@ public class WineHunterApplication {
 	 * @param notes
 	 * @param invalid
 	 */
-	public static void writeReview(int wineID, int userID, int score, String wineName, String notes, int invalid) {
+	public static void writeReview(int wineID, User user, int score, String wineName, String notes, int invalid) {
 		
 		WineHunterApplication.cleanPanel();
 		
-		wineReview = new Search.GUI.WriteWineReview(wineID, userID, score, wineName, notes, invalid); 
+		wineReview = new Search.GUI.WriteWineReview(wineID, user, score, wineName, notes, invalid); 
 		wineReview.setName("wineReview");
 		mainPanel.setVisible(true);
 		mainPanel.add(wineReview);
@@ -315,15 +342,6 @@ public class WineHunterApplication {
 		
 		//testing
 
-		/**
-		System.out.println("\nFrme size: " + frmWinehunter.getSize());
-		System.out.println("\nToolbar size: " + toolbar.getSize());
-		System.out.println("\nMain panel size: " + mainPanel.getSize());
-
-		for (int i = 0; i < components.length; ++i) {
-			System.out.print("\n\t" + components[i].getName() + " size: " + components[i].getSize());
-			writeComponents((JComponent) components[i], 1);
-		}*/
 
 		
 		//writeLocations();
