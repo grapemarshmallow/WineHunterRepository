@@ -317,6 +317,8 @@ public class WineHunterApplication {
 		
 		frmWinehunter.pack();
 		
+		//writeLocations();
+		
 		
 	}
 	/**

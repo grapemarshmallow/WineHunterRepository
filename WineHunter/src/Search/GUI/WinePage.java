@@ -126,13 +126,13 @@ public class WinePage extends JPanel {
 		userScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		userScroll.setViewportBorder(null);
 		userScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
-		userScroll.setPreferredSize(new Dimension(900, 650));
+		userScroll.setPreferredSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 50));
 		userScroll.setName("userScroll");
 		
 		JViewport scrollPort = new JViewport();
 		scrollPort.setName("scrollPort");
 		
-		scrollPort.setPreferredSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 50));
+		//scrollPort.setPreferredSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, WineHunterApplication.APPLICATION_MAIN_HEIGHT - 50));
 		
 		JPanel userInfoScroll = new JPanel();
 		userInfoScroll.setName("userInfoScroll");
@@ -141,11 +141,10 @@ public class WinePage extends JPanel {
 		gbl_userInfoScroll.columnWidths = new int[]{0};
 		gbl_userInfoScroll.rowHeights = new int[]{0};
 		userInfoScroll.setLayout(gbl_userInfoScroll);
-		userInfoScroll.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, 10000));
 		userScroll.setViewport(scrollPort);
 		userScroll.setViewportView(userInfoScroll);
 		
-		this.add(userScroll, "width 100%, height 95%");
+		this.add(userScroll, "width 100%, height 90%");
 		
 		
 		//panel for wine information
@@ -157,7 +156,6 @@ public class WinePage extends JPanel {
 		gbc_winePanel.gridy = 0;
 		gbc_winePanel.anchor = GridBagConstraints.NORTH;
 		gbc_winePanel.weighty = 1;
-		winePanel.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, 10000));
 		userInfoScroll.add(winePanel, gbc_winePanel);
 		GridBagLayout gbl_winePanel = new GridBagLayout();
 		gbl_winePanel.columnWidths = new int[]{0};
@@ -168,7 +166,6 @@ public class WinePage extends JPanel {
 		//panel to display wine information
 		JPanel wineInfoPanel = new JPanel();
 		wineInfoPanel.setName("wineInfoPanel");
-		wineInfoPanel.setMaximumSize(new Dimension(WineHunterApplication.APPLICATION_WIDTH, 10000));
 		GridBagConstraints gbc_wineInfoPanel = new GridBagConstraints();
 		gbc_wineInfoPanel.fill = GridBagConstraints.BOTH;
 		gbc_wineInfoPanel.gridx = 0;
@@ -177,23 +174,24 @@ public class WinePage extends JPanel {
 		gbc_wineInfoPanel.anchor = GridBagConstraints.CENTER;
 		winePanel.add(wineInfoPanel, gbc_wineInfoPanel);
 		GridBagLayout gbl_wineInfoPanel = new GridBagLayout();
-		gbl_winePanel.rowHeights = new int[]{0};
-		gbl_winePanel.columnWidths = new int[]{((int) (0.6 * WineHunterApplication.APPLICATION_WIDTH)), ((int) (0.4 * WineHunterApplication.APPLICATION_WIDTH))};
-		gbl_winePanel.columnWeights = new double[] { 0.6, 0.4 };
+		gbl_wineInfoPanel.rowHeights = new int[]{0};
+		gbl_wineInfoPanel.columnWidths = new int[]{((int) (0.6 * WineHunterApplication.APPLICATION_WIDTH)), ((int) (0.4 * WineHunterApplication.APPLICATION_WIDTH))};
+		gbl_wineInfoPanel.columnWeights = new double[] { 0.6, 0.4 };
 		wineInfoPanel.setLayout(gbl_wineInfoPanel);
 		
 		//actually display everything
 		
 		JPanel wineLeftInfoPanel = new JPanel();
-		wineLeftInfoPanel.setMinimumSize(new Dimension(((int) (WineHunterApplication.APPLICATION_WIDTH * 0.6)), 100));
+		wineLeftInfoPanel.setMinimumSize(new Dimension(((int) (WineHunterApplication.APPLICATION_WIDTH * 0.6)), WineHunterApplication.APPLICATION_MAIN_HEIGHT - 100));
 		wineLeftInfoPanel.setName("wineLeftInfoPanel");
 		GridBagConstraints gbc_wineLeftInfoPanel = new GridBagConstraints();
 		gbc_wineLeftInfoPanel.fill = GridBagConstraints.BOTH;
-		gbc_wineLeftInfoPanel.anchor = GridBagConstraints.EAST;
+		gbc_wineLeftInfoPanel.anchor = GridBagConstraints.NORTHWEST;
 		gbc_wineLeftInfoPanel.insets = new Insets(5, 5, 5, 5);
 		gbc_wineLeftInfoPanel.gridx = 0;
 		gbc_wineLeftInfoPanel.gridy = 0; 
 		gbc_wineLeftInfoPanel.weightx = .6;
+		gbc_wineLeftInfoPanel.weighty = 1;
 		wineInfoPanel.add(wineLeftInfoPanel, gbc_wineLeftInfoPanel);
 		GridBagLayout gbl_wineLeftInfoPanel = new GridBagLayout();
 		gbl_wineLeftInfoPanel.columnWidths = new int[]{0};
@@ -210,6 +208,7 @@ public class WinePage extends JPanel {
 		gbc_infoBucket.gridx = 0;
 		gbc_infoBucket.gridy = 0;
 		gbc_infoBucket.weightx = 1;
+		gbc_infoBucket.weighty = 1;
 		wineLeftInfoPanel.add(infoBucket, gbc_infoBucket);
 		GridBagLayout gbl_infoBucket = new GridBagLayout();
 		gbl_infoBucket.columnWidths = new int[]{0};
@@ -221,18 +220,19 @@ public class WinePage extends JPanel {
 		lblWine.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblWine.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblWine = new GridBagConstraints();
-		gbc_lblWine.anchor = GridBagConstraints.WEST;
+		gbc_lblWine.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblWine.insets = new Insets(5, 5, 5, 5);
 		gbc_lblWine.gridx = 0;
 		gbc_lblWine.gridy = 0;
 		infoBucket.add(lblWine, gbc_lblWine);
 		
-		JLabel lblWineName = new JLabel(results[0]);
+		String wineName = String.format("<html><div WIDTH=%d>%s</div></html>", 400, results[0]);
+		JLabel lblWineName = new JLabel(wineName);
 		lblWineName.setHorizontalAlignment(SwingConstants.LEADING);
 		lblWineName.setName("lblWineName");
 		lblWineName.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblWineName = new GridBagConstraints();
-		gbc_lblWineName.anchor = GridBagConstraints.WEST;
+		gbc_lblWineName.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblWineName.insets = new Insets(5, 5, 5, 5);
 		gbc_lblWineName.gridx = 1;
 		gbc_lblWineName.gridy = 0;
@@ -245,7 +245,7 @@ public class WinePage extends JPanel {
 		lblWinery.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblWinery = new GridBagConstraints();
 		gbc_lblWinery.insets = new Insets(5, 5, 5, 5);
-		gbc_lblWinery.anchor = GridBagConstraints.WEST;
+		gbc_lblWinery.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblWinery.gridx = 0;
 		gbc_lblWinery.gridy = 1;
 		infoBucket.add(lblWinery, gbc_lblWinery);
@@ -255,7 +255,7 @@ public class WinePage extends JPanel {
 		lblWineryName.setName("lblWineryName");
 		lblWineryName.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblWineryName = new GridBagConstraints();
-		gbc_lblWineryName.anchor = GridBagConstraints.WEST;
+		gbc_lblWineryName.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblWineryName.insets = new Insets(5, 5, 5, 5);
 		gbc_lblWineryName.gridx = 1;
 		gbc_lblWineryName.gridy = 1;
@@ -268,7 +268,7 @@ public class WinePage extends JPanel {
 		lblVintage.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblVintage = new GridBagConstraints();
 		gbc_lblVintage.insets = new Insets(5, 5, 5, 5);
-		gbc_lblVintage.anchor = GridBagConstraints.WEST;
+		gbc_lblVintage.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblVintage.gridx = 0;
 		gbc_lblVintage.gridy = 2;
 		infoBucket.add(lblVintage, gbc_lblVintage);
@@ -278,7 +278,7 @@ public class WinePage extends JPanel {
 		lblVintageYr.setName("lblVintageYr");
 		lblVintageYr.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblVintageYr = new GridBagConstraints();
-		gbc_lblVintageYr.anchor = GridBagConstraints.WEST;
+		gbc_lblVintageYr.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblVintageYr.insets = new Insets(5, 5, 5, 5);
 		gbc_lblVintageYr.gridx = 1;
 		gbc_lblVintageYr.gridy = 2;
@@ -291,7 +291,7 @@ public class WinePage extends JPanel {
 		lblVariety.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblVariety = new GridBagConstraints();
 		gbc_lblVariety.insets = new Insets(5, 5, 5, 5);
-		gbc_lblVariety.anchor = GridBagConstraints.WEST;
+		gbc_lblVariety.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblVariety.gridx = 0;
 		gbc_lblVariety.gridy = 3;
 		infoBucket.add(lblVariety, gbc_lblVariety);
@@ -301,7 +301,7 @@ public class WinePage extends JPanel {
 		lblVarietyVal.setName("lblVarietyVal");
 		lblVarietyVal.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblVarietyVal = new GridBagConstraints();
-		gbc_lblVarietyVal.anchor = GridBagConstraints.WEST;
+		gbc_lblVarietyVal.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblVarietyVal.insets = new Insets(5, 5, 5, 5);
 		gbc_lblVarietyVal.gridx = 1;
 		gbc_lblVarietyVal.gridy = 3;
@@ -314,7 +314,7 @@ public class WinePage extends JPanel {
 		lblCountry.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblCountry = new GridBagConstraints();
 		gbc_lblCountry.insets = new Insets(5, 5, 5, 5);
-		gbc_lblCountry.anchor = GridBagConstraints.WEST;
+		gbc_lblCountry.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblCountry.gridx = 0;
 		gbc_lblCountry.gridy = 4;
 		infoBucket.add(lblCountry, gbc_lblCountry);
@@ -324,7 +324,7 @@ public class WinePage extends JPanel {
 		lblCountryName.setName("lblCountryName");
 		lblCountryName.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblCountryName = new GridBagConstraints();
-		gbc_lblCountryName.anchor = GridBagConstraints.WEST;
+		gbc_lblCountryName.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblCountryName.insets = new Insets(5, 5, 5, 5);
 		gbc_lblCountryName.gridx = 1;
 		gbc_lblCountryName.gridy = 4;
@@ -337,7 +337,7 @@ public class WinePage extends JPanel {
 		lblRegion.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblRegion = new GridBagConstraints();
 		gbc_lblRegion.insets = new Insets(5, 5, 5, 5);
-		gbc_lblRegion.anchor = GridBagConstraints.WEST;
+		gbc_lblRegion.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblRegion.gridx = 0;
 		gbc_lblRegion.gridy = 5;
 		infoBucket.add(lblRegion, gbc_lblRegion);
@@ -347,7 +347,7 @@ public class WinePage extends JPanel {
 		lblRegionName.setName("lblRegionName");
 		lblRegionName.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblRegionName = new GridBagConstraints();
-		gbc_lblRegionName.anchor = GridBagConstraints.WEST;
+		gbc_lblRegionName.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblRegionName.insets = new Insets(5, 5, 5, 5);
 		gbc_lblRegionName.gridx = 1;
 		gbc_lblRegionName.gridy = 5;
@@ -360,7 +360,7 @@ public class WinePage extends JPanel {
 		lblProvince.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblProvince = new GridBagConstraints();
 		gbc_lblProvince.insets = new Insets(5, 5, 5, 5);
-		gbc_lblProvince.anchor = GridBagConstraints.WEST;
+		gbc_lblProvince.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblProvince.gridx = 0;
 		gbc_lblProvince.gridy = 6;
 		infoBucket.add(lblProvince, gbc_lblProvince);
@@ -370,7 +370,7 @@ public class WinePage extends JPanel {
 		lblProvinceName.setName("lblProvinceName");
 		lblProvinceName.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblProvinceName = new GridBagConstraints();
-		gbc_lblProvinceName.anchor = GridBagConstraints.WEST;
+		gbc_lblProvinceName.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblProvinceName.insets = new Insets(5, 5, 5, 5);
 		gbc_lblProvinceName.gridx = 1;
 		gbc_lblProvinceName.gridy = 6;
@@ -383,7 +383,7 @@ public class WinePage extends JPanel {
 		lblPrice.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblPrice = new GridBagConstraints();
 		gbc_lblPrice.insets = new Insets(5, 5, 5, 5);
-		gbc_lblPrice.anchor = GridBagConstraints.WEST;
+		gbc_lblPrice.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblPrice.gridx = 0;
 		gbc_lblPrice.gridy = 7;
 		infoBucket.add(lblPrice, gbc_lblPrice);
@@ -393,7 +393,7 @@ public class WinePage extends JPanel {
 		lblPriceVal.setName("lblPriceVal");
 		lblPriceVal.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblPriceVal = new GridBagConstraints();
-		gbc_lblPriceVal.anchor = GridBagConstraints.WEST;
+		gbc_lblPriceVal.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblPriceVal.insets = new Insets(5, 5, 5, 5);
 		gbc_lblPriceVal.gridx = 1;
 		gbc_lblPriceVal.gridy = 7;
@@ -405,7 +405,7 @@ public class WinePage extends JPanel {
 		lblTaster.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblTaster.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblTaster = new GridBagConstraints();
-		gbc_lblTaster.anchor = GridBagConstraints.WEST;
+		gbc_lblTaster.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblTaster.insets = new Insets(5, 5, 5, 5);
 		gbc_lblTaster.gridx = 0;
 		gbc_lblTaster.gridy = 8;
@@ -416,7 +416,7 @@ public class WinePage extends JPanel {
 		lblTasterInfo.setHorizontalAlignment(SwingConstants.LEADING);
 		lblTasterInfo.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblTasterInfo = new GridBagConstraints();
-		gbc_lblTasterInfo.anchor = GridBagConstraints.WEST;
+		gbc_lblTasterInfo.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblTasterInfo.insets = new Insets(5, 5, 5, 5);
 		gbc_lblTasterInfo.gridx = 1;
 		gbc_lblTasterInfo.gridy = 8;
@@ -428,7 +428,7 @@ public class WinePage extends JPanel {
 		lblScore.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblScore.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblScore = new GridBagConstraints();
-		gbc_lblScore.anchor = GridBagConstraints.WEST;
+		gbc_lblScore.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblScore.insets = new Insets(5, 5, 5, 5);
 		gbc_lblScore.gridx = 0;
 		gbc_lblScore.gridy = 9;
@@ -439,7 +439,7 @@ public class WinePage extends JPanel {
 		lblScoreInfo.setHorizontalAlignment(SwingConstants.LEADING);
 		lblScoreInfo.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblScoreInfo = new GridBagConstraints();
-		gbc_lblScoreInfo.anchor = GridBagConstraints.WEST;
+		gbc_lblScoreInfo.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblScoreInfo.insets = new Insets(5, 5, 5, 5);
 		gbc_lblScoreInfo.gridx = 1;
 		gbc_lblScoreInfo.gridy = 9;
@@ -451,7 +451,7 @@ public class WinePage extends JPanel {
 		lblTwitter.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblTwitter.setFont(WineHunterApplication.format.getSubheadingFont());
 		GridBagConstraints gbc_lblTwitter = new GridBagConstraints();
-		gbc_lblTwitter.anchor = GridBagConstraints.WEST;
+		gbc_lblTwitter.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblTwitter.insets = new Insets(5, 5, 5, 5);
 		gbc_lblTwitter.gridx = 0;
 		gbc_lblTwitter.gridy = 10;
@@ -462,7 +462,7 @@ public class WinePage extends JPanel {
 		lblTwitterHandle.setHorizontalAlignment(SwingConstants.LEADING);
 		lblTwitterHandle.setFont(WineHunterApplication.format.getSubheadingFontBase());
 		GridBagConstraints gbc_lblTwitterHandle = new GridBagConstraints();
-		gbc_lblTwitterHandle.anchor = GridBagConstraints.WEST;
+		gbc_lblTwitterHandle.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblTwitterHandle.insets = new Insets(5, 5, 5, 5);
 		gbc_lblTwitterHandle.gridx = 1;
 		gbc_lblTwitterHandle.gridy = 10;
@@ -509,7 +509,7 @@ public class WinePage extends JPanel {
 		infoBucket.add(lblRScoreTitle, gbc_lblRScoreTitle);
 		
 		JPanel wineRightInfoPanel = new JPanel();
-		wineRightInfoPanel.setMaximumSize(new Dimension(((int) (WineHunterApplication.APPLICATION_WIDTH * 0.4)), 100));
+		wineRightInfoPanel.setMinimumSize(new Dimension(((int) (WineHunterApplication.APPLICATION_WIDTH * 0.4)), WineHunterApplication.APPLICATION_MAIN_HEIGHT - 50));
 		wineRightInfoPanel.setName("wineRightInfoPanel");
 		GridBagConstraints gbc_wineRightInfoPanel = new GridBagConstraints();
 		gbc_wineRightInfoPanel.anchor = GridBagConstraints.NORTHWEST;
@@ -517,6 +517,7 @@ public class WinePage extends JPanel {
 		gbc_wineRightInfoPanel.gridx = 1;
 		gbc_wineRightInfoPanel.gridy = 0; 
 		gbc_wineRightInfoPanel.weightx = .4;
+		gbc_wineRightInfoPanel.fill = GridBagConstraints.BOTH;
 		wineInfoPanel.add(wineRightInfoPanel, gbc_wineRightInfoPanel);
 		GridBagLayout gbl_wineRightInfoPanel = new GridBagLayout();
 		gbl_wineRightInfoPanel.columnWidths = new int[]{0};
@@ -591,7 +592,7 @@ public class WinePage extends JPanel {
 				userScore = "User "+ user.getId() + " (" + user.getUsername() + ") gave this wine a score of " + userResults[2];
 			}
 		}
-		userScore = String.format("<html><div WIDTH=%d>%s</div></html>", 250, userScore);
+		userScore = String.format("<html><div WIDTH=%d>%s</div></html>", 300, userScore);
 		JLabel lblWineScore = new JLabel(userScore);
 		lblWineScore.setName("lblWineScore");
 		lblWineScore.setHorizontalAlignment(SwingConstants.LEADING);
@@ -608,7 +609,7 @@ public class WinePage extends JPanel {
 		btnWriteReview.setFont(WineHunterApplication.format.getBaseFont());
 		btnWriteReview.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg1) {
-				int scoreInt = -1; 
+				int scoreInt = 0; 
 				if(userResults[2] != "N/A") {
 					scoreInt = Integer.parseInt(userResults[2]);
 				}
@@ -633,7 +634,7 @@ public class WinePage extends JPanel {
 				userNotes = "User "+ user.getId() + " (" + user.getUsername() + ") notes: " + userResults[3];
 			}
 		}
-		userNotes = String.format("<html><div WIDTH=%d>%s</div></html>", 250, userNotes);
+		userNotes = String.format("<html><div WIDTH=%d>%s</div></html>", 300, userNotes);
 		JLabel lblNotes = new JLabel(userNotes);
 		lblNotes.setName("lblWineScore");
 		lblNotes.setHorizontalAlignment(SwingConstants.LEADING);
