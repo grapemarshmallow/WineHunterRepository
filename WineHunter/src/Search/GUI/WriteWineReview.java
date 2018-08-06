@@ -61,6 +61,7 @@ public class WriteWineReview extends JPanel {
 	 * @param wineName - name of the wine
 	 * @param notes - current notes
 	 * @param invalid - 0 if ok 1 if we got here because of invalid inputs, 2 if updated successfully, 3 for valid review, invalid score
+	 * 	4 for valid score, invalid review
 	 */
 	private static final long serialVersionUID = 462987850014607520L;
 	private JTextArea newNotes; 
@@ -83,22 +84,29 @@ public class WriteWineReview extends JPanel {
 		
 		this.add(lblWineSearch, "width 100%, dock north, pad 10");
 		
-		if(invalid ==1) {
+		if (invalid ==1) {
 			JLabel lblInvalid = new JLabel("Enter valid input before updating.");
 			lblInvalid.setName("lblInvalid");
 			lblInvalid.setHorizontalAlignment(SwingConstants.CENTER);
 			lblInvalid.setFont(WineHunterApplication.format.getSubheadingFont());
 			this.add(lblInvalid, "width 100%, dock north, pad 10");
 		}
-		if(invalid == 2) {
+		else if (invalid == 2) {
 			JLabel lblSuccess = new JLabel("Update successful!");
 			lblSuccess.setName("gbc_lblSuccess");
 			lblSuccess.setHorizontalAlignment(SwingConstants.CENTER);
 			lblSuccess.setFont(WineHunterApplication.format.getSubheadingFont());
 			this.add(lblSuccess, "width 100%, dock north, pad 10");
 		}
-		if(invalid == 3) {
+		else if (invalid == 3) {
 			JLabel lblSuccess = new JLabel("User note update successful! Enter a valid score before updating.");
+			lblSuccess.setName("gbc_lblSuccess");
+			lblSuccess.setHorizontalAlignment(SwingConstants.CENTER);
+			lblSuccess.setFont(WineHunterApplication.format.getSubheadingFont());
+			this.add(lblSuccess, "width 100%, dock north, pad 10");
+		}
+		else if (invalid == 4) {
+			JLabel lblSuccess = new JLabel("Score update successful! Enter a valid note before updating.");
 			lblSuccess.setName("gbc_lblSuccess");
 			lblSuccess.setHorizontalAlignment(SwingConstants.CENTER);
 			lblSuccess.setFont(WineHunterApplication.format.getSubheadingFont());
@@ -219,21 +227,29 @@ public class WriteWineReview extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				String updateNote = ""; 
-				if(!newNotes.getText().isEmpty()) {
+				if((!newNotes.getText().isEmpty()) && (!newNotes.getText().equals("N/A")) ) {
 					updateNote = newNotes.getText(); 
 				}
 				int validScore = 1; //0 if invalid, 1 if valid
 				newScore = (int) scoreSpinner.getValue();
-				if(newScore < 0) {
+				if(newScore < 1) {
 					//invalid to have empty score in updating
 					validScore = 0; 
 					
 				}
 				
 				try {
-					if(validScore == 0) {
+					if (validScore == 0 && !updateNote.isEmpty()) {
 						updateUserWineNotes(userID, wineID, updateNote);
 						WineHunterApplication.writeReview(wineID, user, score, wineName, updateNote, 3);
+					}
+					else if (validScore == 1 && updateNote.isEmpty()) {
+						updateUserWineScore(userID, wineID, newScore);
+						WineHunterApplication.writeReview(wineID, user, newScore, wineName, notes, 4);
+					}
+					else if (validScore == 0 && updateNote.isEmpty()) {
+						
+						WineHunterApplication.writeReview(wineID, user, score, wineName, notes, 1);
 					}
 					else {
 						updateUserWineScore(userID, wineID, newScore);
