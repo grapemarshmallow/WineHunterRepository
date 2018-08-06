@@ -120,7 +120,7 @@ public class UserSession {
 	 * @return 0 if user not successfully created, -1 if duplicate issue, 1 otherwise
 	 * @throws SQLException
 	 */
-	public int createUser(String name, String email, String password, String username, int admin, int superAdmin) throws SQLException {
+	public int createUser(String name, String email, String username, String password, int admin, int superAdmin) throws SQLException {
 		
 		
 		int result = 0;
