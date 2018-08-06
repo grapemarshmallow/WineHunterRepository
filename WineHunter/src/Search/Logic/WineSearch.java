@@ -515,6 +515,7 @@ public class WineSearch {
 			wheresql = wheresql + pointsString;
 		}
 		
+		
 		if (wineryId != -10) {
 			String wineryString = "wy.WineryID = " + wineryId;
 			if ((needAnd == 1) || (needAndAfter == 1) || (needAndAfter2 == 1)) {
@@ -523,6 +524,7 @@ public class WineSearch {
 			else {
 				wheresql = wheresql + wineryString;
 			}
+			needAnd = 1;
 		}
 		else if (regionId != -10) {
 			String regionString = "wy.RegionID = " + regionId;
@@ -532,6 +534,8 @@ public class WineSearch {
 			else {
 				wheresql = wheresql + regionString;
 			}
+			
+			needAnd = 1;
 		}
 		else if (provinceId != -10) {
 			String provinceString = "wy.ProvinceID = " + provinceId;
@@ -541,6 +545,8 @@ public class WineSearch {
 			else {
 				wheresql = wheresql + provinceString;
 			}
+			
+			needAnd = 1;
 		}
 		else if (countryId != -10) {
 			String countryString = "c.CountryID = " + countryId;
@@ -550,15 +556,46 @@ public class WineSearch {
 			else {
 				wheresql = wheresql + countryString;
 			}
+			needAnd = 1;
+		}
+		
+		
+		if (keywordId != -10) {
+			String keywordString = "w.wineID IN "
+					+ "(SELECT wk.WineID FROM WineKeyword wk "
+					+ "WHERE wk.KeywordID = " + keywordId + ")";
+			if ((needAnd == 1) || (needAndAfter == 1) || (needAndAfter2 == 1)) {
+				wheresql = wheresql + " AND " + keywordString;
+			}
+			else {
+				wheresql = wheresql + keywordString;
+			}
+			needAnd = 1;
+			
+		}
+		
+		if (varietyId != -10) {
+			String varietyString = "w.wineID IN "
+					+ "(SELECT wv.WineID FROM WineVariety wv "
+					+ "WHERE wv.VarietyID = " + varietyId + ")";
+			if ((needAnd == 1) || (needAndAfter == 1) || (needAndAfter2 == 1)) {
+				wheresql = wheresql + " AND " + varietyString;
+			}
+			else {
+				wheresql = wheresql + varietyString;
+			}
+			needAnd = 1;
+			
 		}
 		
 		
 		sql = "SELECT w.wineID, w.wineName, w.vintage, w.price, wy.wineryName, countryName, provinceName" + 
-				" FROM wine w INNER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
-				" INNER JOIN province p ON p.ProvinceID = wy.ProvinceID"
-				+ " INNER JOIN region r ON wy.RegionID = r.RegionID" + 
-				" INNER JOIN country c ON c.CountryID = p.CountryID "
-				+ "INNER JOIN winereview wr on w.WineID = wr.WineID " + wheresql; 
+				" FROM wine w LEFT OUTER JOIN wineries wy ON w.wineryID=wy.wineryID" + 
+				" LEFT OUTER JOIN province p ON p.ProvinceID = wy.ProvinceID"
+				+ " LEFT OUTER JOIN region r ON wy.RegionID = r.RegionID" + 
+				" LEFT OUTER JOIN country c ON c.CountryID = p.CountryID "
+				+ "LEFT OUTER JOIN winereview wr on w.WineID = wr.WineID "
+				+ wheresql; 
 		
 		ResultSet rs = stmt.executeQuery(sql);
 		

@@ -811,31 +811,31 @@ public class ViewWineSearch extends JPanel{
 		
 		provinceBox = new JComboBox<Province>();
 		provinceBox.setName("provinceBox");
-		provinceBox.setSelectedItem(null);
+		provinceBox.setSelectedIndex(-1);
 		provinceBox.setEnabled(false);
 		
 		regionBox = new JComboBox<Region>();
 		regionBox.setName("regionBox");
-		regionBox.setSelectedItem(null);
+		regionBox.setSelectedIndex(-1);
 		regionBox.setEnabled(false);
 		
 		wineryBox.setName("wineryBox");
-		wineryBox.setSelectedItem(null);
+		wineryBox.setSelectedIndex(-1);
 		wineryBox.setEnabled(false);
 		
 		countryBox.setModel(new DefaultComboBoxModel<Country>(countryList));
-		countryBox.setSelectedItem(null);
+		countryBox.setSelectedIndex(-1);
 		countryBox.setEnabled(true);
 		countryBox.addItemListener(countryRefresh);
 		countryBox.setName("countryBox");
 		
 		varietyBox.setModel(new DefaultComboBoxModel<Variety>(varietyList));
-		varietyBox.setSelectedItem(null);
+		varietyBox.setSelectedIndex(-1);
 		varietyBox.setEnabled(true);
 		varietyBox.setName("varietyBox");
 		
 		keywordBox.setModel(new DefaultComboBoxModel<Keyword>(keywordList));
-		keywordBox.setSelectedItem(null);
+		keywordBox.setSelectedIndex(-1);
 		keywordBox.setEnabled(true);
 		keywordBox.setName("keywordBox");
 		
@@ -848,11 +848,12 @@ public class ViewWineSearch extends JPanel{
 		
 		try {
 			if (e.getSource().equals(countryBox)) {
+				
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					Country currentCountry = (Country) countryBox.getSelectedItem();
 					LoadVariousLists.loadProvinceOptions(provinceList, currentCountry);
 					provinceBox.setModel(new DefaultComboBoxModel<Province>(provinceList));
-					provinceBox.setSelectedItem(null);
+					provinceBox.setSelectedIndex(-1);
 					provinceBox.setEnabled(true);
 					provinceBox.addItemListener(provinceRefresh);
 				} 
@@ -860,9 +861,9 @@ public class ViewWineSearch extends JPanel{
 					provinceBox.removeItemListener(provinceRefresh);
 					regionBox.removeItemListener(regionRefresh);
 					wineryBox.removeItemListener(wineryRefresh);
-					provinceBox.setSelectedItem(null);
-					regionBox.setSelectedItem(null);
-					wineryBox.setSelectedItem(null);
+					provinceBox.setSelectedIndex(-1);
+					regionBox.setSelectedIndex(-1);
+					wineryBox.setSelectedIndex(-1);
 					provinceBox.setEnabled(false);
 					regionBox.setEnabled(false);
 					wineryBox.setEnabled(false);
@@ -874,33 +875,37 @@ public class ViewWineSearch extends JPanel{
 					Province currentProvince = (Province) provinceBox.getSelectedItem();
 					LoadVariousLists.loadRegionOptions(regionList, currentProvince);
 					LoadVariousLists.loadWineryOptions(wineryList, currentProvince, null);
-					regionBox.setModel(new DefaultComboBoxModel<Region>(regionList));
-					regionBox.setSelectedItem(null);
 					regionBox.setEnabled(true);
-					wineryBox.setModel(new DefaultComboBoxModel<Winery>(wineryList));
-					wineryBox.setSelectedItem(null);
+					regionBox.setModel(new DefaultComboBoxModel<Region>(regionList));
+					regionBox.setSelectedIndex(-1);
 					wineryBox.setEnabled(true);
-					regionBox.addItemListener(regionRefresh);
+					wineryBox.setModel(new DefaultComboBoxModel<Winery>(wineryList));
+					wineryBox.setSelectedIndex(-1);
 					wineryBox.addItemListener(wineryRefresh);
+					regionBox.addItemListener(regionRefresh);
+					
 				} 
 				else {
 					regionBox.removeItemListener(regionRefresh);
 					wineryBox.removeItemListener(wineryRefresh);
 					regionBox.setEnabled(false);
 					wineryBox.setEnabled(false);
-					regionBox.setSelectedItem(null);
-					wineryBox.setSelectedItem(null);
+					regionBox.setSelectedIndex(-1);
+					wineryBox.setSelectedIndex(-1);
 				}
 			}
 			
 			else if (e.getSource().equals(regionBox)) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
+					wineryBox.removeItemListener(wineryRefresh);
 					Province currentProvince = (Province) provinceBox.getSelectedItem();
 					Region currentRegion = (Region) regionBox.getSelectedItem();
 					LoadVariousLists.loadWineryOptions(wineryList, currentProvince, currentRegion);
 					wineryBox.setModel(new DefaultComboBoxModel<Winery>(wineryList));
-					wineryBox.setSelectedItem(null);
+					wineryBox.setSelectedIndex(-1);
 					wineryBox.setEnabled(true);
+					wineryBox.addItemListener(wineryRefresh);
+					
 				}
 			}
 			
@@ -912,10 +917,11 @@ public class ViewWineSearch extends JPanel{
 					regionBox.setEnabled(false);
 				}
 				else {
+					regionBox.removeItemListener(regionRefresh);
 					Province currentProvince = (Province) provinceBox.getSelectedItem();
 					LoadVariousLists.loadRegionOptions(regionList, currentProvince);
 					regionBox.setModel(new DefaultComboBoxModel<Region>(regionList));
-					regionBox.setSelectedItem(null);
+					regionBox.setSelectedIndex(-1);
 					regionBox.setEnabled(true);
 					
 					regionBox.addItemListener(regionRefresh);
