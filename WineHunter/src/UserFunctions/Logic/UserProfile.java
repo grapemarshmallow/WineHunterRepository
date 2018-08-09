@@ -305,6 +305,57 @@ public class UserProfile {
 
 		rs.close();
 		
+		sql = "SELECT AVG(UserScore) as avg0"
+				+ " FROM UserWine"
+				+ " WHERE UserID = " + user.getId();
+		
+		rs = stmt.executeQuery(sql);
+		
+		boolean hasResults = rs.first();
+		double avgScore=0; 
+
+		if (hasResults) {
+			avgScore = rs.getDouble("avg0"); 
+		}
+
+		user.setavgScore(avgScore);
+		
+		rs.close();
+		
+		sql = "SELECT COUNT(*) as likeCount"
+				+ " FROM UserReview"
+				+ " WHERE LikeDislikeWineReview = 1 AND UserID = " + user.getId();
+		
+		rs = stmt.executeQuery(sql);
+		
+		hasResults = rs.first();
+		int likeCnt = 0; 
+
+		if (hasResults) {
+			likeCnt = rs.getInt("likeCount"); 
+		}
+
+		user.setnumLikes(likeCnt);
+		
+		rs.close();
+		
+		sql = "SELECT COUNT(*) as dislikeCount"
+				+ " FROM UserReview"
+				+ " WHERE LikeDislikeWineReview = 2 AND UserID = " + user.getId();
+		
+		rs = stmt.executeQuery(sql);
+		
+		hasResults = rs.first();
+		int dislikeCnt = 0; 
+
+		if (hasResults) {
+			dislikeCnt = rs.getInt("dislikeCount"); 
+		}
+
+		user.setnumDislikes(dislikeCnt);
+		
+		rs.close();
+		
 		stmt.close();
 		
 		return result;

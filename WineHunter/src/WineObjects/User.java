@@ -40,6 +40,9 @@ public class User {
 	private ArrayList<Variety> userDislikeVarietyList = new ArrayList<Variety>();
 	private ArrayList<Variety> sysLikeVarietyList = new ArrayList<Variety>();
 	private ArrayList<Variety> sysDislikeVarietyList = new ArrayList<Variety>();
+	private double avgScore; 
+	private int numLikes;
+	private int numDislikes; 
 	
 	/**
 	 * constructs a user object
@@ -149,6 +152,24 @@ public class User {
 		this.superAdmin = superAdmin;
 	}
 	
+	public double getavgScore() {
+		return this.avgScore; 
+	}
+	public int getnumLikes() {
+		return this.numLikes;
+	}
+	public int getnumDislikes() {
+		return this.numDislikes; 
+	}
+	public void setavgScore(double score) {
+		this.avgScore= score; 
+	}
+	public void setnumLikes(int likes) {
+		this.numLikes=likes; 
+	}
+	public void setnumDislikes(int dislikes) {
+		this.numDislikes=dislikes; 
+	}
 	/**
 	 * refreshes our users lists for filling
 	 */

@@ -530,6 +530,84 @@ public class ViewUserProfile extends JPanel {
 		gbc_lblAdminText.gridx = 1;
 		gbc_lblAdminText.gridy = 4;
 		profileBucket.add(lblAdminText, gbc_lblAdminText);
+		
+		JLabel lblAvgScore = new JLabel("Average Score: ");
+		lblAvgScore.setName("lblAvgScore");
+		lblAvgScore.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblAvgScore.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblAvgScore = new GridBagConstraints();
+		gbc_lblAvgScore.insets = new Insets(5, 5, 5, 5);
+		gbc_lblAvgScore.anchor = GridBagConstraints.EAST;
+		gbc_lblAvgScore.gridx = 0;
+		gbc_lblAvgScore.gridy = 5;
+		profileBucket.add(lblAvgScore, gbc_lblAvgScore);
+		
+		JLabel lblAvgScoreText = new JLabel("No wines reviewed");
+		lblAvgScoreText.setName("lblAvgScoreText");
+		lblAvgScoreText.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblAvgScoreText.setFont(WineHunterApplication.format.getSubheadingFontBase());
+		//String avgScoreText = Double.toString(user.getavgScore());
+		String avgScoreText = String.format("%.2f", user.getavgScore()); 
+		if (avgScoreText != "0.0"){
+				//avgScoreText = String.format("%.2f", avgScoreText);
+				lblAvgScoreText.setText(avgScoreText);
+		}
+		GridBagConstraints gbc_lblAvgScoreText = new GridBagConstraints();
+		gbc_lblAvgScoreText.insets = new Insets(5, 5, 5, 5);
+		gbc_lblAvgScoreText.anchor = GridBagConstraints.WEST;
+		gbc_lblAvgScoreText.gridx = 1;
+		gbc_lblAvgScoreText.gridy = 5;
+		profileBucket.add(lblAvgScoreText, gbc_lblAvgScoreText);
+		
+		JLabel lblLikes = new JLabel("# of likes: ");
+		lblLikes.setName("lblLikes");
+		lblLikes.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblLikes.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblLikes = new GridBagConstraints();
+		gbc_lblLikes.insets = new Insets(5, 5, 5, 5);
+		gbc_lblLikes.anchor = GridBagConstraints.EAST;
+		gbc_lblLikes.gridx = 0;
+		gbc_lblLikes.gridy = 6;
+		profileBucket.add(lblLikes, gbc_lblLikes);
+		
+		JLabel lblNumLikes = new JLabel("0");
+		lblNumLikes.setName("lblLikes");
+		lblNumLikes.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNumLikes.setFont(WineHunterApplication.format.getSubheadingFontBase());
+		lblNumLikes.setForeground(Color.GREEN);
+		String avgNumLikes = Integer.toString(user.getnumLikes()); 
+		lblNumLikes.setText(avgNumLikes);
+		GridBagConstraints gbc_lblNumLikes = new GridBagConstraints();
+		gbc_lblNumLikes.insets = new Insets(5, 5, 5, 5);
+		gbc_lblNumLikes.anchor = GridBagConstraints.WEST;
+		gbc_lblNumLikes.gridx = 1;
+		gbc_lblNumLikes.gridy = 6;
+		profileBucket.add(lblNumLikes, gbc_lblNumLikes);
+		
+		JLabel lblDislikes = new JLabel("# of dislikes: ");
+		lblDislikes.setName("lblDislikes");
+		lblDislikes.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblDislikes.setFont(WineHunterApplication.format.getSubheadingFont());
+		GridBagConstraints gbc_lblDislikes = new GridBagConstraints();
+		gbc_lblDislikes.insets = new Insets(5, 5, 5, 5);
+		gbc_lblDislikes.anchor = GridBagConstraints.EAST;
+		gbc_lblDislikes.gridx = 0;
+		gbc_lblDislikes.gridy = 7;
+		profileBucket.add(lblDislikes, gbc_lblDislikes);
+		
+		JLabel lblNumDislikes = new JLabel("0");
+		lblNumDislikes.setName("lblLikes");
+		lblNumDislikes.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNumDislikes.setFont(WineHunterApplication.format.getSubheadingFontBase());
+		lblNumDislikes.setForeground(Color.RED);
+		String avgNumDislikes = Integer.toString(user.getnumDislikes()); 
+		lblNumLikes.setText(avgNumDislikes);
+		GridBagConstraints gbc_lblNumDislikes = new GridBagConstraints();
+		gbc_lblNumDislikes.insets = new Insets(5, 5, 5, 5);
+		gbc_lblNumDislikes.anchor = GridBagConstraints.WEST;
+		gbc_lblNumDislikes.gridx = 1;
+		gbc_lblNumDislikes.gridy = 7;
+		profileBucket.add(lblNumDislikes, gbc_lblNumDislikes);
 	}
 
 	/**
