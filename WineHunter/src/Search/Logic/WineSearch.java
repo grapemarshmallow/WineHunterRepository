@@ -468,7 +468,7 @@ public class WineSearch {
 		
 		if (noPriceToggle) {
 			if (needOr == 1) {
-				priceString = "((" + priceString + ") OR (w.price = 0))";
+				priceString = "((" + priceString + ") OR (w.price = -1))";
 			}
 			
 		}
