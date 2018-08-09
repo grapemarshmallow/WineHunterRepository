@@ -419,7 +419,7 @@ public class WineSearch {
 		
 		String vintageString = "";
 		if (vintageMinimum != ViewWineSearch.MIN_VINTAGE) {
-			vintageString = "w.vintage > " + vintageMinimum;
+			vintageString = "w.vintage >= " + vintageMinimum;
 			needAnd = 1;
 			needAndInner = 1;
 			needOr = 1;
@@ -431,7 +431,7 @@ public class WineSearch {
 			else {
 				needAnd = 1;
 			}
-			vintageString = vintageString + "w.vintage < " + vintageMaximum;
+			vintageString = vintageString + "w.vintage <= " + vintageMaximum;
 			needOr = 1;
 		}
 		
@@ -450,7 +450,7 @@ public class WineSearch {
 		
 		String priceString = "";
 		if (priceMinimum != ViewWineSearch.MIN_PRICE) {
-			priceString = "w.price > " + priceMinimum;
+			priceString = "w.price >= " + priceMinimum;
 			needAndAfter = 1;
 			needAndInner = 1;
 			needOr = 1;
@@ -462,7 +462,7 @@ public class WineSearch {
 			else {
 				needAndAfter = 1;
 			}
-			priceString = priceString + "w.price < " + priceMaximum;
+			priceString = priceString + "w.price <= " + priceMaximum;
 			needOr = 1;
 		}
 		
@@ -485,7 +485,7 @@ public class WineSearch {
 		
 		String pointsString = "";
 		if (pointsMinimum != ViewWineSearch.MIN_POINTS) {
-			pointsString = "wr.Points > " + pointsMinimum;
+			pointsString = "wr.Points >= " + pointsMinimum;
 			needAndAfter2 = 1;
 			needAndInner = 1;
 			needOr = 1;
@@ -497,7 +497,7 @@ public class WineSearch {
 			else {
 				needAndAfter2 = 1;
 			}
-			pointsString = pointsString + "wr.Points < " + pointsMaximum;
+			pointsString = pointsString + "wr.Points <= " + pointsMaximum;
 			needOr = 1;
 		}
 		
